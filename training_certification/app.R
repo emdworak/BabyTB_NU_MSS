@@ -28,8 +28,8 @@ library(shinydashboard)
 
 library(shinydashboard)
 
-values <- c("Yes" = 1, "No" = 0, "NA" = 2)
-
+radio_labels <- c("Yes", "No", "NA")
+radio_values <- c(1, 0, 1)
 
 ui <- dashboardPage(
   dashboardHeader(title = "BabyTB Training Certification"),
@@ -63,28 +63,28 @@ ui <- dashboardPage(
               fluidRow(
                 column(6,
                        textInput("text_lwl_person", h4("Person being certified:"), 
-                                 value = "Enter text...")
+                                 value = "")
                 ),
                 
                 column(6,
                        textInput("text_lwl_site", h4("Site:"), 
-                                 value = "Enter text...")
+                                 value = "")
                 ),
                 
                 column(6,
                        textInput("text_lwl_date", h4("Date:"), 
-                                 value = "Enter text...")
+                                 value = "")
                 ),
                 
                 
                 column(6,
                        textInput("text_lwl_certifier", h4("Certifier:"), 
-                                 value = "Enter text...")
+                                 value = "")
                 ),
                 
                 column(6,
-                       textInput("text_lwl_childAge", h4("Child Age:"), 
-                                 value = "Enter text...")
+                       textInput("text_lwl_childAge", h4("Child Age (in months):"), 
+                                 value = "")
                 )
                 
               ),
@@ -94,23 +94,23 @@ ui <- dashboardPage(
               fluidRow(
                 column(6,
                        radioButtons("radio_lwl_001", p("Child (C), caregiver & examiner (E) are seated correctly"),
-                                    choices = values , selected = 3)
+                                    choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
                        ),
                 
                 column(6,
                        textInput("text_lwl_001", h4("Notes"), 
-                                 value = "Enter text...")
+                                 value = "")
                        )
                 ),
               
             fluidRow(
                 column(6,
                        radioButtons("radio_lwl_002", p("iPad is set up so that C is in the correct placement for gaze."),
-                                    choices = values, selected = 3)),
+                                    choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)),
                 
                 column(6,
                        textInput("text_lwl_002", h4("Notes"), 
-                                 value = "Enter text..."))
+                                 value = ""))
                 
       ),
       
@@ -119,24 +119,24 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_003", p("iPad sound is loud enough for C & E to hear"),
-                            choices = values, selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
         ),
         
         column(6,
                textInput("text_lwl_003", h4("Notes"), 
-                         value = "Enter text...")
+                         value = "")
         )
       ),
       
       fluidRow(
         column(6,
                radioButtons("radio_lwl_004", p("E slides purple button to the right"),
-                            choices = values, selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
         ),
         
         column(6,
                textInput("text_lwl_004", h4("Notes"), 
-                         value = "Enter text...")
+                         value = "")
         )
       ),
       
@@ -144,12 +144,12 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_005", p("E reviews instructional screen & slides purple button to the right"),
-                            choices = values, selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
         ),
         
         column(6,
                textInput("text_lwl_005", h4("Notes"), 
-                         value = "Enter text...")
+                         value = "")
         )
       ),
       
@@ -158,12 +158,12 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_006", p("E stands behind the C unless they need to redirect the C’s attention to the iPad without touching the iPad itself or blocking the iPad camera"),
-                            choices = values, selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
         ),
         
         column(6,
                textInput("text_lwl_006", h4("Notes"), 
-                         value = "Enter text...")
+                         value = "")
         )
       ),
       
@@ -172,24 +172,24 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_007", p("After calibration, the iPad begins to present items one at a time. E stands behind the C unless they need to redirect C’s attention without touching the iPad or blocking the camera"),
-                            choices = values, selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
         ),
         
         column(6,
                textInput("text_lwl_007", h4("Notes"), 
-                         value = "Enter text...")
+                         value = "")
         )
       ),
       
       fluidRow(
         column(6,
                radioButtons("radio_lwl_008", p("Test continues until all items are presented"),
-                            choices = values, selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
         ),
         
         column(6,
                textInput("text_lwl_008", h4("Notes"), 
-                         value = "Enter text...")
+                         value = "")
         )
       ),
       
@@ -201,7 +201,7 @@ ui <- dashboardPage(
       
       h2("Your Score"), 
       fluidRow(
-        column(1,
+        column(12,
                verbatimTextOutput("lwl_score"))
       )
     )
@@ -210,20 +210,56 @@ ui <- dashboardPage(
 )
 
 
+# Need an overall feedback area that may help flag folks that aren't qualified
+
 # Define server logic to plot various variables against mpg ----
 server <- function(input, output) {
-  lwl_score <- reactive({
-    input$lwl_submit
-    isolate(sum(c(input$radio_lwl_001, input$radio_lwl_002,
-                  input$radio_lwl_003, input$radio_lwl_004,
-                  input$radio_lwl_005, input$radio_lwl_006,
-                  input$radio_lwl_007, input$radio_lwl_008)))
-  })
+  lwl_values <- eventReactive(input$lwl_submit, {
+
+    lwl_data <- data.frame(
+      "text_lwl_person" = c(input$text_lwl_person),
+      "text_lwl_site" = c(input$text_lwl_site),
+      "text_lwl_date" = c(input$text_lwl_date),
+      "text_lwl_certifier" = c(input$text_lwl_certifier),
+      "text_lwl_childAge" = c(input$text_lwl_childAge),
+      "radio_lwl_001" = c(input$radio_lwl_001), 
+      "radio_lwl_002" = c(input$radio_lwl_002),
+      "radio_lwl_003" = c(input$radio_lwl_003), 
+      "radio_lwl_004" = c(input$radio_lwl_004), 
+      "radio_lwl_005" = c(input$radio_lwl_005),  
+      "radio_lwl_006" = c(input$radio_lwl_006), 
+      "radio_lwl_007" = c(input$radio_lwl_007),  
+      "value_lwl_001" = as.numeric(c(input$radio_lwl_001)),  
+      "value_lwl_002" = as.numeric(c(input$radio_lwl_002)),  
+      "value_lwl_003" = as.numeric(c(input$radio_lwl_003)),   
+      "value_lwl_004" = as.numeric(c(input$radio_lwl_004)),  
+      "value_lwl_005" = as.numeric(c(input$radio_lwl_005)),   
+      "value_lwl_006" = as.numeric(c(input$radio_lwl_006)),  
+      "value_lwl_007" = as.numeric(c(input$radio_lwl_007)),   
+      "value_lwl_008" = as.numeric(c(input$radio_lwl_008)),
+      "notes_lwl_001" = as.numeric(c(input$text_lwl_001)),  
+      "notes_lwl_002" = as.numeric(c(input$text_lwl_002)),  
+      "notes_lwl_003" = as.numeric(c(input$text_lwl_003)),   
+      "notes_lwl_004" = as.numeric(c(input$text_lwl_004)),  
+      "notes_lwl_005" = as.numeric(c(input$text_lwl_005)),   
+      "notes_lwl_006" = as.numeric(c(input$text_lwl_006)),  
+      "notes_lwl_007" = as.numeric(c(input$text_lwl_007)),   
+      "notes_lwl_008" = as.numeric(c(input$text_lwl_008))
+      )
+    
+    lwl_data$sum <- rowSums(lwl_data %>% select(starts_with("value_")), na.rm = TRUE) * NA^!rowSums(!is.na(lwl_data %>% select(starts_with("value_"))))
+    
+    percent_correct <- round((lwl_data$sum / 8)*100, 2)
+    
+    paste0(percent_correct, "%")
+  
+    })
   
   output$lwl_score <- renderText({
-    lwl_score()
+    lwl_values()
   })
   
+
 }
 
 shinyApp(ui, server)
