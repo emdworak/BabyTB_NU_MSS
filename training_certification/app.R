@@ -35,9 +35,33 @@ ui <- dashboardPage(
   dashboardHeader(title = "BabyTB Training Certification"),
   
   dashboardSidebar(
+    width = 300,
+    tags$head(
+      tags$style("@import url(https://use.fontawesome.com/releases/v6.2.1/css/all.css);")
+      ),
+    
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("compass")),
-      menuItem("Looking While Listening", tabName = "tab2", icon = icon("eye"))
+      menuItem("Gaze", tabName = "tab2", icon = icon("eye")),
+      menuItem("Looking While Listening", tabName = "tab_lwl", icon = icon("eye")),
+      menuItem("Mullen Expr. Lang. Observational", tabName = "tab_melo", icon = icon("comment")),
+      menuItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
+      menuItem("Mullen Receptive Language", tabName = "tab6", icon = icon("comment")),
+      menuItem("Picture Vocab", tabName = "tab7", icon = icon("comment")),
+      menuItem("Social Observational (younger)", tabName = "tab8", icon = icon("cubes-stacked")),
+      menuItem("Social Observational (older)", tabName = "tab9", icon = icon("cubes-stacked")),
+      menuItem("Who Has More", tabName = "tab10", icon = icon("arrow-up-9-1")),
+      menuItem("Subitizing", tabName = "tab11", icon = icon("arrow-up-9-1")),
+      menuItem("Object Counting", tabName = "tab12", icon = icon("arrow-up-9-1")),
+      menuItem("Verbal Arithmetic", tabName = "tab13", icon = icon("arrow-up-9-1")),
+      menuItem("Verbal Counting", tabName = "tab14", icon = icon("arrow-up-9-1")),
+      menuItem("Get Up and Go", tabName = "tab15", icon = icon("person-running")),
+      menuItem("Reach to Eat", tabName = "tab16", icon = icon("cookie-bite")),
+      menuItem("Sit and Stand", tabName = "tab17", icon = icon("child-reaching")),
+      menuItem("Mullen Visual Reception", tabName = "tab18", icon = icon("eye")),
+      menuItem("EF Learning & Memory", tabName = "tab19", icon = icon("brain"))
+      
+      
     )
   ),
   
@@ -55,10 +79,10 @@ ui <- dashboardPage(
       ),
       
       # Second tab content
-      tabItem(tabName = "tab2",
+      tabItem(tabName = "tab_lwl",
               
               h2("Certification Checklist for Looking While Listening  "),
-              h3("Before Beginning"),
+              h3("Certification Details"),
               
               fluidRow(
                 column(6,
@@ -72,8 +96,10 @@ ui <- dashboardPage(
                 ),
                 
                 column(6,
-                       textInput("text_lwl_date", h4("Date:"), 
-                                 value = "")
+                       dateInput("date",
+                                 label = "Date (yyyy-mm-dd)",
+                                 value = "yy-mm-dd"
+                       )
                 ),
                 
                 
@@ -204,6 +230,175 @@ ui <- dashboardPage(
         column(12,
                verbatimTextOutput("lwl_score"))
       )
+    ),
+    
+    tabItem(tabName = "tab_melp",
+            
+            h2("Mullen Expressive Language Prompted"),
+            h3("Certification Details"),
+            
+            fluidRow(
+              column(6,
+                     textInput("text_melp_person", h4("Person being certified:"), 
+                               value = "")
+              ),
+              
+              column(6,
+                     textInput("text_melp_site", h4("Site:"), 
+                               value = "")
+              ),
+              
+              column(6,
+                     dateInput("date",
+                               label = "Date (yyyy-mm-dd)",
+                               value = ""
+                     )
+              ),
+              
+              
+              column(6,
+                     textInput("text_melp_certifier", h4("Certifier:"), 
+                               value = "")
+              ),
+              
+              column(6,
+                     textInput("text_melp_childAge", h4("Child Age (in months):"), 
+                               value = "")
+              )
+              
+            ),
+            
+            h3("Before Beginning"),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_001", p("iPad is set up correctly"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_001", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)),
+              
+              column(6,
+                     textInput("text_melp_002", h4("Notes"), 
+                               value = ""))
+              
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_003", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            h3("Testing"),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_004", p("E slides purple button to the right to begin"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_004", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_005", p("E reviews instructions & slides purple button to right"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_005", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_006", p("Age 1-23 months: EL7: Voluntary Babbling: Attracts C’s attention with repeated sounds"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_006", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_106", p("EL7: Voluntary Babbling"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              )
+              
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_007", p("Age 1-23 months: EL10: Plays Gestures / Language Game; asks caregiver which gesture/language game C enjoys (pat-a-cake, peek-a-boo)"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_007", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_008", p("E plays game with C; observes C’s enjoyment"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              ),
+              
+              column(6,
+                     textInput("text_melp_008", h4("Notes"), 
+                               value = "")
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_107", p("EL10: Plays Gestures/Language Game"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              )
+              
+            ),
+            
+            fluidRow(
+              column(1,
+                     actionButton(inputId = "melp_submit", label = "Submit", 
+                                  icon = NULL, width = NULL))
+            ),
+            
+            h2("Your Score"), 
+            fluidRow(
+              column(12,
+                     verbatimTextOutput("melp_score"))
+            )
     )
   )
 )
