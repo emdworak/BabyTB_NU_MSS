@@ -98,7 +98,7 @@ ui <- dashboardPage(
                 column(6,
                        dateInput("date",
                                  label = "Date (yyyy-mm-dd)",
-                                 value = "yy-mm-dd"
+                                 value = Sys.Date()
                        )
                 ),
                 
@@ -251,7 +251,7 @@ ui <- dashboardPage(
               column(6,
                      dateInput("date",
                                label = "Date (yyyy-mm-dd)",
-                               value = ""
+                               value = Sys.Date()
                      )
               ),
               
@@ -266,6 +266,18 @@ ui <- dashboardPage(
                                value = "")
               )
               
+            ),
+            
+            h3("Upload Examiner File"),
+            
+            fluidRow(
+              column(6,
+                     fileInput("melp_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
+                        multiple = FALSE,
+                        accept = c("text/csv",
+                                   "text/comma-separated-values,text/plain",
+                                   ".csv"))
+                     ),
             ),
             
             h3("Before Beginning"),
@@ -340,21 +352,18 @@ ui <- dashboardPage(
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
               ),
               
-              column(6,
-                     textInput("text_melp_006", h4("Notes"), 
-                               value = "")
-              )
-            ),
-            
-            
-            
-            fluidRow(
+              # column(6,
+              #        textInput("text_melp_006", h4("Notes"), 
+              #                  value = "")
+              # ),
               column(6,
                      radioButtons("radio_melp_106", p("EL7: Voluntary Babbling"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
               )
-              
             ),
+            
+            
+            
             
             fluidRow(
               column(6,
@@ -375,18 +384,11 @@ ui <- dashboardPage(
               ),
               
               column(6,
-                     textInput("text_melp_008", h4("Notes"), 
-                               value = "")
-              )
-            ),
-            
-            fluidRow(
-              column(6,
                      radioButtons("radio_melp_107", p("EL10: Plays Gestures/Language Game"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
               )
-              
             ),
+
             
             fluidRow(
               column(1,
@@ -397,7 +399,13 @@ ui <- dashboardPage(
             h2("Your Score"), 
             fluidRow(
               column(12,
-                     verbatimTextOutput("melp_score"))
+                     verbatimTextOutput("melp_score")),
+            ),
+            
+            h4("This will be removed, but it here to show that the data upload worked"),
+            fluidRow(
+              column(12,
+                     tableOutput("melp_examiner_data"))
             )
     )
   )
@@ -409,6 +417,40 @@ ui <- dashboardPage(
 
 # Define server logic to plot various variables against mpg ----
 server <- function(input, output) {
+  
+  output$melp_examiner_data <- renderTable({
+    
+    # input$melp_examiner_file will be NULL initially. After the user selects
+    # and uploads a file,
+    # or all rows if selected, will be shown.
+    
+    req(input$melp_examiner_file)
+    
+    # when reading semicolon separated files,
+    # having a comma separator causes `read.csv` to error
+    tryCatch(
+      {
+        melp_exam_df <- read.csv(input$melp_examiner_file$datapath) %>% 
+          select(Key, ItemID, Value) %>% 
+          filter(Key == "Score") %>% 
+          filter(ItemID %in% c("EL7", "EL10", "EL11", "EL15", "EL16")) %>% 
+          pivot_wider(names_from = ItemID, 
+                      values_from = Value) %>% 
+          rename("exam_EL7" = "EL7", 
+                 "exam_EL10" = "EL10", 
+                 "exam_EL11" = "EL11", 
+                 "exam_EL15" = "EL15", 
+                 "exam_EL16" = "EL16") ## Need to confirm what shows up if the test is NA
+      },
+      error = function(e) {
+        # return a safeError if a parsing error occurs
+        stop(safeError(e))
+      }
+    )
+    })
+
+  
+  
   lwl_values <- eventReactive(input$lwl_submit, {
 
     lwl_data <- data.frame(
