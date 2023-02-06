@@ -377,7 +377,7 @@ ui <- dashboardPage(
                      verbatimTextOutput("melp_score")),
             ),
             
-            h4("This will be removed, but it here to show that the data upload worked"),
+            h4("This will be removed, but it's here to show that the data upload worked"),
             fluidRow(
               column(12,
                      tableOutput("melp_examiner_data"))
