@@ -134,7 +134,7 @@ ui <- dashboardPage(
             
                 fluidRow(
                   column(6,
-                         textInput("text_lwl_001", h4("Notes about setup"), 
+                         textAreaInput("text_lwl_001", h4("Notes about setup"), 
                                    value = ""))
       ),
       
@@ -189,7 +189,7 @@ ui <- dashboardPage(
         
       fluidRow(
         column(6,
-               textInput("text_lwl_002", h4("Notes about testing"), 
+               textAreaInput("text_lwl_002", h4("Notes about testing"), 
                          value = "")
         )
       ),
@@ -261,33 +261,25 @@ ui <- dashboardPage(
               column(6,
                      radioButtons("radio_melp_001", p("iPad is set up correctly"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
-              ),
-              
-              column(6,
-                     textInput("text_melp_001", h4("Notes"), 
-                               value = "")
               )
             ),
             
             fluidRow(
               column(6,
                      radioButtons("radio_melp_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)),
-              
-              column(6,
-                     textInput("text_melp_002", h4("Notes"), 
-                               value = ""))
-              
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3))
             ),
             
             fluidRow(
               column(6,
                      radioButtons("radio_melp_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                )
               ),
-              
+            
+            fluidRow(
               column(6,
-                     textInput("text_melp_003", h4("Notes"), 
+                     textAreaInput("text_melp_001", h4("Notes about setup"), 
                                value = "")
               )
             ),
@@ -298,11 +290,6 @@ ui <- dashboardPage(
               column(6,
                      radioButtons("radio_melp_004", p("E slides purple button to the right to begin"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
-              ),
-              
-              column(6,
-                     textInput("text_melp_004", h4("Notes"), 
-                               value = "")
               )
             ),
             
@@ -311,11 +298,6 @@ ui <- dashboardPage(
               column(6,
                      radioButtons("radio_melp_005", p("E reviews instructions & slides purple button to right"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
-              ),
-              
-              column(6,
-                     textInput("text_melp_005", h4("Notes"), 
-                               value = "")
               )
             ),
             
@@ -327,28 +309,17 @@ ui <- dashboardPage(
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
               ),
               
-              # column(6,
-              #        textInput("text_melp_006", h4("Notes"), 
-              #                  value = "")
-              # ),
+              
               column(6,
                      radioButtons("radio_melp_106", p("EL7: Voluntary Babbling"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
               )
             ),
             
-            
-            
-            
             fluidRow(
               column(6,
                      radioButtons("radio_melp_007", p("Age 1-23 months: EL10: Plays Gestures / Language Game; asks caregiver which gesture/language game C enjoys (pat-a-cake, peek-a-boo)"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
-              ),
-              
-              column(6,
-                     textInput("text_melp_007", h4("Notes"), 
-                               value = "")
               )
             ),
             
@@ -361,6 +332,13 @@ ui <- dashboardPage(
               column(6,
                      radioButtons("radio_melp_107", p("EL10: Plays Gestures/Language Game"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     textAreaInput("text_melp_002", h4("Notes about testing"), 
+                                   value = "")
               )
             ),
 
