@@ -30,6 +30,9 @@ library(shinydashboard)
 
 radio_labels <- c("Yes", "No", "NA")
 radio_values <- c(1, 0, 1)
+el_values2 <- c(NA, 1, 0)
+el_values3 <- c(NA, 0, 1, 2)
+el_values4 <- c(NA, 0, 1, 2, 3)
 
 ui <- dashboardPage(
   dashboardHeader(title = "BabyTB Training Certification"),
@@ -120,7 +123,7 @@ ui <- dashboardPage(
               fluidRow(
                 column(6,
                        radioButtons("radio_lwl_001", p("Child (C), caregiver & examiner (E) are seated correctly"),
-                                    choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                    choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
                        )
                 ),
               
@@ -128,7 +131,7 @@ ui <- dashboardPage(
             fluidRow(
                 column(6,
                        radioButtons("radio_lwl_002", p("iPad is set up so that C is in the correct placement for gaze."),
-                                    choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                    choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
                        )
                 ),
             
@@ -143,14 +146,14 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_003", p("iPad sound is loud enough for C & E to hear"),
-                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
         )
       ),
       
       fluidRow(
         column(6,
                radioButtons("radio_lwl_004", p("E slides purple button to the right"),
-                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
         )
       ),
       
@@ -158,7 +161,7 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_005", p("E reviews instructional screen & slides purple button to the right"),
-                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
         )
       ),
       
@@ -167,7 +170,7 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_006", p("E stands behind the C unless they need to redirect the C’s attention to the iPad without touching the iPad itself or blocking the iPad camera"),
-                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
         )
       ),
       
@@ -176,14 +179,14 @@ ui <- dashboardPage(
       fluidRow(
         column(6,
                radioButtons("radio_lwl_007", p("After calibration, the iPad begins to present items one at a time. E stands behind the C unless they need to redirect C’s attention without touching the iPad or blocking the camera"),
-                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
         )
       ),
       
       fluidRow(
         column(6,
                radioButtons("radio_lwl_008", p("Test continues until all items are presented"),
-                            choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                            choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
         )
         ),
         
@@ -260,20 +263,20 @@ ui <- dashboardPage(
             fluidRow(
               column(6,
                      radioButtons("radio_melp_001", p("iPad is set up correctly"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
             
             fluidRow(
               column(6,
                      radioButtons("radio_melp_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3))
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
             ),
             
             fluidRow(
               column(6,
                      radioButtons("radio_melp_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
                 )
               ),
             
@@ -289,7 +292,7 @@ ui <- dashboardPage(
             fluidRow(
               column(6,
                      radioButtons("radio_melp_004", p("E slides purple button to the right to begin"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
             
@@ -297,7 +300,7 @@ ui <- dashboardPage(
             fluidRow(
               column(6,
                      radioButtons("radio_melp_005", p("E reviews instructions & slides purple button to right"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
             
@@ -306,32 +309,74 @@ ui <- dashboardPage(
             fluidRow(
               column(6,
                      radioButtons("radio_melp_006", p("Age 1-23 months: EL7: Voluntary Babbling: Attracts C’s attention with repeated sounds"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               ),
               
               
               column(6,
-                     radioButtons("radio_melp_106", p("EL7: Voluntary Babbling"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                     radioButtons("radio_melp_el7", p("EL7: Voluntary Babbling"),
+                                  choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
               )
             ),
             
             fluidRow(
               column(6,
                      radioButtons("radio_melp_007", p("Age 1-23 months: EL10: Plays Gestures / Language Game; asks caregiver which gesture/language game C enjoys (pat-a-cake, peek-a-boo)"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
             
             fluidRow(
               column(6,
                      radioButtons("radio_melp_008", p("E plays game with C; observes C’s enjoyment"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               ),
               
               column(6,
-                     radioButtons("radio_melp_107", p("EL10: Plays Gestures/Language Game"),
-                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = 3)
+                     radioButtons("radio_melp_el10", p("EL10: Plays Gestures/Language Game"),
+                                  choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_009", p("Age 1-23 months: EL11: Says first words; ask caregiver which words C says and try to elicit words."),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+              ),
+              
+              column(6,
+                     radioButtons("radio_melp_el11", p("EL11: Says first words"),
+                                  choiceNames = c("NA", "Zero", "One", 
+                                                  "Two to seven", "Eight or more"), 
+                                  choiceValues = el_values4,  selected = "")
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_010", p("All ages: EL15: Names objects: E lays out objects on table in front of C but not reachable by C; points to each item & asks “what is this?” or “what do we call this?”"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+              ),
+              
+              column(6,
+                     radioButtons("radio_melp_el15", p("EL15: Names objects"),
+                                  choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons", 
+                                                  "4 or 5 endorsed buttons", "6 endorsed buttons"), 
+                                  choiceValues = el_values4,  selected = "")
+              )
+            ),
+            
+            fluidRow(
+              column(6,
+                     radioButtons("radio_melp_011", p("All ages: EL16: Labels pictures: E shows C 3 images and points to each, asking “what is this?” or “what do we call this?”"),
+                                  choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+              ),
+              
+              column(6,
+                     radioButtons("radio_melp_el16", p("EL16: Labels Pictures"),
+                                  choiceNames = c("NA", "Does not label labels at least one picture ", 
+                                                  "Labels at least one picture"), 
+                                  choiceValues = el_values2,  selected = "")
               )
             ),
             
@@ -402,7 +447,63 @@ server <- function(input, output) {
     )
     })
 
-  
+  melp_values <- eventReactive(input$melp_submit, {
+    
+    melp_data <- data.frame(
+      "text_melp_person" = c(input$text_melp_person),
+      "text_melp_site" = c(input$text_melp_site),
+      "text_melp_date" = c(input$text_melp_date),
+      "text_melp_certifier" = c(input$text_melp_certifier),
+      "text_melp_childAge" = c(input$text_melp_childAge),
+      
+      "radio_melp_001" = c(input$radio_melp_001), 
+      "radio_melp_002" = c(input$radio_melp_002),
+      "radio_melp_003" = c(input$radio_melp_003), 
+      "radio_melp_004" = c(input$radio_melp_004), 
+      "radio_melp_005" = c(input$radio_melp_005),  
+      "radio_melp_006" = c(input$radio_melp_006), 
+      "radio_melp_el7" = c(input$radio_melp_el7), 
+      "radio_melp_007" = c(input$radio_melp_007),
+      "radio_melp_008" = c(input$radio_melp_008),
+      "radio_melp_el10" = c(input$radio_melp_el10),
+      "radio_melp_009" = c(input$radio_melp_009),
+      "radio_melp_el11" = c(input$radio_melp_el11),
+      "radio_melp_010" = c(input$radio_melp_010),
+      "radio_melp_el15" = c(input$radio_melp_el15),
+      "radio_melp_011" = c(input$radio_melp_011),
+      "radio_melp_el16" = c(input$radio_melp_el16),
+      
+      "value_melp_001" = as.numeric(c(input$radio_melp_001)), 
+      "value_melp_002" = as.numeric(c(input$radio_melp_002)),
+      "value_melp_003" = as.numeric(c(input$radio_melp_003)), 
+      "value_melp_004" = as.numeric(c(input$radio_melp_004)), 
+      "value_melp_005" = as.numeric(c(input$radio_melp_005)),  
+      "value_melp_006" = as.numeric(c(input$radio_melp_006)), 
+      "value_melp_el7" = as.numeric(c(input$radio_melp_el7)), 
+      "value_melp_007" = as.numeric(c(input$radio_melp_007)),
+      "value_melp_008" = as.numeric(c(input$radio_melp_008)),
+      "value_melp_el10" = as.numeric(c(input$radio_melp_el10)),
+      "value_melp_009" = as.numeric(c(input$radio_melp_009)),
+      "value_melp_el11" = as.numeric(c(input$radio_melp_el11)),
+      "value_melp_010" = as.numeric(c(input$radio_melp_010)),
+      "value_melp_el15" = as.numeric(c(input$radio_melp_el15)),
+      "value_melp_011" = as.numeric(c(input$radio_melp_011)),
+      "value_melp_el16" = as.numeric(c(input$radio_melp_el16)),
+      
+      "notes_melp_001" = as.numeric(c(input$text_melp_001)),  
+      "notes_melp_002" = as.numeric(c(input$text_melp_002))
+    )
+    
+    
+    melp_data$sum <- rowSums(melp_data %>% select(starts_with("value_melp_")), na.rm = TRUE) * NA^!rowSums(!is.na(melp_data %>% select(starts_with("value_"))))
+    
+    percent_correct <- round((melp_data$sum / 11)*100, 2)
+    
+    paste0(percent_correct, "%")
+    ## PURPLE RABBITS
+    #melp_combined <- melp_exam_df
+    
+  })
   
   lwl_values <- eventReactive(input$lwl_submit, {
 
