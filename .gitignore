@@ -3,4 +3,8 @@
 .RData
 .Ruserdata
 
+
+## Make sure personal authentication information is not uploaded
 training_certification/rsconnect
+training_certification/authentication_files/authentication_info.R
+training_certification/authentication_files/authentication_info.rdata
