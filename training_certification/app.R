@@ -1083,7 +1083,7 @@ tabItem(tabName = "tab_scd",
 ),
 
 
-## LWL page ------
+## Looking While Listening page ------
 tabItem(tabName = "tab_lwl",
         
         h2("Certification Checklist for Looking While Listening"),
@@ -1599,7 +1599,7 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                     radioButtons("radio_melp_002", p("Seating is correct for child, caregiver and examiner."),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
             ),
 
@@ -1621,7 +1621,7 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_004", p("E slides purple button to the right to begin"),
+                     radioButtons("radio_melp_004", p("Examiner slides purple button to the right to begin"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
@@ -1629,7 +1629,7 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_005", p("E reviews instructions & slides purple button to right"),
+                     radioButtons("radio_melp_005", p("Examiner reviews instructions & slides purple button to right"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
@@ -1651,14 +1651,14 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_007", p("Age 1-23 months: EL10: Plays Gestures / Language Game; asks caregiver which gesture/language game C enjoys (pat-a-cake, peek-a-boo)"),
+                     radioButtons("radio_melp_007", p("Age 1-23 months: EL10: Plays Gestures / Language Game; asks caregiver which gesture/language game child enjoys (pat-a-cake, peek-a-boo)"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               )
             ),
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_008", p("E plays game with C; observes C’s enjoyment"),
+                     radioButtons("radio_melp_008", p("Examiner plays game with C; observes C’s enjoyment"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               ),
 
@@ -1670,7 +1670,7 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_009", p("Age 1-23 months: EL11: Says first words; ask caregiver which words C says and try to elicit words."),
+                     radioButtons("radio_melp_009", p("Age 1-23 months: EL11: Says first words; ask caregiver which words child says and try to elicit words."),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               ),
 
@@ -1684,7 +1684,7 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_010", p("All ages: EL15: Names objects: E lays out objects on table in front of C but not reachable by C; points to each item & asks “what is this?” or “what do we call this?”"),
+                     radioButtons("radio_melp_010", p("All ages: EL15: Names objects: Examiner lays out objects on table in front of child but not reachable by C; points to each item & asks “what is this?” or “what do we call this?”"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               ),
 
@@ -1698,13 +1698,13 @@ tabItem(tabName = "tab_melo",
 
             fluidRow(
               column(6,
-                     radioButtons("radio_melp_011", p("All ages: EL16: Labels pictures: E shows C 3 images and points to each, asking “what is this?” or “what do we call this?”"),
+                     radioButtons("radio_melp_011", p("All ages: EL16: Labels pictures: Examiner shows child 3 images and points to each, asking “what is this?” or “what do we call this?”"),
                                   choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
               ),
 
               column(6,
                      radioButtons("radio_melp_el16", p("EL16: Labels Pictures"),
-                                  choiceNames = c("NA", "Does not label labels at least one picture ",
+                                  choiceNames = c("NA", "Does not label labels at least one picture",
                                                   "Labels at least one picture"),
                                   choiceValues = el_values2,  selected = "")
               )
@@ -1892,6 +1892,7 @@ tabItem(tabName = "tab_pv",
 tabItem(tabName = "tab_sobY",
 
         h2("Certification Checklist for Social Observational (ages 9-23 months)"),
+        
         h3("Certification Details"),
 
         fluidRow(
@@ -1941,20 +1942,27 @@ tabItem(tabName = "tab_sobY",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_001", p("iPad is set up correctly"),
+                 radioButtons("radio_sobY_001", p("Set up is correct- table and chairs in right place."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_sobY_002", p("Child is at table and sitting in correct position."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                 radioButtons("radio_sobY_003", p("Examiner reads instructions to the caregiver."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_004", p("Has toys for transitions available for child "),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -1966,107 +1974,851 @@ tabItem(tabName = "tab_sobY",
           )
         ),
 
-        h3("Testing"),
-
+        h3("Communicative Temptation 1: Minute One"),
+      
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_004", p("E slides purple button to the right to begin"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sobY_005", p("E reviews instructions & slides purple button to right"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sobY_006", p("ADD QUESTION"),
+                 radioButtons("radio_sobY_005", p("Step 1- Examiner activates wind-up toy"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
-
+          
           column(6,
-                 radioButtons("radio_sobY_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_sobY_SO_9_23_1", p("2-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_007", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sobY_008", p("ADD QUESTION"),
+                 radioButtons("radio_sobY_006", p("Step 2- Examiner engages in social exchange of turns activates wind-up toy."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobY_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_sobY_SO_9_23_2", p("3-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_009", p("ADD QUESTION"),
+                 radioButtons("radio_sobY_007", p("Step 3- If necessary, examiner requests wind-up toy back."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobY_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                 radioButtons("radio_sobY_SO_9_23_3", p("Smiles without look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_010", p("ADD QUESTION"),
+                 radioButtons("radio_sobY_008", p("Step 4- Examiner activates wind-up toy."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobY_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                 radioButtons("radio_sobY_SO_9_23_4", p("Smiles with look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sobY_011", p("ADD QUESTION"),
+                 radioButtons("radio_sobY_009", p("Step 5- Examiner engages in social exchange of turns."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobY_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_sobY_SO_9_23_5", p("Show gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
 
         fluidRow(
           column(6,
-                 textAreaInput("text_sobY_002", h4("Notes about testing"),
+                 radioButtons("radio_sobY_010", p("Step 6- Examiner requests wind-up toy back and bye-bye."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_6", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_7", p("Comments with sounds or words."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_002", h4("Notes about minute one of testing"),
                                value = "")
           )
         ),
 
-
+        h3("Response to Name & Gaze/Point 1: Minute Two"),
+        
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_011", p("Has car and places in front of child and to side of examiner."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_9", p("Responds to name "),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_012", p("Step 1- Examiner calls child’s name."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_10", p("Follows gaze/point"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_013", p("Step 2- Examiner points to car and says, “LOOK!”."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_11", p("2-point gaze shift."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_014", p("Step 3- Examiner gives child car to play with."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_12", p("3-point gaze shift."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_015", p("Step 4- Examiner engage in social exchange of turns."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_13", p("Smiles without look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_016", p("Step 5- Examiner requests requests car or gently removes."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_14", p("Smiles with look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_15", p("Show gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_16", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_17", p("Comments with sounds or words."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_003", h4("Notes about minute two of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Communication Temptation 2: Minute Three"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_017", p("Has required toys"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_19", p("2-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_018", p("Puts figure in jar."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_20", p("3-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_019", p("Step 1- Examiner puts jar w/ figure inside in front of child."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_21", p("Smiles without look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_020", p("Step 2- Examiner opens lid and gives to child, engages in social exchange of turns."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_22", p("Smiles with look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_021", p("Step 3- Examiner requests jar back- holds out hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_23", p("Show gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_022", p("Step 4- Examiner puts stringy ball in jar, closes lid, and hands child the jar."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_24", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_023", p("Step 5- Examiner opens lid and gives to child, engages in social exchange of turns."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_25", p("Comments with sounds or words."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_024", p("Step 6- Examiner requests jar back, holds out hand, and bye-bye."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_004", h4("Notes about minute three of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Communicative Temptation 3, probe 2: Minute Four"),
+        
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_025", p("Examiner has small figure from previous placed at table height behind child."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_27", p("Responds to name."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_026", p("Step 1 (9-15 mos)- Examiner plays “Walk mouse, creep mouse” with 2 trials separated by 3 secs and bye-bye."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_28", p("Follows gaze/point"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_027", p("Step 1 (16-23 mos)- Examiner plays “Itsy Bitsy Spider” with 2 trials separated by 3 secs and bye-bye at end."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_29", p("2-point gaze shift."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_028", p("Step 2- Calls child’s name."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_30", p("3-point gaze shift."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_029", p("Step 3- Examiner point to objects and says, “LOOK!”."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_31", p("Smiles without look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_030", p("Step 4- Label object. The examiner tries to get child to look in direction by tapping before the examiner labels object."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_32", p("Smiles with look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_031", p("Step 5- Examiner and child engage in social exchange of turns about object."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_33", p("Show gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_34", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_35", p("Comments with sounds or words."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_005", h4("Notes about minute four of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Sharing Books 1: Minute Five"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_032", p("Has requisite two books"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_37", p("2-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_033", p("Step 1- Examiner allows child to choose one of two books."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_38", p("3-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_034", p("Step 2- Examiner encourages social interaction by looking through the book together."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_39", p("Smiles without look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_035", p("Step 3- Examiner points, names or describes a picture on the page the child has open."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_40", p("Smiles with look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_036", p("Step 4- Examiner removes first book; says bye-bye book."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_41", p("Show gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_42", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_43", p("Comments with sounds or words."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_006", h4("Notes about minute five of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Sharing Books 2: Minute Six"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_037", p("Has same books as earlier."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_45", p("2-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_038", p("Step 1- Examiner gives child remaining book."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_46", p("3-point gaze shift"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_039", p("Step 2- Examiner encourages social interactions by looking through book with child."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_47", p("Smiles without look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_040", p("Step 3- Examiner points, names or describes a picture on the page the child has open."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_48", p("Smiles with look."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_041", p("Step 4- Examiner removes book; says bye-bye book"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_49", p("Show gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_50", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_51", p("Comments with sounds or words."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_007", h4("Notes about minute six of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Parent/Caregiver-Child Play 1: Minute Seven"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_042", p("Has feeding playset."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_53", p("Explores features of object"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_043", p("Step 1- Examiner explains play activity to caregiver."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_54", p("Uses item functionally"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_044", p("Step 2- Examiner brings out feeding playset."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_55", p("Pretends toward other (caregiver, examiner, doll)."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_045", p("Step 3- Examiner encourages play."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_56", p("2 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_046", p("Step 4- Examiner brings out small bowl & plate; encourages more play."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_57", p("3 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_047", p("Step 5- Examiner engages with child; names actions or objects child is touching."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_008", h4("Notes about minute seven of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Parent/Caregiver-Child Play 2: Minute Eight"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_048", p("Has matching feeding playset for parent & cooking playset ."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_66", p("Explores features of object"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_049", p("Step 1- Examiner gives feeding playset to caregiver."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_67", p("Uses item functionally"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_050", p("Step 2- Examiner asks caregiver to demonstrate pretend play (feeding)."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_68", p("Pretends toward other (caregiver, examiner, doll)."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_051", p("Step 3- Examiner brings out pan, lid & spatula from cooking set; put between the caregiver and child."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_69", p("2 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_052", p("Step 4- Examiner asks caregiver to encourage child to play."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_70", p("3 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_009", h4("Notes about minute eight of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Parent/Caregiver-Child Play 3: Minute Nine"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_053", p("Has cooking playset."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_79", p("Explores features of object"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_054", p("Step 1- Examiner brings out large bowl & large spoon; place between child and caregiver."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_80", p("Uses item functionally"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_055", p("Step 2- Examiner asks caregiver to demonstrate pretend play: cooking and serving."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_81", p("Pretends toward other (caregiver, examiner, doll)."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_056", p("Step 3- Examiner encourages child to pretend cooking and serving."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_82", p("2 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_83", p("3 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_010", h4("Notes about minute nine of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Parent/Caregiver-Child Play 4: Minute Ten"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_057", p("Has four toys from earlier minutes 1-4 ."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_92", p("Explores features of object"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_058", p("Step 1- Examiner offers one of the other toys for the child to incorporate into the play."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_93", p("Uses item functionally"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_059", p("Step 2- Examiner asks parent to pretend play (cooking and serving)."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_94", p("Pretends toward other (caregiver, examiner, doll)."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobY_060", p("Step 3- Examiner encourages child to caregiver."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobY_SO_9_23_95", p("2 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_sobY_SO_9_23_96", p("3 Pretend action sequences."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobY_011", h4("Notes about minute ten of testing"),
+                               value = "")
+          )
+        ),
+        
+        
+        
+        
         fluidRow(
           column(1,
                  actionButton(inputId = "sobY_submit", label = "Submit",
@@ -2083,44 +2835,44 @@ tabItem(tabName = "tab_sobY",
 ## Social Observational (older) page ------
 
 tabItem(tabName = "tab_sobO",
-
-        h2("Certification Checklist for Social Observational (ages 24 months and older)"
-           ),
+        
+        h2("Certification Checklist for Social Observational (ages 24 months and older)"),
+        
         h3("Certification Details"),
-
+        
         fluidRow(
           column(6,
                  textInput("text_sobO_person", h4("Person being certified:"),
                            value = "")
           ),
-
+          
           column(6,
                  textInput("text_sobO_site", h4("Site:"),
                            value = "")
           ),
-
+          
           column(6,
                  dateInput("text_sobO_date",
                            label = "Date (yyyy-mm-dd)",
                            value = Sys.Date()
                  )
           ),
-
-
+          
+          
           column(6,
                  textInput("text_sobO_certifier", h4("Certifier:"),
                            value = "")
           ),
-
+          
           column(6,
                  textInput("text_sobO_childAge", h4("Child Age (in months):"),
                            value = "")
           )
-
+          
         ),
-
+        
         h3("Upload Examiner File"),
-
+        
         fluidRow(
           column(6,
                  fileInput("sobO_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
@@ -2130,132 +2882,475 @@ tabItem(tabName = "tab_sobO",
                                       ".csv"))
           ),
         ),
-
+        
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_001", p("iPad is set up correctly"),
+                 radioButtons("radio_sobO_001", p("Set up is correct- table and chairs in right place."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_sobO_002", p("Child is at table and sitting in correct position."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                 radioButtons("radio_sobO_003", p("Examiner reads instructions to the caregiver."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_004", p("Has toys for transitions available for chil."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  textAreaInput("text_sobO_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
-        h3("Testing"),
-
+        
+        h3("Joint Attention: Minute One"),
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_004", p("E slides purple button to the right to begin"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sobO_005", p("E reviews instructions & slides purple button to right"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sobO_006", p("ADD QUESTION"),
+                 radioButtons("radio_sobO_005", p("Cooking pot placed without child taking note"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
-
+          
           column(6,
-                 radioButtons("radio_sobO_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_sobO_SO_24_48_1", p("Following point."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_007", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sobO_008", p("ADD QUESTION"),
+                 radioButtons("radio_sobO_006", p("Examiner pulls out cookware and puts on table."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobO_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_sobO_SO_24_48_2", p("Complies with request (pot) spontaneously."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_009", p("ADD QUESTION"),
+                 radioButtons("radio_sobO_007", p("Examiner completes set-up/ intro script: “Hey [name], I’ve got…”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobO_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                 radioButtons("radio_sobO_SO_24_48_3", p("Complies with request after prompt."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_010", p("ADD QUESTION"),
+                 radioButtons("radio_sobO_008", p("Step 1- “missing my cooking pot” and pointing."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobO_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                 radioButtons("radio_sobO_SO_24_48_4", p("Comments on jungle animal."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sobO_011", p("ADD QUESTION"),
+                 radioButtons("radio_sobO_009", p("Step 2- If necessary, examiner brings cooking pot."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sobO_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_sobO_SO_24_48_5", p("Points to jungle animal."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 textAreaInput("text_sobO_002", h4("Notes about testing"),
+                 radioButtons("radio_sobO_010", p("Step 3- If pot not opened, examiner asks child to do so."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_6", p("Shows jungle animal."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobO_002", h4("Notes about minute one of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Pretend Play: Minutes Two-Three"),
+        
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_011", p("Puts out doll and action figure."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_7", p("Child-as-agent"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_012", p("Child choses between above."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_8", p("Substitution"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_013", p("Step 1- Examiner demonstrates pretend play."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_9", p("Substitution without object."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_014", p("Step 2- Examiner demonstrates substitution if necessary."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_10", p("Dolls-as-agent."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_015", p("Step 3- Examiner mirrors child’s pretend and escalate if child does not escalate."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_11", p("Socio-dramatic play."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_016", p("Step 4- Examiner removes all items."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobO_003", h4("Notes about minutes two-three of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Prosocial Behavior: Minutes Four-Five"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_017", p("Has required toys"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_12", p("Shares blocks"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_018", p("Dumps out the bags of blocks."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_13", p("Takes turns building tower"),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_019", p("Step 1- Examiner indicates discrepancy in number of blocks to encourage sharing."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_14", p("Picks up fallen blocks or repairs tower."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_020", p("Step 2- Examiner takes turns building tower."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_15", p("Concerned facial expression."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_021", p("Step 3- Examiner accidently knocks over tower."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_16", p("Verbal concern/comforting."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_022", p("Step 4- Examiner expresses disappointment."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_17", p("Physical comforting."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_023", p("Step 5- Examiner starts cleaning; requests help if necessary."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_18", p("Helps clean up spontaneously."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6, 
+                 radioButtons("radio_sobO_SO_24_48_19",  p("Helps clean up after prompt."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobO_004", h4("Notes about minute four-five of testing"),
+                               value = "")
+          )
+        ),
+        
+        
+        h3("Social Communication 1: Minutes Six-Seven"),
+        
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_024", p("Has required Duplo set in container."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_20", p("Rebuilds elephant at least 2-steps."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_025", p("Elephant is disassembled when brought out."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_21", p("Rebuilds elephant all steps."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_026", p("Step 1- Examiner demonstrates the 4 steps to “correctly” assemble elephant using the words: this goes here, for each step ."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_22", p("Steps in correct order."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_027", p("Step 2- Examiner disassembles and puts back in container; give to child: “Can you build it like I did?”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_23", p("Asks for help opening container ."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_028", p("Step 3- Examiner offers help if needed."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_029", p("Step 4- Examiner remove all items."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobO_005", h4("Notes about minute six-seven of testing"),
+                               value = "")
+          )
+        ),
+        
+        h3("Social Communications 2: Minutes Eight-Ten"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_030", p("Has requisite book: I spy"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_24", p("Initiates/responds to conversation."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_031", p("Set-up- Examiner introduces book."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_25", p("Takes a conversational turn."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_032", p("Step 1- Examiner opens book to invite conversation."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_26", p("Responds to a shift in topic."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_033", p("Step 2- Examiner mentions hat, then butterfly to encourage conversation and turn taking."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_27", p("Corrects mislabeling by protest only."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_034", p("Step 3- Examiner points to another object to shift conversation."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_sobO_SO_24_48_28", p("Corrects mislabeling by giving correct label."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_035", p("Step 4- Examiner turns page and mislabels book as “dog”."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          column(6, 
+                 radioButtons("radio_sobO_SO_24_48_29", p("Adapts speech register for doll."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_036", p("Step 5- Examiner pretends with doll and book."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6, 
+                 radioButtons("radio_sobO_SO_24_48_30", p("Turns book to face doll."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sobO_037", p("Step 6- Examiner clears table."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6, 
+                 radioButtons("radio_sobO_SO_24_48_31", p("Attempts to teach doll."),
+                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sobO_006", h4("Notes about minute eight-ten of testing"),
                                value = "")
           )
         ),
@@ -2335,7 +3430,7 @@ tabItem(tabName = "tab_whm",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_whm_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -2357,7 +3452,7 @@ tabItem(tabName = "tab_whm",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_whm_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2365,7 +3460,7 @@ tabItem(tabName = "tab_whm",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_whm_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2440,7 +3535,7 @@ tabItem(tabName = "tab_whm",
 
           column(6,
                  radioButtons("radio_whm_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -2528,7 +3623,7 @@ tabItem(tabName = "tab_sub",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_sub_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -2550,7 +3645,7 @@ tabItem(tabName = "tab_sub",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_sub_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2558,7 +3653,7 @@ tabItem(tabName = "tab_sub",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_sub_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2633,7 +3728,7 @@ tabItem(tabName = "tab_sub",
 
           column(6,
                  radioButtons("radio_sub_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -2721,7 +3816,7 @@ tabItem(tabName = "tab_oc",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_oc_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -2743,7 +3838,7 @@ tabItem(tabName = "tab_oc",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_oc_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2751,7 +3846,7 @@ tabItem(tabName = "tab_oc",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_oc_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2826,7 +3921,7 @@ tabItem(tabName = "tab_oc",
 
           column(6,
                  radioButtons("radio_oc_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -2914,7 +4009,7 @@ tabItem(tabName = "tab_va",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_va_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_va_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -2936,7 +4031,7 @@ tabItem(tabName = "tab_va",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_va_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_va_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -2944,7 +4039,7 @@ tabItem(tabName = "tab_va",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_va_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_va_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3019,7 +4114,7 @@ tabItem(tabName = "tab_va",
 
           column(6,
                  radioButtons("radio_va_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -3107,7 +4202,7 @@ tabItem(tabName = "tab_vc",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_vc_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -3129,7 +4224,7 @@ tabItem(tabName = "tab_vc",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_vc_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3137,7 +4232,7 @@ tabItem(tabName = "tab_vc",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_vc_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3212,7 +4307,7 @@ tabItem(tabName = "tab_vc",
 
           column(6,
                  radioButtons("radio_vc_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -3300,7 +4395,7 @@ tabItem(tabName = "tab_guag",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_guag_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -3322,7 +4417,7 @@ tabItem(tabName = "tab_guag",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_guag_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3330,7 +4425,7 @@ tabItem(tabName = "tab_guag",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_guag_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3405,7 +4500,7 @@ tabItem(tabName = "tab_guag",
 
           column(6,
                  radioButtons("radio_guag_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -3493,7 +4588,7 @@ tabItem(tabName = "tab_rte",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_rte_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -3515,7 +4610,7 @@ tabItem(tabName = "tab_rte",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_rte_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3523,7 +4618,7 @@ tabItem(tabName = "tab_rte",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_rte_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3598,7 +4693,7 @@ tabItem(tabName = "tab_rte",
 
           column(6,
                  radioButtons("radio_rte_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -3686,7 +4781,7 @@ tabItem(tabName = "tab_sas",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_sas_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -3708,7 +4803,7 @@ tabItem(tabName = "tab_sas",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_sas_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3716,7 +4811,7 @@ tabItem(tabName = "tab_sas",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_sas_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3791,7 +4886,7 @@ tabItem(tabName = "tab_sas",
 
           column(6,
                  radioButtons("radio_sas_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -3879,7 +4974,7 @@ tabItem(tabName = "tab_mrl",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mrl_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_mrl_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
         
@@ -3901,7 +4996,7 @@ tabItem(tabName = "tab_mrl",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mrl_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_mrl_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3909,7 +5004,7 @@ tabItem(tabName = "tab_mrl",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mrl_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_mrl_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -3984,7 +5079,7 @@ tabItem(tabName = "tab_mrl",
           
           column(6,
                  radioButtons("radio_mrl_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -4073,7 +5168,7 @@ tabItem(tabName = "tab_mvr",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_mvr_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_mvr_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -4095,7 +5190,7 @@ tabItem(tabName = "tab_mvr",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_mvr_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_mvr_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -4103,7 +5198,7 @@ tabItem(tabName = "tab_mvr",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_mvr_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_mvr_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -4178,7 +5273,7 @@ tabItem(tabName = "tab_mvr",
 
           column(6,
                  radioButtons("radio_mvr_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -4266,7 +5361,7 @@ tabItem(tabName = "tab_touch",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_touch_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_touch_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
         
@@ -4288,7 +5383,7 @@ tabItem(tabName = "tab_touch",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_touch_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_touch_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -4296,7 +5391,7 @@ tabItem(tabName = "tab_touch",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_touch_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_touch_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -4371,7 +5466,7 @@ tabItem(tabName = "tab_touch",
           
           column(6,
                  radioButtons("radio_touch_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
@@ -4460,7 +5555,7 @@ tabItem(tabName = "tab_elm",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_elm_002", p("Seating is correct for Child (C), caregiver & Examiner (E)"),
+                 radioButtons("radio_elm_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
 
@@ -4482,7 +5577,7 @@ tabItem(tabName = "tab_elm",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_elm_004", p("E slides purple button to the right to begin"),
+                 radioButtons("radio_elm_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -4490,7 +5585,7 @@ tabItem(tabName = "tab_elm",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_elm_005", p("E reviews instructions & slides purple button to right"),
+                 radioButtons("radio_elm_005", p("Examiner reviews instructions & slides purple button to right"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
@@ -4565,7 +5660,7 @@ tabItem(tabName = "tab_elm",
 
           column(6,
                  radioButtons("radio_elm_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture ",
+                              choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
                               choiceValues = el_values2,  selected = "")
           )
