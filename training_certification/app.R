@@ -204,8 +204,10 @@ ui <- dashboardPage(
 
               h2("Certification Information"),
 
-              p("Welcome to the NIH BabyTB training certification page."),
+              p("Welcome to the NIH Infant and Toddler Toolbox (aka the “NIH Baby Toolbox” or “NIH BabyTB”) training certification Shiny application!"),
 
+              p("This application is intended to help certify examiners undergoing training in the administration of the NIH BabyTB."),
+              
               p("More details will be added ")
 
       ),
@@ -3372,189 +3374,189 @@ tabItem(tabName = "tab_sobO",
 ## Who Has More page ------
 
 tabItem(tabName = "tab_whm",
-
+        
         h2("Certification Checklist for Who Has More"),
         h3("Certification Details"),
-
+        
         fluidRow(
           column(6,
                  textInput("text_whm_person", h4("Person being certified:"),
                            value = "")
           ),
-
+          
           column(6,
                  textInput("text_whm_site", h4("Site:"),
                            value = "")
           ),
-
+          
           column(6,
                  dateInput("text_whm_date",
                            label = "Date (yyyy-mm-dd)",
                            value = Sys.Date()
                  )
           ),
-
-
+          
+          
           column(6,
                  textInput("text_whm_certifier", h4("Certifier:"),
                            value = "")
           ),
-
+          
           column(6,
                  textInput("text_whm_childAge", h4("Child Age (in months):"),
                            value = "")
           )
-
+          
         ),
-
-        h3("Upload Examiner File"),
-
-        fluidRow(
-          column(6,
-                 fileInput("whm_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                           multiple = FALSE,
-                           accept = c("text/csv",
-                                      "text/comma-separated-values,text/plain",
-                                      ".csv"))
-          ),
-        ),
-
+        
+        
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_001", p("iPad is set up correctly"),
+                 radioButtons("radio_whm_001", p("iPad is set up correctly so that both the examiner and child can see screen."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  radioButtons("radio_whm_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_whm_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_whm_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
         h3("Testing"),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_003", p("iPad sound is loud enough for child and examiner to hear."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  radioButtons("radio_whm_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_whm_005", p("Examiner demonstration item is presented."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_006", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-
-          column(6,
-                 radioButtons("radio_whm_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_whm_007", p("ADD QUESTION"),
+                 radioButtons("radio_whm_006", p("On 4th screen, examiner touches the bird with more berries."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_008", p("ADD QUESTION"),
+                 radioButtons("radio_whm_007", p("When NEXT button is active, examiner taps it."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_whm_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_009", p("ADD QUESTION"),
+                 radioButtons("radio_whm_008", p("Examiner reads: Now it’s your turn. Remember to select the box that has the most items."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_whm_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_010", p("ADD QUESTION"),
+                 radioButtons("radio_whm_009", p("Examiner slides purple button to the right."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_whm_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_whm_011", p("ADD QUESTION"),
+                 radioButtons("radio_whm_010", p("Practice item appears and the audio says: “Who has more?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_whm_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_011", p("Examiner encourages the child to make a choice and after the child choses, the examiner taps NEXT."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_012", p("If the child makes an incorrect choice, the audio says: “Try Again.”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_013", p("After answering correctly or after three incorrect answers, the App moves to live items."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_014", p("Examiner reminds child to tap the box with more items."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_015", p("Examiner slides purple button to the right to bring up test items."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_016", p("The items appear automatically after the child makes a choice."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_whm_017", p("Test continues until the child answers incorrectly and/or times out on 4 live items in a row."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  textAreaInput("text_whm_002", h4("Notes about testing"),
                                value = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(1,
                  actionButton(inputId = "whm_submit", label = "Submit",
                               icon = NULL, width = NULL))
         ),
-
+        
         h2("Your Score"),
         fluidRow(
           column(12,
@@ -3598,18 +3600,6 @@ tabItem(tabName = "tab_sub",
                            value = "")
           )
 
-        ),
-
-        h3("Upload Examiner File"),
-
-        fluidRow(
-          column(6,
-                 fileInput("sub_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                           multiple = FALSE,
-                           accept = c("text/csv",
-                                      "text/comma-separated-values,text/plain",
-                                      ".csv"))
-          ),
         ),
 
         h3("Before Beginning"),
@@ -3793,17 +3783,6 @@ tabItem(tabName = "tab_oc",
 
         ),
 
-        h3("Upload Examiner File"),
-
-        fluidRow(
-          column(6,
-                 fileInput("oc_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                           multiple = FALSE,
-                           accept = c("text/csv",
-                                      "text/comma-separated-values,text/plain",
-                                      ".csv"))
-          ),
-        ),
 
         h3("Before Beginning"),
 
@@ -3986,17 +3965,6 @@ tabItem(tabName = "tab_va",
 
         ),
 
-        h3("Upload Examiner File"),
-
-        fluidRow(
-          column(6,
-                 fileInput("va_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                           multiple = FALSE,
-                           accept = c("text/csv",
-                                      "text/comma-separated-values,text/plain",
-                                      ".csv"))
-          ),
-        ),
 
         h3("Before Beginning"),
 
@@ -4179,17 +4147,6 @@ tabItem(tabName = "tab_vc",
 
         ),
 
-        h3("Upload Examiner File"),
-
-        fluidRow(
-          column(6,
-                 fileInput("vc_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                           multiple = FALSE,
-                           accept = c("text/csv",
-                                      "text/comma-separated-values,text/plain",
-                                      ".csv"))
-          ),
-        ),
 
         h3("Before Beginning"),
 
@@ -5530,18 +5487,6 @@ tabItem(tabName = "tab_elm",
                            value = "")
           )
 
-        ),
-
-        h3("Upload Examiner File"),
-
-        fluidRow(
-          column(6,
-                 fileInput("elm_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                           multiple = FALSE,
-                           accept = c("text/csv",
-                                      "text/comma-separated-values,text/plain",
-                                      ".csv"))
-          ),
         ),
 
         h3("Before Beginning"),
