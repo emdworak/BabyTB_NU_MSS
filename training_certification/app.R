@@ -48,10 +48,17 @@ library(shinydashboard)
 
 radio_labels <- c("Yes", "No", "NA")
 radio_values <- c(1, 0, 1)
-el_values2_noNA <- c(1, 0)
-el_values2 <- c(NA, 1, 0)
-el_values3 <- c(NA, 0, 1, 2)
-el_values4 <- c(NA, 0, 1, 2, 3)
+app_values2_noNA <- c(1, 0)
+app_values2 <- c(NA, 1, 0)
+app_values3 <- c(NA, 0, 1, 2)
+app_values4 <- c(NA, 0, 1, 2, 3)
+app_values4_no0 <- c(NA, 1, 2, 3)
+app_values5 <- c(NA, 1, 2, 3, 4)
+app_values6 <- c(NA, 1, 2, 3, 4, 5)
+app_values7 <- c(NA, 1, 2, 3, 4, 5, 6)
+app_values8 <- c(NA, 1, 2, 3, 4, 5, 6, 7)
+app_values9 <- c(NA, 1, 2, 3, 4, 5, 6, 7, 8)
+app_values10 <- c(NA, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
 # Define the UI -----
 
@@ -70,7 +77,7 @@ ui <- dashboardPage(
       
       menuItem("Child 1-5 Month Battery", tabName = "child_1_5", icon = icon("baby"),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Mullen Receptive Language", tabName = "tab_mrl", icon = icon("comment")),
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Mullen Visual Reception", tabName = "tab_mvr", icon = icon("eye")),
@@ -81,7 +88,7 @@ ui <- dashboardPage(
       menuItem("Child 6-8 Month Battery", tabName = "child_6_8", icon = icon("baby"),
                menuSubItem("Mullen Visual Reception", tabName = "tab_mvr", icon = icon("eye")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Executive Function (Gaze)", tabName = "tab_efg", icon = icon("eye")),
                menuSubItem("Mullen Receptive Language", tabName = "tab_mrl", icon = icon("comment")),
                menuSubItem("Looking While Listening", tabName = "tab_lwl", icon = icon("eye")),
@@ -100,7 +107,7 @@ ui <- dashboardPage(
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Numerical Change Detection", tabName = "tab_ncd", icon = icon("eye")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Mullen Visual Reception", tabName = "tab_mvr", icon = icon("eye")),
                menuSubItem("Spatial Change Detection", tabName = "tab_scd", icon = icon("eye")),
                menuSubItem("Reach to Eat", tabName = "tab_rte", icon = icon("cookie-bite")),
@@ -115,7 +122,7 @@ ui <- dashboardPage(
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Numerical Change Detection", tabName = "tab_ncd", icon = icon("eye")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Mullen Visual Reception", tabName = "tab_mvr", icon = icon("eye")),
                menuSubItem("Spatial Change Detection", tabName = "tab_scd", icon = icon("eye")),
                menuSubItem("Reach to Eat", tabName = "tab_rte", icon = icon("cookie-bite")),
@@ -128,7 +135,7 @@ ui <- dashboardPage(
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Looking While Listening", tabName = "tab_lwl", icon = icon("eye")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Numerical Change Detection", tabName = "tab_ncd", icon = icon("eye")),
                menuSubItem("Spatial Change Detection", tabName = "tab_scd", icon = icon("eye")),
                menuSubItem("NBT Touch Screen Tutorial", tabName = "tab_touch", icon = icon("hand-point-up")),
@@ -144,7 +151,7 @@ ui <- dashboardPage(
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Looking While Listening", tabName = "tab_lwl", icon = icon("eye")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Numerical Change Detection", tabName = "tab_ncd", icon = icon("eye")),
                menuSubItem("Spatial Change Detection", tabName = "tab_scd", icon = icon("eye")),
                menuSubItem("NBT Touch Screen Tutorial", tabName = "tab_touch", icon = icon("hand-point-up")),
@@ -162,7 +169,7 @@ ui <- dashboardPage(
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Picture Vocab", tabName = "tab_pv", icon = icon("comment")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Verbal Counting", tabName = "tab_vc", icon = icon("arrow-up-9-1")),
                menuSubItem("Object Counting", tabName = "tab_oc", icon = icon("arrow-up-9-1")),
                menuSubItem("Subitizing", tabName = "tab_sub", icon = icon("arrow-up-9-1")),
@@ -181,7 +188,7 @@ ui <- dashboardPage(
                menuSubItem("Mullen Expr. Lang. Prompted", tabName = "tab_melp", icon = icon("comment")),
                menuSubItem("Picture Vocab", tabName = "tab_pv", icon = icon("comment")),
                menuSubItem("Sit and Stand", tabName = "tab_sas", icon = icon("child-reaching")),
-               menuSubItem("Get Up and Go", tabName = "tab_guag", icon = icon("person-running")),
+               menuSubItem("Get Up and Go", tabName = "tab_gug", icon = icon("person-running")),
                menuSubItem("Verbal Counting", tabName = "tab_vc", icon = icon("arrow-up-9-1")),
                menuSubItem("Object Counting", tabName = "tab_oc", icon = icon("arrow-up-9-1")),
                menuSubItem("Subitizing", tabName = "tab_sub", icon = icon("arrow-up-9-1")),
@@ -1427,89 +1434,95 @@ tabItem(tabName = "tab_melo",
         ),
         
         
-        h3("Testing"),
+        fluidRow(
+          column(6,  h3("Testing")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el2", p("EL2: Vocalizes (any throaty sounds)"),
-                              choiceNames = c("Vocalizes", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Vocalizes", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el3", p("EL3: Smiles and Makes Happy Sounds"),
-                              choiceNames = c("Smiles and Makes Happy Sounds", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Smiles and Makes Happy Sounds", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el4", p("EL4: Coos, Chuckles, or Laughs (makes 2 of 3 sounds)"),
-                              choiceNames = c("Coos, Chuckles, or Laughs", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Coos, Chuckles, or Laughs", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el5", p("EL5: Makes Vocalizations (uses 2 or more sounds, like ah, eh, m);  Examiner can ask caregiver."),
-                              choiceNames = c("Make Vocalizations", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Make Vocalizations", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el6", p("EL6: Plays with Sounds (such as o, u, a-a-a, ah-goo);  Examiner can ask caregiver."),
-                              choiceNames = c("Plays with Sounds", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Plays with Sounds", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el8", p("EL8: Produces 3 Consonant Sounds (such as p, d, k, g, m)."),
-                              choiceNames = c("Produces 3 Consonant Sounds", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Produces 3 Consonant Sounds", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el12", p("EL12: Jabbers with Inflection (changes in inflection; different tones or pitch)."),
-                              choiceNames = c("Jabbers with Inflection", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Jabbers with Inflection", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el13", p("EL13: Combines Jargon/Gestures (jargon + gestures, touching or looking)."),
-                              choiceNames = c("Combines Jargon/Gestures", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Combines Jargon/Gestures", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el14", p("EL14: Combines Words/Gestures (word approximations with pointing or gesturing); Examiner can ask caregiver."),
-                              choiceNames = c("Combines Words/Gestures", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Combines Words/Gestures", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el17", p("EL17: Uses 2-Word Phrases."),
-                              choiceNames = c("Uses 2-Word Phrases", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Uses 2-Word Phrases", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el19", p("EL19: Uses Pronouns (such as “my”, “mine”, “you” or “me”)."),
-                              choiceNames = c("Uses Pronouns", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Uses Pronouns", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6,
                  radioButtons("radio_melo_el22", p("EL22: Uses 3 to 4 Word Sentences."),
-                              choiceNames = c("Uses 3 to 4 Word Sentences", "Unselected"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Uses 3 to 4 Word Sentences", "Unselected"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -1530,7 +1543,7 @@ tabItem(tabName = "tab_melo",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("melo_score")),
+                 verbatimTextOutput("melo_score"))
         ),
         
         h4("This will be removed, but it's here to show that the data upload worked"),
@@ -1619,7 +1632,13 @@ tabItem(tabName = "tab_melo",
               )
             ),
 
-            h3("Testing"),
+            fluidRow(
+              column(6, h3("Testing")
+                     ),
+              
+              column(6, h3("How You Would Score the Task?")
+              )
+            ),
 
             fluidRow(
               column(6,
@@ -1647,7 +1666,7 @@ tabItem(tabName = "tab_melo",
 
               column(6,
                      radioButtons("radio_melp_el7", p("EL7: Voluntary Babbling"),
-                                  choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                                  choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
               )
             ),
 
@@ -1666,7 +1685,7 @@ tabItem(tabName = "tab_melo",
 
               column(6,
                      radioButtons("radio_melp_el10", p("EL10: Plays Gestures/Language Game"),
-                                  choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                                  choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
               )
             ),
 
@@ -1680,7 +1699,7 @@ tabItem(tabName = "tab_melo",
                      radioButtons("radio_melp_el11", p("EL11: Says first words"),
                                   choiceNames = c("NA", "Zero", "One",
                                                   "Two to seven", "Eight or more"),
-                                  choiceValues = el_values4,  selected = "")
+                                  choiceValues = app_values4,  selected = "")
               )
             ),
 
@@ -1694,7 +1713,7 @@ tabItem(tabName = "tab_melo",
                      radioButtons("radio_melp_el15", p("EL15: Names objects"),
                                   choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
                                                   "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                                  choiceValues = el_values4,  selected = "")
+                                  choiceValues = app_values4,  selected = "")
               )
             ),
 
@@ -1708,7 +1727,7 @@ tabItem(tabName = "tab_melo",
                      radioButtons("radio_melp_el16", p("EL16: Labels Pictures"),
                                   choiceNames = c("NA", "Does not label labels at least one picture",
                                                   "Labels at least one picture"),
-                                  choiceValues = el_values2,  selected = "")
+                                  choiceValues = app_values2,  selected = "")
               )
             ),
 
@@ -1729,7 +1748,7 @@ tabItem(tabName = "tab_melo",
             h2("Your Score"),
             fluidRow(
               column(12,
-                     verbatimTextOutput("melp_score")),
+                     verbatimTextOutput("melp_score"))
             ),
 
             h4("This will be removed, but it's here to show that the data upload worked"),
@@ -1976,7 +1995,13 @@ tabItem(tabName = "tab_sobY",
           )
         ),
 
-        h3("Communicative Temptation 1: Minute One"),
+        fluidRow(
+          column(6, h3("Communicative Temptation 1: Minute One")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
       
         fluidRow(
           column(6,
@@ -1986,7 +2011,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_1", p("2-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
 
@@ -1998,7 +2023,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_2", p("3-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
 
@@ -2010,7 +2035,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_3", p("Smiles without look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
 
@@ -2022,7 +2047,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_4", p("Smiles with look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
 
@@ -2034,7 +2059,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_5", p("Show gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
 
@@ -2046,14 +2071,14 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_6", p("Uses point gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
 
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_7", p("Comments with sounds or words."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2064,8 +2089,13 @@ tabItem(tabName = "tab_sobY",
           )
         ),
 
-        h3("Response to Name & Gaze/Point 1: Minute Two"),
-        
+        fluidRow(
+          column(6, h3("Response to Name & Gaze/Point 1: Minute Two")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2075,7 +2105,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_9", p("Responds to name "),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2087,7 +2117,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_10", p("Follows gaze/point"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2099,7 +2129,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_11", p("2-point gaze shift."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2111,7 +2141,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_12", p("3-point gaze shift."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2123,7 +2153,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_13", p("Smiles without look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2135,28 +2165,28 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_14", p("Smiles with look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_15", p("Show gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_16", p("Uses point gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_17", p("Comments with sounds or words."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2167,7 +2197,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Communication Temptation 2: Minute Three"),
+        
+        fluidRow(
+          column(6, h3("Communication Temptation 2: Minute Three")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2177,7 +2214,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_19", p("2-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2189,7 +2226,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_20", p("3-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2201,7 +2238,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_21", p("Smiles without look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2213,7 +2250,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_22", p("Smiles with look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2225,7 +2262,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_23", p("Show gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2237,7 +2274,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_24", p("Uses point gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2249,7 +2286,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_25", p("Comments with sounds or words."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2267,8 +2304,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Communicative Temptation 3, probe 2: Minute Four"),
         
+        fluidRow(
+          column(6, h3("Communicative Temptation 3, probe 2: Minute Four")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2278,7 +2321,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_27", p("Responds to name."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2290,7 +2333,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_28", p("Follows gaze/point"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2302,7 +2345,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_29", p("2-point gaze shift."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2314,7 +2357,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_30", p("3-point gaze shift."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2326,7 +2369,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_31", p("Smiles without look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2338,7 +2381,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_32", p("Smiles with look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2350,21 +2393,21 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_33", p("Show gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_34", p("Uses point gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_35", p("Comments with sounds or words."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2375,7 +2418,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Sharing Books 1: Minute Five"),
+        
+        fluidRow(
+          column(6, h3("Sharing Books 1: Minute Five")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2385,7 +2435,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_37", p("2-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2397,7 +2447,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_38", p("3-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2409,7 +2459,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_39", p("Smiles without look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2421,7 +2471,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_40", p("Smiles with look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2433,21 +2483,21 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_41", p("Show gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_42", p("Uses point gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_43", p("Comments with sounds or words."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2458,7 +2508,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Sharing Books 2: Minute Six"),
+        
+        fluidRow(
+          column(6, h3("Sharing Books 2: Minute Six")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2468,7 +2525,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_45", p("2-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2480,7 +2537,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_46", p("3-point gaze shift"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2492,7 +2549,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_47", p("Smiles without look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2504,7 +2561,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_48", p("Smiles with look."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2516,21 +2573,21 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_49", p("Show gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_50", p("Uses point gesture."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_51", p("Comments with sounds or words."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2541,7 +2598,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Parent/Caregiver-Child Play 1: Minute Seven"),
+        fluidRow(
+          column(6,  h3("Parent/Caregiver-Child Play 1: Minute Seven")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
+        
         
         fluidRow(
           column(6,
@@ -2551,7 +2615,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_53", p("Explores features of object"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2563,7 +2627,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_54", p("Uses item functionally"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2575,7 +2639,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_55", p("Pretends toward other (caregiver, examiner, doll)."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2587,7 +2651,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_56", p("2 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2599,7 +2663,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_57", p("3 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2618,7 +2682,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Parent/Caregiver-Child Play 2: Minute Eight"),
+
+        fluidRow(
+          column(6,  h3("Parent/Caregiver-Child Play 2: Minute Eight")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2628,7 +2699,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_66", p("Explores features of object"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2640,7 +2711,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_67", p("Uses item functionally"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2652,7 +2723,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_68", p("Pretends toward other (caregiver, examiner, doll)."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2664,7 +2735,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_69", p("2 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2676,7 +2747,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_70", p("3 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2687,8 +2758,15 @@ tabItem(tabName = "tab_sobY",
                                value = "")
           )
         ),
-        
-        h3("Parent/Caregiver-Child Play 3: Minute Nine"),
+
+                
+        fluidRow(
+          column(6,  h3("Parent/Caregiver-Child Play 3: Minute Nine")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2698,7 +2776,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_79", p("Explores features of object"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2710,7 +2788,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_80", p("Uses item functionally"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2722,7 +2800,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_81", p("Pretends toward other (caregiver, examiner, doll)."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2734,14 +2812,14 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_82", p("2 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_83", p("3 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2753,7 +2831,14 @@ tabItem(tabName = "tab_sobY",
           )
         ),
         
-        h3("Parent/Caregiver-Child Play 4: Minute Ten"),
+        
+        fluidRow(
+          column(6,  h3("Parent/Caregiver-Child Play 4: Minute Ten")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2763,7 +2848,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_92", p("Explores features of object"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2775,7 +2860,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_93", p("Uses item functionally"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2787,7 +2872,7 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_94", p("Pretends toward other (caregiver, examiner, doll)."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2799,14 +2884,14 @@ tabItem(tabName = "tab_sobY",
           
           column(6,
                  radioButtons("radio_sobY_SO_9_23_95", p("2 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6,
                  radioButtons("radio_sobY_SO_9_23_96", p("3 Pretend action sequences."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2921,7 +3006,14 @@ tabItem(tabName = "tab_sobO",
           )
         ),
         
-        h3("Joint Attention: Minute One"),
+        
+        fluidRow(
+          column(6,  h3("Joint Attention: Minute One")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -2931,7 +3023,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_1", p("Following point."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2943,7 +3035,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_2", p("Complies with request (pot) spontaneously."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2955,7 +3047,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_3", p("Complies with request after prompt."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2967,7 +3059,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_4", p("Comments on jungle animal."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2979,7 +3071,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_5", p("Points to jungle animal."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -2991,7 +3083,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_6", p("Shows jungle animal."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3002,7 +3094,14 @@ tabItem(tabName = "tab_sobO",
           )
         ),
         
-        h3("Pretend Play: Minutes Two-Three"),
+        
+        fluidRow(
+          column(6,  h3("Pretend Play: Minutes Two-Three")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         
         fluidRow(
@@ -3013,7 +3112,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_7", p("Child-as-agent"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3025,7 +3124,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_8", p("Substitution"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3037,7 +3136,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_9", p("Substitution without object."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3049,7 +3148,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_10", p("Dolls-as-agent."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3061,7 +3160,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_11", p("Socio-dramatic play."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3079,7 +3178,15 @@ tabItem(tabName = "tab_sobO",
           )
         ),
         
-        h3("Prosocial Behavior: Minutes Four-Five"),
+        
+        
+        fluidRow(
+          column(6,  h3("Prosocial Behavior: Minutes Four-Five")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -3089,7 +3196,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_12", p("Shares blocks"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3101,7 +3208,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_13", p("Takes turns building tower"),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3113,7 +3220,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_14", p("Picks up fallen blocks or repairs tower."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3125,7 +3232,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_15", p("Concerned facial expression."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3137,7 +3244,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_16", p("Verbal concern/comforting."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3149,7 +3256,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_17", p("Physical comforting."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3161,14 +3268,14 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_18", p("Helps clean up spontaneously."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
         fluidRow(
           column(6, offset = 6, 
                  radioButtons("radio_sobO_SO_24_48_19",  p("Helps clean up after prompt."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3179,9 +3286,16 @@ tabItem(tabName = "tab_sobO",
           )
         ),
         
+  
         
-        h3("Social Communication 1: Minutes Six-Seven"),
         
+        fluidRow(
+          column(6,  h3("Social Communication 1: Minutes Six-Seven")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -3191,7 +3305,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_20", p("Rebuilds elephant at least 2-steps."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3203,7 +3317,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_21", p("Rebuilds elephant all steps."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3215,7 +3329,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_22", p("Steps in correct order."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3227,7 +3341,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_23", p("Asks for help opening container ."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3253,7 +3367,14 @@ tabItem(tabName = "tab_sobO",
           )
         ),
         
-        h3("Social Communications 2: Minutes Eight-Ten"),
+        
+        fluidRow(
+          column(6,  h3("Social Communications 2: Minutes Eight-Ten")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -3263,7 +3384,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_24", p("Initiates/responds to conversation."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3275,7 +3396,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_25", p("Takes a conversational turn."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3287,7 +3408,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_26", p("Responds to a shift in topic."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3299,7 +3420,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_27", p("Corrects mislabeling by protest only."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3311,7 +3432,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6,
                  radioButtons("radio_sobO_SO_24_48_28", p("Corrects mislabeling by giving correct label."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3322,7 +3443,7 @@ tabItem(tabName = "tab_sobO",
           ),
           column(6, 
                  radioButtons("radio_sobO_SO_24_48_29", p("Adapts speech register for doll."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3334,7 +3455,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6, 
                  radioButtons("radio_sobO_SO_24_48_30", p("Turns book to face doll."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -3346,7 +3467,7 @@ tabItem(tabName = "tab_sobO",
           
           column(6, 
                  radioButtons("radio_sobO_SO_24_48_31", p("Attempts to teach doll."),
-                              choiceNames = c("Yes", "No"), choiceValues = el_values2_noNA,  selected = "")
+                              choiceNames = c("Yes", "No"), choiceValues = app_values2_noNA,  selected = "")
           )
         ),
         
@@ -4178,194 +4299,403 @@ tabItem(tabName = "tab_vc",
 
 ## Get Up and Go page ------
 
-tabItem(tabName = "tab_guag",
-
+tabItem(tabName = "tab_gug",
+        
         h2("Certification Checklist for Get Up and Go"),
         h3("Certification Details"),
-
+        
         fluidRow(
           column(6,
-                 textInput("text_guag_person", h4("Person being certified:"),
+                 textInput("text_gug_person", h4("Person being certified:"),
                            value = "")
           ),
-
+          
           column(6,
-                 textInput("text_guag_site", h4("Site:"),
+                 textInput("text_gug_site", h4("Site:"),
                            value = "")
           ),
-
+          
           column(6,
-                 dateInput("text_guag_date",
+                 dateInput("text_gug_date",
                            label = "Date (yyyy-mm-dd)",
                            value = Sys.Date()
                  )
           ),
-
-
+          
+          
           column(6,
-                 textInput("text_guag_certifier", h4("Certifier:"),
+                 textInput("text_gug_certifier", h4("Certifier:"),
                            value = "")
           ),
-
+          
           column(6,
-                 textInput("text_guag_childAge", h4("Child Age (in months):"),
+                 textInput("text_gug_childAge", h4("Child Age (in months):"),
                            value = "")
           )
-
+          
         ),
-
+        
         h3("Upload Examiner File"),
-
+        
         fluidRow(
           column(6,
-                 fileInput("guag_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
+                 fileInput("gug_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
                            multiple = FALSE,
                            accept = c("text/csv",
                                       "text/comma-separated-values,text/plain",
                                       ".csv"))
           ),
         ),
-
+        
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_001", p("iPad is set up correctly"),
+                 radioButtons("radio_gug_001", p("Has 36 x36 box."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_002", p("Seating is correct for child, caregiver and examiner."),
+                 radioButtons("radio_gug_002", p("Has masking tape and tape measure for start and end lines."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                 radioButtons("radio_gug_003", p("Has carpet, foam mat, other floor covering (recommended)."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 textAreaInput("text_guag_001", h4("Notes about setup"),
+                 radioButtons("radio_gug_004", p("Has attractive toy/snack to entice child to get up and go."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_005", p("Has set up the floor with the equipment above."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_gug_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
-        h3("Testing"),
-
+        
+        
+        h3("Questions before Testing"),
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_004", p("Examiner slides purple button to the right to begin"),
+                 radioButtons("radio_gug_006", p("If not observed earlier, examiner asks caregiver: “Can [child's name] get off their back?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_gug_007", p("Examiner asks necessary follow-up questions."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_006", p("ADD QUESTION"),
+                 radioButtons("radio_gug_008", p("If yes above and not observed earlier, the examiner asks “Can [child's name] take forward steps independently?”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_009", p("Examiner asks necessary follow-up questions."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,  h3("Pre-Locomotion (PL) Testing")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_010", p("Examiner places child on back."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_011", p("Examiner and caregiver are on the side of the mat."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_012", p("Examiner holds and shakes toy above the child’s face."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_013", p("After child reaches for toy, examiner moves toy on diagonal toward self; encourages the child to roll using name and encouraging words."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_014", p("Testing stops when child rolls to prone or after 30 seconds have elapsed."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
-
+          
           column(6,
-                 radioButtons("radio_guag_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_gug_back", p("Did child get off back?"),
+                              choiceNames = c("NA", "No (didn’t try)", "No (tried but couldn’t)", "Yes"),
+                              choiceValues = app_values4_no0,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_007", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_guag_008", p("ADD QUESTION"),
+                 radioButtons("radio_gug_015", p("Examiner begins testing prone if the child turns over."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_guag_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_gug_prone", p("What child did on belly?"),
+                              choiceNames = c("NA", "Nothing, did not lift head",
+                                              "Lifted head only", "Propped on forearms",
+                                              "Rolled onto back", "Propped on hands",
+                                              "Took steps or got off belly"),
+                              choiceValues = app_values7,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_009", p("ADD QUESTION"),
+                 radioButtons("radio_gug_016", p("If child did not turn over, examiner puts the child in prone position."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_guag_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                 radioButtons("radio_gug_roll", p("How child got off back? "),
+                              choiceNames = c("NA", "Rolled to belly, hands trapped",
+                                              "Rolled to belly, hands out", "Rolled to hands-knees",
+                                              "Side lying", "Got up without rolling"),
+                              choiceValues = app_values6,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_010", p("ADD QUESTION"),
+                 radioButtons("radio_gug_017", p("Examiner encourage the child to lift head/push up with encouraging words or toys in front of face."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_guag_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                 radioButtons("radio_gug_uppos", p("Most upright postures?"),
+                              choiceNames = c("NA", "Belly", "Hands-knees or hands-feet",
+                                              "Sit or kneel, back vertical", "Stand"),
+                              choiceValues = app_values5,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_guag_011", p("ADD QUESTION"),
+                 radioButtons("radio_gug_018", p("Examiner tests prone skills for 30 seconds."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_guag_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                 radioButtons("radio_gug_sit", p("How child got to sit or kneel?"),
+                              choiceNames = c("NA", "Pushed up from crawl", 
+                                              "Pushed up from side lying", "Sat up directly from supine"),
+                              choiceValues = app_values4_no0,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 textAreaInput("text_guag_002", h4("Notes about testing"),
+                 textAreaInput("text_gug_002", h4("Notes about pre-locomotion testing"),
                                value = "")
           )
         ),
-
-
+        
+        h3("Locomotion (LO) version"),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_019", p("Examiner places child on back."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_gug_stand", p("How child got to standing?"),
+                              choiceNames = c("NA", "Down-dog to stand", 
+                                              "Half-kneel to stand", "Squat to stand"),
+                              choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_020", p("Caregiver is behind the platform."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_gug_hands", p("How many hands child used?"),
+                              choiceNames = c("NA", "0", 
+                                              "1", "2"),
+                              choiceValues = app_values3,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_021", p("Examiner moves next to caregiver, behind box/platform and crouches there."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_gug_turn", p("Child turned to face finish line? "),
+                              choiceNames = c("NA", "Never faced finish", 
+                                              "Turned to face finish", "Already facing finish"),
+                              choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_022", p("Examiner encourages child to get off back and start toward platform."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_gug_trameth", p("How child traveled?"),
+                              choiceNames = c("NA", "Did not travel", "log roll", 
+                                              "belly crawl", "bum shuffle or hitch", 
+                                              "Hands-knees or hands-feet", "knee-walk or half-kneel", 
+                                              "walk"),
+                              choiceValues = app_values8,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_023", p("Examiner encourages child with words, toys, and snacks."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_gug_toes", p("Child walked on toes?"),
+                              choiceNames = c("NA", "Can't see heels", "No", 
+                                              "Right foot", "Left foot", 
+                                              "Both"),
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_024", p("Testing stops when child gets onto and off the platform or after 30 seconds have elapsed."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_gug_tradis", p("How far child traveled?"),
+                              choiceNames = c("NA",  "Took a few steps and fell",
+                                              "Took a few steps and stopped", "3 meters, not continuous",
+                                              "3 meters, but dawdled", "3 meters, no dawdling"),
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_025", p("Examiner encourages child to get off the platform."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 numericInput("radio_gug_starttime", p("When did the child cross start line?", br(),
+                                                       "(Start Time in Seconds: XX.XX)"),
+                              value = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_gug_026", p("Examiner spots child getting onto or off the platform if child seems unsteady but does not offer support."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 numericInput("radio_gug_endtime", p("When did the child cross finish line?", br(),
+                                                     "(End Time in Seconds: XX.XX)"),
+                              value = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_gug_tradis", p("How did child get up stair?"),
+                              choiceNames = c("NA", "Didn't try", "Did not pull up", 
+                                              "Pulled up to knees", "Pulled up to stand", 
+                                              "Climbed up, stayed prone", "Climbed up, stood up", 
+                                              "Tried to step & fell", "Stepped up, not integrated", 
+                                              "Stepped up, gait integrated"),
+                              choiceValues = app_values10,  selected = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6, offset = 6,
+                 radioButtons("radio_gug_stairdo", p("How did child get down stair?"),
+                              choiceNames = c("NA",  "Didn't try to come down",
+                                              "Climbed down, fell", "Climbed down, stayed down",
+                                              "Walked down, fell", "Walked down, not integrated",
+                                              "Walked down, integrated", "Jumped or leaped & fell",
+                                              "Jumped or leaped no fall"),
+                              choiceValues = app_values9,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_gug_003", h4("Notes about locomotion testing"),
+                               value = "")
+          )
+        ),
+        
+        
         fluidRow(
           column(1,
-                 actionButton(inputId = "guag_submit", label = "Submit",
+                 actionButton(inputId = "gug_submit", label = "Submit",
                               icon = NULL, width = NULL))
         ),
-
+        
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("guag_score"))
+                 verbatimTextOutput("gug_score"))
         )
 ),
 
@@ -4420,146 +4750,98 @@ tabItem(tabName = "tab_rte",
         ),
 
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_001", p("iPad is set up correctly"),
+                 radioButtons("radio_rte_001", p("Has “large base” (1 cup measure)."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_002", p("Seating is correct for child, caregiver and examiner."),
+                 radioButtons("radio_rte_002", p("Has “small base” (formula spoon with flat base & flat handle)."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                 radioButtons("radio_rte_003", p("Has 1-inch wooden cube."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_004", p("Has ~10 Cheerios or similar dry snack."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_005", p("Has spoon (approx. 6.2-inch with 1.25 inch diameter bowl)."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_006", p("Has tissue to dry off spoon."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_007", p("Has hand sanitizer to clean child’s hand before they eat food and before examiner touches food child will eat."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_008", p("Set up of table is correct- caregiver and child on one side facing."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_009", p("Child’s is correct height: Child’s chest touching front edge of table and tabletop approximately below the child’s elbow (child’s arm is above tabletop)."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  textAreaInput("text_rte_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
         h3("Testing"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_004", p("Examiner slides purple button to the right to begin"),
+                 radioButtons("radio_rte_010", p("Examiner asks caregiver if they are comfortable with us giving child cheerios or another dry but easily dissolvable snack."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_rte_011", p("If caregiver says “no”, examiner administers Block task (BT)."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_rte_006", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-
-          column(6,
-                 radioButtons("radio_rte_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_rte_007", p("ADD QUESTION"),
+                 radioButtons("radio_rte_012", p("If caregiver says “yes”, examiner administers Cheerios task (CT)."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_rte_008", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_rte_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_rte_009", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_rte_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_rte_010", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_rte_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_rte_011", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_rte_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 textAreaInput("text_rte_002", h4("Notes about testing"),
-                               value = "")
-          )
-        ),
-
-
-        fluidRow(
-          column(1,
-                 actionButton(inputId = "rte_submit", label = "Submit",
-                              icon = NULL, width = NULL))
-        ),
-
-        h2("Your Score"),
-        fluidRow(
-          column(12,
-                 verbatimTextOutput("rte_score"))
-        )
+        )#,
 ),
 
 ## Sit and Stand page ------
@@ -4641,7 +4923,13 @@ tabItem(tabName = "tab_sas",
           )
         ),
 
-        h3("Testing"),
+        fluidRow(
+          column(6,  h3("Testing")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
 
         fluidRow(
           column(6,
@@ -4669,7 +4957,7 @@ tabItem(tabName = "tab_sas",
 
           column(6,
                  radioButtons("radio_sas_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -4688,7 +4976,7 @@ tabItem(tabName = "tab_sas",
 
           column(6,
                  radioButtons("radio_sas_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -4702,7 +4990,7 @@ tabItem(tabName = "tab_sas",
                  radioButtons("radio_sas_el11", p("ADD QUESTION"),
                               choiceNames = c("NA", "Zero", "One",
                                               "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
 
@@ -4716,7 +5004,7 @@ tabItem(tabName = "tab_sas",
                  radioButtons("radio_sas_el15", p("ADD QUESTION"),
                               choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
                                               "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
 
@@ -4730,7 +5018,7 @@ tabItem(tabName = "tab_sas",
                  radioButtons("radio_sas_el16", p("ADD QUESTION"),
                               choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                              choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -4834,7 +5122,13 @@ tabItem(tabName = "tab_mrl",
           )
         ),
         
-        h3("Testing"),
+        fluidRow(
+          column(6,  h3("Testing")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -4862,7 +5156,7 @@ tabItem(tabName = "tab_mrl",
           
           column(6,
                  radioButtons("radio_mrl_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
         
@@ -4881,7 +5175,7 @@ tabItem(tabName = "tab_mrl",
           
           column(6,
                  radioButtons("radio_mrl_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
         
@@ -4895,7 +5189,7 @@ tabItem(tabName = "tab_mrl",
                  radioButtons("radio_mrl_el11", p("ADD QUESTION"),
                               choiceNames = c("NA", "Zero", "One",
                                               "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
         
@@ -4909,7 +5203,7 @@ tabItem(tabName = "tab_mrl",
                  radioButtons("radio_mrl_el15", p("ADD QUESTION"),
                               choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
                                               "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
         
@@ -4923,7 +5217,7 @@ tabItem(tabName = "tab_mrl",
                  radioButtons("radio_mrl_el16", p("ADD QUESTION"),
                               choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                              choiceValues = app_values2,  selected = "")
           )
         ),
         
@@ -5028,7 +5322,13 @@ tabItem(tabName = "tab_mvr",
           )
         ),
 
-        h3("Testing"),
+        fluidRow(
+          column(6,  h3("Testing")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
 
         fluidRow(
           column(6,
@@ -5056,7 +5356,7 @@ tabItem(tabName = "tab_mvr",
 
           column(6,
                  radioButtons("radio_mvr_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -5075,7 +5375,7 @@ tabItem(tabName = "tab_mvr",
 
           column(6,
                  radioButtons("radio_mvr_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -5089,7 +5389,7 @@ tabItem(tabName = "tab_mvr",
                  radioButtons("radio_mvr_el11", p("ADD QUESTION"),
                               choiceNames = c("NA", "Zero", "One",
                                               "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
 
@@ -5103,7 +5403,7 @@ tabItem(tabName = "tab_mvr",
                  radioButtons("radio_mvr_el15", p("ADD QUESTION"),
                               choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
                                               "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
 
@@ -5117,7 +5417,7 @@ tabItem(tabName = "tab_mvr",
                  radioButtons("radio_mvr_el16", p("ADD QUESTION"),
                               choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                              choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -5221,7 +5521,13 @@ tabItem(tabName = "tab_touch",
           )
         ),
         
-        h3("Testing"),
+        fluidRow(
+          column(6,  h3("Testing")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
         
         fluidRow(
           column(6,
@@ -5249,7 +5555,7 @@ tabItem(tabName = "tab_touch",
           
           column(6,
                  radioButtons("radio_touch_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
         
@@ -5268,7 +5574,7 @@ tabItem(tabName = "tab_touch",
           
           column(6,
                  radioButtons("radio_touch_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
         
@@ -5282,7 +5588,7 @@ tabItem(tabName = "tab_touch",
                  radioButtons("radio_touch_el11", p("ADD QUESTION"),
                               choiceNames = c("NA", "Zero", "One",
                                               "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
         
@@ -5296,7 +5602,7 @@ tabItem(tabName = "tab_touch",
                  radioButtons("radio_touch_el15", p("ADD QUESTION"),
                               choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
                                               "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
         
@@ -5310,7 +5616,7 @@ tabItem(tabName = "tab_touch",
                  radioButtons("radio_touch_el16", p("ADD QUESTION"),
                               choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                              choiceValues = app_values2,  selected = "")
           )
         ),
         
@@ -5431,7 +5737,7 @@ tabItem(tabName = "tab_elm",
 
           column(6,
                  radioButtons("radio_elm_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -5450,7 +5756,7 @@ tabItem(tabName = "tab_elm",
 
           column(6,
                  radioButtons("radio_elm_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
+                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
 
@@ -5464,7 +5770,7 @@ tabItem(tabName = "tab_elm",
                  radioButtons("radio_elm_el11", p("ADD QUESTION"),
                               choiceNames = c("NA", "Zero", "One",
                                               "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
 
@@ -5478,7 +5784,7 @@ tabItem(tabName = "tab_elm",
                  radioButtons("radio_elm_el15", p("ADD QUESTION"),
                               choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
                                               "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
+                              choiceValues = app_values4,  selected = "")
           )
         ),
 
@@ -5492,7 +5798,7 @@ tabItem(tabName = "tab_elm",
                  radioButtons("radio_elm_el16", p("ADD QUESTION"),
                               choiceNames = c("NA", "Does not label labels at least one picture",
                                               "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
+                              choiceValues = app_values2,  selected = "")
           )
         ),
 
