@@ -1885,7 +1885,7 @@ tabItem(tabName = "tab_pv",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("pv_score")),
+                 verbatimTextOutput("pv_score"))
         )
 ),
 
@@ -2830,7 +2830,7 @@ tabItem(tabName = "tab_sobY",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("sobY_score")),
+                 verbatimTextOutput("sobY_score"))
         )
 ),
 
@@ -3367,7 +3367,7 @@ tabItem(tabName = "tab_sobO",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("sobO_score")),
+                 verbatimTextOutput("sobO_score"))
         )
 ),
 
@@ -3560,7 +3560,7 @@ tabItem(tabName = "tab_whm",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("whm_score")),
+                 verbatimTextOutput("whm_score"))
         )
 ),
 
@@ -3603,145 +3603,121 @@ tabItem(tabName = "tab_sub",
         ),
 
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_001", p("iPad is set up correctly"),
+                 radioButtons("radio_sub_001", p("iPad is set up correctly so that both the examiner and child can see screen."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  radioButtons("radio_sub_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sub_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_sub_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
         h3("Testing"),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sub_003", p("iPad sound is loud enough for child and examiner to hear."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  radioButtons("radio_sub_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_sub_005", p("After audio prompt says “Look at the screen” NEXT button is active and examiner taps it."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_006", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-
-          column(6,
-                 radioButtons("radio_sub_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sub_007", p("ADD QUESTION"),
+                 radioButtons("radio_sub_006", p("Item appears for one second & audio prompts: “how many did you see?” "),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_008", p("ADD QUESTION"),
+                 radioButtons("radio_sub_007", p("Examiner taps NEXT and records child’s answer on a screen with three choices: Numeric response; No response; or invalid response."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sub_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_009", p("ADD QUESTION"),
+                 radioButtons("radio_sub_008", p("After entering response, examiner taps NEXT."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sub_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_010", p("ADD QUESTION"),
+                 radioButtons("radio_sub_009", p("The 2nd item appears for one second & audio prompts: “How many did you see?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sub_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sub_011", p("ADD QUESTION"),
+                 radioButtons("radio_sub_010", p("Examiner taps NEXT and records child’s answer on a screen with three choices: Numeric response; No response; or invalid response."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sub_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sub_011", p("After entering response, examiner taps NEXT."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sub_012", p("Test continues until all items are presented."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  textAreaInput("text_sub_002", h4("Notes about testing"),
                                value = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(1,
                  actionButton(inputId = "sub_submit", label = "Submit",
                               icon = NULL, width = NULL))
         ),
-
+        
         h2("Your Score"),
+        
         fluidRow(
           column(12,
-                 verbatimTextOutput("sub_score")),
+                 verbatimTextOutput("sub_score"))
         )
 ),
 
@@ -3785,147 +3761,138 @@ tabItem(tabName = "tab_oc",
 
 
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_001", p("iPad is set up correctly"),
+                 radioButtons("radio_oc_001", p("iPad is set up correctly so that both the examiner and child can see screen."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  radioButtons("radio_oc_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_oc_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_oc_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
         h3("Testing"),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_oc_003", p("iPad sound is loud enough for child and examiner to hear."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
         fluidRow(
           column(6,
                  radioButtons("radio_oc_004", p("Examiner slides purple button to the right to begin"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_oc_005", p("The 1st item appears and audio prompts: “Look at the screen.” “How many are there?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_006", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-
-          column(6,
-                 radioButtons("radio_oc_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_oc_007", p("ADD QUESTION"),
+                 radioButtons("radio_oc_006", p("Examiner taps NEXT and records child’s answer on a screen with three choices: Numeric response; No response; or invalid response."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_008", p("ADD QUESTION"),
+                 radioButtons("radio_oc_007", p("After entering the child’s response, the examiner taps NEXT."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_oc_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_009", p("ADD QUESTION"),
+                 radioButtons("radio_oc_008", p("The 2nd item appears and audio prompts: “How many are there?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_oc_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_010", p("ADD QUESTION"),
+                 radioButtons("radio_oc_009", p("Examiner taps NEXT and records child’s answer on a screen with three choices: Numeric response; No response; or invalid response."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_oc_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_oc_011", p("ADD QUESTION"),
+                 radioButtons("radio_oc_010", p("After entering the child’s response, the examiner taps NEXT."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_oc_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_oc_011", p("The 3rd item appears and audio prompts: “How many are there?”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_oc_012", p("Examiner taps NEXT and records child’s answer on a screen with three choices: Numeric response; No response; or invalid response."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_oc_013", p("After entering the child’s response, the examiner taps NEXT."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_oc_014", p("The pattern above continues until the last item or until the response option for the 1st or 3rd  item is: an incorrect numerical choice; no response; or an invalid response."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        
         fluidRow(
           column(6,
                  textAreaInput("text_oc_002", h4("Notes about testing"),
                                value = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(1,
                  actionButton(inputId = "oc_submit", label = "Submit",
                               icon = NULL, width = NULL))
         ),
-
+        
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("oc_score")),
+                 verbatimTextOutput("oc_score"))
         )
 ),
+
 
 ## Verbal Arithmetic page ------
 
@@ -3965,128 +3932,106 @@ tabItem(tabName = "tab_va",
 
         ),
 
-
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_va_001", p("iPad is set up correctly"),
+                 radioButtons("radio_va_001", p("iPad is set up correctly so that both the examiner and child can see screen."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  radioButtons("radio_va_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_va_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                 radioButtons("radio_va_003", p("There are 5 blocks on table to use."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_va_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
         h3("Testing"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_va_004", p("Examiner slides purple button to the right to begin"),
+                 radioButtons("radio_va_004", p("Examiner puts blocks on table to their right."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_va_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_va_005", p("Examiner slides purple button to the right to begin."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_va_006", p("ADD QUESTION"),
+                 radioButtons("radio_va_006", p("Examiner reads the first problem: ”If I have two blocks & I find another one, how many do I have now?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_va_007", p("If child answers, examiner records the child’s answer on screen & taps NEXT button."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_va_008", p("If child doesn’t answer, examiner waits 5 seconds and asks question again; this time taking first 2 blocks & adding 1 block from blocks to the examiner’s right."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_va_009", p("If the child doesn’t answer within 10 seconds, examiner taps No Response."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_va_010", p("After entering the child’s response, the examiner taps NEXT."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_va_011", p("The sequence above is repeated through the remaining 4 questions:", 
+                                                br(), "If I have 1 block and my friend D gives me 3 more, how many…", 
+                                                br(), "If I have 4 blocks and I lose 1, how many…", 
+                                                br(), "If I have 2 blocks and I lose 1, how many…", 
+                                                br(), "If have 3 blocks and my friend J takes 2, how many… "),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_va_012", p("Test continues until all 5 questions are presented."),
+                      choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+                 )
           ),
-
-
-          column(6,
-                 radioButtons("radio_va_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_va_007", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_va_008", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_va_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_va_009", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_va_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_va_010", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_va_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_va_011", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_va_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
-          )
-        ),
 
         fluidRow(
           column(6,
@@ -4095,19 +4040,19 @@ tabItem(tabName = "tab_va",
           )
         ),
 
-
         fluidRow(
           column(1,
                  actionButton(inputId = "va_submit", label = "Submit",
                               icon = NULL, width = NULL))
         ),
-
+        
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("va_score")),
+                 verbatimTextOutput("va_score"))
         )
-),
+        ),
+
 
 ## Verbal Counting page ------
 
@@ -4149,145 +4094,85 @@ tabItem(tabName = "tab_vc",
 
 
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_001", p("iPad is set up correctly"),
+                 radioButtons("radio_vc_001", p("iPad is set up correctly so that both the examiner and child can see screen."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  radioButtons("radio_vc_002", p("Seating is correct for child, caregiver and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_vc_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          )
-        ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_vc_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
         h3("Testing"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_004", p("Examiner slides purple button to the right to begin"),
+                 radioButtons("radio_vc_003", p("Examiner slides purple button to the right to begin."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_vc_004", p("Examiner asks: “How high can you count? Please start at one and show me?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_006", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-
-          column(6,
-                 radioButtons("radio_vc_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_vc_007", p("ADD QUESTION"),
+                 radioButtons("radio_vc_005", p("When child stops counting, examiner prompts, saying: “What comes next?” or “Can you count higher?”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_008", p("ADD QUESTION"),
+                 radioButtons("radio_vc_006", p("Examiner choses response: Numeric; Did not start at 1; Invalid Response."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_vc_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = el_values2,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_009", p("ADD QUESTION"),
+                 radioButtons("radio_vc_007", p("After entering the child’s response, the examiner taps NEXT."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_vc_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = el_values4,  selected = "")
           )
         ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_vc_010", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_vc_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = el_values4,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_vc_011", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_vc_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = el_values2,  selected = "")
-          )
-        ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_vc_002", h4("Notes about testing"),
                                value = "")
           )
         ),
-
-
+        
+        
         fluidRow(
           column(1,
                  actionButton(inputId = "vc_submit", label = "Submit",
                               icon = NULL, width = NULL))
         ),
-
+        
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("vc_score")),
+                 verbatimTextOutput("vc_score"))
         )
 ),
 
@@ -4480,7 +4365,7 @@ tabItem(tabName = "tab_guag",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("guag_score")),
+                 verbatimTextOutput("guag_score"))
         )
 ),
 
@@ -4673,7 +4558,7 @@ tabItem(tabName = "tab_rte",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("rte_score")),
+                 verbatimTextOutput("rte_score"))
         )
 ),
 
@@ -4866,7 +4751,7 @@ tabItem(tabName = "tab_sas",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("sas_score")),
+                 verbatimTextOutput("sas_score"))
         )
 ),
 
@@ -5059,7 +4944,7 @@ tabItem(tabName = "tab_mrl",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("mrl_score")),
+                 verbatimTextOutput("mrl_score"))
         ),
         
 ),
@@ -5253,7 +5138,7 @@ tabItem(tabName = "tab_mvr",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("mvr_score")),
+                 verbatimTextOutput("mvr_score"))
         )
 ),
 
@@ -5446,7 +5331,7 @@ tabItem(tabName = "tab_touch",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("touch_score")),
+                 verbatimTextOutput("touch_score"))
         )
 ),
 
@@ -5628,7 +5513,7 @@ tabItem(tabName = "tab_elm",
         h2("Your Score"),
         fluidRow(
           column(12,
-                 verbatimTextOutput("elm_score")),
+                 verbatimTextOutput("elm_score"))
         )
 )
 
