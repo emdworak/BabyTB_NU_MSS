@@ -51,6 +51,7 @@ radio_values <- c(1, 0, 1)
 app_values2_noNA <- c(1, 0)
 app_values2 <- c(NA, 1, 0)
 app_values3 <- c(NA, 0, 1, 2)
+app_values3_no0 <- c(NA, 1, 2)
 app_values4 <- c(NA, 0, 1, 2, 3)
 app_values4_no0 <- c(NA, 1, 2, 3)
 app_values5 <- c(NA, 1, 2, 3, 4)
@@ -4841,8 +4842,959 @@ tabItem(tabName = "tab_rte",
                  radioButtons("radio_rte_012", p("If caregiver says “yes”, examiner administers Cheerios task (CT)."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
-        )#,
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_002", h4("Notes about testing."),
+                               value = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, h3("Block (BT) Task")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_013", p("Right Hand- Examiner overturns measuring cup (large base) with non-dominant hand and with dominant hand places block on top."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_014", p("Right Hand- Examiner asks caregiver to gently hold child’s left arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_015", p("Right Hand- Examiner uses both hands to move base and block to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_016", p("Right Hand- Examiner quickly releases block and pulls back dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_017", p("Right Hand- Examiner continues to hold cup with non-dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_018", p("Right Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_019", p("Right Hand- Examiner draws child's attention to the block."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lbtr_success ", p("Did child reach block with right hand?"),
+                              choiceNames = c(NA, "Noncompliant", "Didn't try",
+                                              "Moved arm only", "Touched but no grasp", 
+                                              "Grasped from the table", "Grasped from the base"), 
+                              choiceValues = app_values7,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_020", p("Right Hand- If block falls off cup, examiner leaves block on table and removes cup."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lbtr_grasp", p("Child used which grasp with right hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Multi-finger grip", 
+                                              "Thumb & finger grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_021", p("Left Hand- Repeats task with child’s left hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_022", p("Left Hand- Examiner overturns measuring cup (large base) with non-dominant hand and with dominant hand places block on top."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_023", p("Left Hand- Examiner asks caregiver to gently hold child’s right arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_024", p("Left Hand- Examiner uses both hands to move base and block to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_025", p("Left Hand- Examiner uses both hands to move base and block to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_026", p("Left Hand- Examiner quickly releases block and pulls back dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_027", p("Left Hand- Examiner continues to hold cup with non-dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_028", p("Left Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lbtl_success ", p("Did child reach block with left hand?"),
+                              choiceNames = c(NA, "Noncompliant", "Didn't try",
+                                              "Moved arm only", "Touched but no grasp", 
+                                              "Grasped from the table", "Grasped from the base"), 
+                              choiceValues = app_values7,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_029", p("Left Hand- Examiner draws child attention to the block."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lbtl_grasp", p("Child used which grasp with left hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Multi-finger grip", 
+                                              "Thumb & finger grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_030", p("Left Hand- If block falls off cup, leave block on table and remove cup."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_003", h4("Notes about block task."),
+                               value = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, h3("Cheerio Small Base Task")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_031", p("Right Hand- Examiner uses non-dominant hand: holds upside down formula spoon (small base) by handle and with dominant hand puts cheerio on top of spoon bowl."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_032", p("Right Hand- Examiner asks caregiver to gently hold child’s left arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_033", p("Right Hand- Examiner uses both hands to move spoon and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_034", p("Right Hand- Examiner quickly releases cheerio and pulls back dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_035", p("Right Hand- Continues to hold spoon with non-dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_036", p("Right Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_037", p("Right Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_sctr_success", p("Did child reach small base with right hand?"),
+                              choiceNames = c(NA, "Noncompliant", "Didn't try",
+                                              "Moved arm only", "Touched but no grasp", 
+                                              "Grasped from the table", "Grasped from the base"), 
+                              choiceValues = app_values7,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_038", p("Right Hand- If cheerio falls off base, examiner leaves cheerio on table and removes base."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_sctr_grasp", p("Child used which grasp with right hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Multi-finger grip", 
+                                              "Thumb & finger grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_039", p("Left Hand- Repeats task with child’s left hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_040", p("Left Hand- Examiner uses non-dominant hand: holds upside down formula spoon (small base) by handle and with dominant hand puts cheerio on top of spoon bowl."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_041", p("Left Hand- Examiner asks caregiver to gently hold child’s right arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_042", p("Left Hand- Examiner uses both hands: moves spoon and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_043", p("Left Hand- Examiner quickly releases cheerio and pulls back dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_044", p("Left Hand- Examiner continues to hold base with non-dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_045", p("Left Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_046", p("Left Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_sctl_success ", p("Did child reach small base with left hand?"),
+                              choiceNames = c(NA, "Noncompliant", "Didn't try",
+                                              "Moved arm only", "Touched but no grasp", 
+                                              "Grasped from the table", "Grasped from the base"), 
+                              choiceValues = app_values7,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_047", p("Left Hand- If cheerio falls off base, examiner leaves cheerio on table and removes base."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_sctl_grasp", p("Child used which grasp with left hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Multi-finger grip", 
+                                              "Thumb & finger grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_004", h4("Notes about cheerio small base task."),
+                               value = "")
+          )
+        ),
+        
+        br(),
+        
+        fluidRow(
+          tags$b("If child fails both small base trials, examiner administers 2 trials with large base.", br(), 
+            "If child succeeds with either hand, examiner administers 4 trials with spoon (SPE) easy & (SPH) hard.")
+        ),
+        
+        br(),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_048", p("Examiner administers the correct next item (large base or spoon) based on child’s behavior on small base."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        
+        
+        fluidRow(
+          column(6, h3("Cheerio Large Base Task")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_049", p("Right Hand- Examiner overturns measuring cup (large base) with non-dominant hand & with dominant hand places cheerio on top."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_050", p("Right Hand- Examiner asks caregiver to gently hold child’s left arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_051", p("Right Hand- Examiner uses both hands to move base and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_052", p("Right Hand- Examiner quickly releases cheerio and pulls back dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_053", p("Right Hand- Continues to hold base with non-dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_054", p("Right Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_055", p("Right Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lctr_success", p("Did child reach large base with right hand?"),
+                              choiceNames = c(NA, "Noncompliant", "Didn't try",
+                                              "Moved arm only", "Touched but no grasp", 
+                                              "Grasped from the table", "Grasped from the base"), 
+                              choiceValues = app_values7,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_056", p("Right Hand- If cheerio falls off base, examiner leaves cheerio on table and removes base."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lctr_grasp", p("Child used which grasp with right hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Multi-finger grip", 
+                                              "Thumb & finger grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_057", p("Left Hand- Repeats task with child’s left hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_058", p("Left Hand- overturns measuring cup (large base) with non-dominant hand & with dominant hand places cheerio on top."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_059", p("Left Hand- Examiner asks caregiver to gently hold child’s right arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_060", p("Left Hand- Examiner uses both hands: moves base and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_061", p("Left Hand- Examiner quickly releases cheerio and pulls back dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_062", p("Left Hand- Examiner continues to hold base with non-dominant hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_063", p("Left Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_064", p("Left Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lctl_success ", p("Did child reach large base with left hand?"),
+                              choiceNames = c(NA, "Noncompliant", "Didn't try",
+                                              "Moved arm only", "Touched but no grasp", 
+                                              "Grasped from the table", "Grasped from the base"), 
+                              choiceValues = app_values7,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_065", p("Left Hand- If cheerio falls off base, examiner leaves cheerio on table and removes cup"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_lctl_grasp", p("Child used which grasp with left hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Multi-finger grip", 
+                                              "Thumb & finger grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_005", h4("Notes about cheerio large base task."),
+                               value = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, h3("Cheerio Spoon Easy & Hard Tasks")
+          ),
+          
+          column(6, h3("How You Would Score the Task?")
+          )
+        ),
+        
+        fluidRow(
+          h4("Cheerio Spoon Easy (Right Hand)")
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_066", p("Right Hand- Examiner places measuring up right side up on the table, holding the cup by the handle with your non-dominant hand & with dominant hand holding the spoon handle up (with cheerio in bowl of spoon)."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_067", p("Right Hand- Examiner demonstrates using the spoon to bring cheerio to mouth."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_068", p("Right Hand- Examiner asks caregiver to gently hold child’s left arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_069", p("Right Hand- Examiner uses both hands to move cup with spoon and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnter_purpose", p("Did child use right hand to move spoon?"),
+                              choiceNames = c(NA, "Noncompliant", "Refused to pick up spoon",
+                                              "Picked up to play", "Grasped Cheerio", 
+                                              "Grasped spoon for transport"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_070", p("Right Hand- When cup is in place, let go of the spoon and quickly pull back dominant hand; examiner continues to hold the cup by the handle with non-dominant hand; handle of spoon should be in direction of right hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnter_move", p("Did child use right hand to grasp or move handle?"),
+                              choiceNames = c(NA, "Grasped handle", "Moved handle"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_071", p("Right Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnter_grasp", p("Child used which grasp with right hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Thumb & finger grip",
+                                              "Adult-like grip"), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_072", p("Right Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnter_thumb", p("Where was right hand thumb pointing?"),
+                              choiceNames = c(NA, "Away from bowl", "Toward bowl"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_073", p("Right Hand- After child grasps spoon or tries to eat cheerio directly from bowl, dry spoon with tissue and administer Hard spoon trial."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnter_success", p("Did child bring cheerio to mouth with right hand?"),
+                              choiceNames = c(NA, "Didn't try", "Child used restrained hand", 
+                                              "Cheerio fell", "After replacement", 
+                                              "On first attempt"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_006", h4("Notes about cheerio spoon easy task with right hand."),
+                               value = "")
+          )
+        ),
+        
+        fluidRow(
+          h4("Cheerio Spoon Hard (Right Hand)")
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_074", p("Right Hand- Examiner places measuring up right side up on the table, holding the cup by the handle with your non-dominant hand and with dominant hand holding the spoon handle up (with cheerio in bowl of spoon."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_075", p("Right Hand- If child grabbed cheerio from base on earlier trial, examiner demonstrates using the spoon to bring cheerio to mouth."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_076", p("Right Hand- Examiner asks caregiver to gently hold child’s left arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_077", p("Right Hand- Examiner uses both hands to move cup with spoon and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthr_purpose", p("Did child use right hand to move spoon?"),
+                              choiceNames = c(NA, "Noncompliant", "Refused to pick up spoon",
+                                              "Picked up to play", "Grasped Cheerio", 
+                                              "Grasped spoon for transport"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_078", p("Right Hand- When cup is in place, let go of the spoon & quickly pull back dominant hand; examiner continues to hold the cup by the handle with non-dominant hand; handle of spoon should be away from the right hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthr_move", p("Did child use right hand to grasp or move handle?"),
+                              choiceNames = c(NA, "Grasped handle", "Moved handle"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_079", p("Right Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthr_grasp", p("Child used which grasp with right hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Thumb & finger grip", 
+                                              "Adult-like grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_080", p("Right Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthr_thumb", p("Where was right hand thumb pointing?"),
+                              choiceNames = c(NA, "Away from bowl", "Toward bowl"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_081", p("Right Hand- After child grasps spoon or tries to eat cheerio directly from bowl, dry spoon with tissue."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthr_success", p("Did child bring cheerio to mouth with right hand?"),
+                              choiceNames = c(NA, "Didn't try", "Child used restrained hand", 
+                                              "Cheerio fell", "After replacement", 
+                                              "On first attempt"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_007", h4("Notes about cheerio spoon hard task with right hand."),
+                               value = "")
+          )
+        ),
+  
+        fluidRow(
+          h4("Cheerio Spoon Easy (Left Hand)")
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_082", p("Left Hand- Examiner begins administration of Easy spoon trial to left hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_083", p("Left Hand- Examiner places measuring up right side up on the table, holding the cup by the handle with your non-dominant hand & with dominant hand holding the spoon handle up (with cheerio in bowl of spoon)."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_084", p("Left Hand- If child grabbed cheerio from base on earlier trial, Examiner demonstrates using the spoon to bring cheerio to mouth."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_085", p("Left Hand- Examiner asks caregiver to gently hold child’s right arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_086", p("Left Hand- Examiner uses both hands to move cup with spoon and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spntel_purpose", p("Did child use left hand to move spoon?"),
+                              choiceNames = c(NA, "Noncompliant", "Refused to pick up spoon",
+                                              "Picked up to play", "Grasped Cheerio", 
+                                              "Grasped spoon for transport"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_087", p("Left Hand- When cup is in place, let go of the spoon and quickly pull back dominant hand; examiner continues to hold the cup by the handle with non-dominant hand; handle of spoon should be in direction of left hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spntel_move", p("Did child use left hand to grasp or move handle?"),
+                              choiceNames = c(NA, "Grasped handle", "Moved handle"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_088", p("Left Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spntel_grasp", p("Child used which grasp with left hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Thumb & finger grip",
+                                              "Adult-like grip"), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_089", p("Left Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spntel_thumb", p("Where was left hand thumb pointing?"),
+                              choiceNames = c(NA, "Away from bowl", "Toward bowl"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_090", p("Left Hand- After child grasps spoon or tries to eat cheerio directly from bowl, dry spoon with tissue and administer Hard spoon trial."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spntel_success", p("Did child bring cheerio to mouth with left hand?"),
+                              choiceNames = c(NA, "Didn't try", "Child used restrained hand", 
+                                              "Cheerio fell", "After replacement", 
+                                              "On first attempt"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_008", h4("Notes about cheerio spoon easy task with left hand."),
+                               value = "")
+          )
+        ),
+        
+        fluidRow(
+          h4("Cheerio Spoon Hard (Left Hand)")
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_091", p("Left Hand- Examiner places measuring up right side up on the table, holding the cup by the handle with your non-dominant hand and with dominant hand holding the spoon handle up (with cheerio in bowl of spoon."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_092", p("Left Hand- If child grabbed cheerio from base on earlier trial, examiner demonstrates using the spoon to bring cheerio to mouth."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_093", p("Left Hand- Examiner asks caregiver to gently hold child’s right arm."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_094", p("Left Hand- Examiner uses both hands to move cup with spoon and cheerio to midline of child within easy reach from child’s chest."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthl_purpose", p("Did child use left hand to move spoon?"),
+                              choiceNames = c(NA, "Noncompliant", "Refused to pick up spoon",
+                                              "Picked up to play", "Grasped Cheerio", 
+                                              "Grasped spoon for transport"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_095", p("Left Hand- When cup is in place, let go of the spoon & quickly pull back dominant hand; examiner continues to hold the cup by the handle with non-dominant hand; handle of spoon should be away from the left hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthl_move", p("Did child use left hand to grasp or move handle?"),
+                              choiceNames = c(NA, "Grasped handle", "Moved handle"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_096", p("Left Hand- Examiner should not obstruct the camera with arm or hand."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthl_grasp", p("Child used which grasp with left hand?"),
+                              choiceNames = c(NA, "Palmer grip", "Thumb & finger grip", 
+                                              "Adult-like grip" ), choiceValues = app_values4_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_097", p("Left Hand- Examiner draws child's attention to the cheerio."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthl_thumb", p("Where was left hand thumb pointing?"),
+                              choiceNames = c(NA, "Away from bowl", "Toward bowl"), 
+                              choiceValues = app_values3_no0,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_rte_098", p("Left Hand- After child grasps spoon or tries to eat cheerio directly from bowl, dry spoon with tissue."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          ),
+          
+          column(6,
+                 radioButtons("radio_rte_spnthl_success", p("Did child bring cheerio to mouth with left hand?"),
+                              choiceNames = c(NA, "Didn't try", "Child used restrained hand", 
+                                              "Cheerio fell", "After replacement", 
+                                              "On first attempt"), 
+                              choiceValues = app_values6,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_rte_009", h4("Notes about cheerio spoon hard task with left hand."),
+                               value = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(1,
+                 actionButton(inputId = "rte_submit", label = "Submit",
+                              icon = NULL, width = NULL))
+        ),
+        
+        h2("Your Score"),
+        fluidRow(
+          column(12,
+                 verbatimTextOutput("rte_score"))
+        )
 ),
+
 
 ## Sit and Stand page ------
 
@@ -4894,141 +5846,182 @@ tabItem(tabName = "tab_sas",
           ),
         ),
 
+        
         h3("Before Beginning"),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_001", p("iPad is set up correctly"),
+                 radioButtons("radio_sas_001", p("Clean, non-skid mat that won’t move when child moves on it."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_002", p("Seating is correct for child, caregiver and examiner."),
+                 radioButtons("radio_sas_002", p("Toys, large picture books or smart phone to keep child’s attention."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_003", p("Materials are all assembled: red ball, picture book, toy car, key, plastic knife"),
+                 radioButtons("radio_sas_003", p("Footprint mat (for older children- Feet Together & Feet Tandem."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
                  textAreaInput("text_sas_001", h4("Notes about setup"),
                                value = "")
           )
         ),
-
+        
+        
+        h3("Questions Before Testing"),
+        
         fluidRow(
-          column(6,  h3("Testing")
+          column(6,
+                 radioButtons("radio_sas_004", p("If not observed earlier, examiner asks caregiver, “Have you seen [child's name] walk 3m unsupported?”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_005", p("If child is older than 24 months and answer is “yes”, go to Feet Together & Tandem Stands"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_006", p("If child is younger than 24 months and answer is “yes”, no more testing DONE."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_007", p("If not observed earlier, examiner asks caregiver “Can child stand?”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_008", p("If answer to above is “yes”, go to Unsupported Stand: Feet Apart."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_009", p("If answer to above is “no” & not observed earlier, examiner asks caregiver, “Have you seen [child's name] sit unsupported for 10s.”"),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_010", p("If answer to above is “yes”, go to Unsupported Sit."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6, 
+                 radioButtons("radio_sas_011", p("If answer to above is “no”, go to Pull to Sit & Unsupported Sit."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 textAreaInput("text_sas_002", h4("Notes about questions before testing"),
+                               value = "")
+          )
+        ),
+        
+        
+        fluidRow(
+          column(6, h3("Pull to Sit")
           ),
           
           column(6, h3("How You Would Score the Task?")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_004", p("Examiner slides purple button to the right to begin"),
+                 radioButtons("radio_sas_012", p("If answer to unsupported sit is “no”, go to Pull to Sit."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_005", p("Examiner reviews instructions & slides purple button to right"),
+                 radioButtons("radio_sas_013", p("Lays child down on back with feet pointed toward examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
-
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_006", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-
-          column(6,
-                 radioButtons("radio_sas_el7", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 radioButtons("radio_sas_007", p("ADD QUESTION"),
+                 radioButtons("radio_sas_014", p("Examiner reassures caregiver about testing head & neck control."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_008", p("ADD QUESTION"),
+                 radioButtons("radio_sas_015", p("Holds each of child’s hands in examiner’s hands with thumbs in child’s palms and fingers grasping child’s wrists."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sas_el10", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Yes", "No"), choiceValues = app_values2,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_009", p("ADD QUESTION"),
+                 radioButtons("radio_sas_016", p("Takes approximately 4 seconds count to raise child fully, engaging child in the process with words and attention to face."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sas_el11", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Zero", "One",
-                                              "Two to seven", "Eight or more"),
-                              choiceValues = app_values4,  selected = "")
           )
         ),
-
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_010", p("ADD QUESTION"),
+                 radioButtons("radio_sas_017", p("If child cannot support head at all, examiner stops and lays child down."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_018", p("If child’s head tips backwards or child makes effort to keep head in line with body, examiner continues."),
+                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
+          )
+        ),
+        
+        fluidRow(
+          column(6,
+                 radioButtons("radio_sas_019", p("After child completes Pull-to-Sit, examiner gently lies child back down on floor."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
-
+          
           column(6,
-                 radioButtons("radio_sas_el15", p("ADD QUESTION"),
-                              choiceNames = c("NA", "No endorsed buttons", "1-3 endorsed buttons",
-                                              "4 or 5 endorsed buttons", "6 endorsed buttons"),
-                              choiceValues = app_values4,  selected = "")
+                 radioButtons("radio_sas_pts_q1", p("Pull to Sit: head in line with torso?"),
+                              choiceNames = c(NA, "No", "Yes"), choiceValues = app_values3_no0,  selected = "")
           )
         ),
-
+        
+        
         fluidRow(
           column(6,
-                 radioButtons("radio_sas_011", p("ADD QUESTION"),
-                              choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
-          ),
-
-          column(6,
-                 radioButtons("radio_sas_el16", p("ADD QUESTION"),
-                              choiceNames = c("NA", "Does not label labels at least one picture",
-                                              "Labels at least one picture"),
-                              choiceValues = app_values2,  selected = "")
-          )
-        ),
-
-        fluidRow(
-          column(6,
-                 textAreaInput("text_sas_002", h4("Notes about testing"),
+                 textAreaInput("text_sas_003", h4("Notes about pull to sit task"),
                                value = "")
           )
         ),
 
+        
+        
 
         fluidRow(
           column(1,
