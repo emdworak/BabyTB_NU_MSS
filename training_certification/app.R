@@ -252,8 +252,8 @@ ui <- dashboardPage(
                 ),
                 
                 column(6,
-                       textInput("text_efg_childAge", h4("Child Age (in months):"),
-                                 value = "")
+                       numericInput("text_efg_childAge", h4("Child Age (in months):"),
+                                    value = "", min = 0, max = 60, step = 0.5)
                 )
                 
               ),
@@ -543,8 +543,8 @@ tabItem(tabName = "tab_ncd",
           ),
           
           column(6,
-                 textInput("text_ncd_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_ncd_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -834,8 +834,8 @@ tabItem(tabName = "tab_scd",
           ),
           
           column(6,
-                 textInput("text_scd_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_scd_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -1125,8 +1125,8 @@ tabItem(tabName = "tab_lwl",
           ),
           
           column(6,
-                 textInput("text_lwl_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_lwl_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -1417,8 +1417,8 @@ tabItem(tabName = "tab_melo",
           ),
           
           column(6,
-                 textInput("text_melo_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_melo_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -1540,12 +1540,12 @@ tabItem(tabName = "tab_melo",
         fluidRow(
           column(12,
                  verbatimTextOutput("melo_score"))
-        ),
-        
-        h4("This will be removed, but it's here to show that the data upload worked"),
-        fluidRow(
-          column(12,
-                 tableOutput("test"))
+        # ),
+        # 
+        # h4("This will be removed, but it's here to show that the data upload worked"),
+        # fluidRow(
+        #   column(12,
+        #          tableOutput("test"))
         )
 ),
 
@@ -1581,23 +1581,19 @@ tabItem(tabName = "tab_melo",
               ),
 
               column(6,
-                     textInput("text_melp_childAge", h4("Child Age (in months):"),
-                               value = "")
+                     numericInput("text_melp_childAge", h4("Child Age (in months):"),
+                                  value = "", min = 0, max = 60, step = 0.5)
               )
 
             ),
 
             h3("Upload Examiner File"),
-
-            fluidRow(
-              column(6,
-                     fileInput("melp_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
-                        multiple = FALSE,
-                        accept = c("text/csv",
-                                   "text/comma-separated-values,text/plain",
-                                   ".csv"))
-                     ),
-            ),
+            
+            fileInput("melp_examiner_file", "Please upload the narrow structured item export from the examiner's administration. This file should be a CSV file",
+                      multiple = FALSE,
+                      accept = c("text/csv",
+                                 "text/comma-separated-values,text/plain",
+                                 ".csv")),
 
             h3("Before Beginning"),
 
@@ -1785,8 +1781,8 @@ tabItem(tabName = "tab_pv",
           ),
 
           column(6,
-                 textInput("text_pv_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_pv_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -1937,8 +1933,8 @@ tabItem(tabName = "tab_sobY",
           ),
 
           column(6,
-                 textInput("text_sobY_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_sobY_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -2948,8 +2944,8 @@ tabItem(tabName = "tab_sobO",
           ),
           
           column(6,
-                 textInput("text_sobO_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_sobO_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -3520,8 +3516,8 @@ tabItem(tabName = "tab_whm",
           ),
           
           column(6,
-                 textInput("text_whm_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_whm_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -3713,8 +3709,8 @@ tabItem(tabName = "tab_sub",
           ),
 
           column(6,
-                 textInput("text_sub_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_sub_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -3870,8 +3866,8 @@ tabItem(tabName = "tab_oc",
           ),
 
           column(6,
-                 textInput("text_oc_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_oc_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -4043,8 +4039,8 @@ tabItem(tabName = "tab_va",
           ),
 
           column(6,
-                 textInput("text_va_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_va_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -4203,8 +4199,8 @@ tabItem(tabName = "tab_vc",
           ),
 
           column(6,
-                 textInput("text_vc_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_vc_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -4325,8 +4321,8 @@ tabItem(tabName = "tab_gug",
           ),
           
           column(6,
-                 textInput("text_gug_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_gug_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -4727,8 +4723,8 @@ tabItem(tabName = "tab_rte",
           ),
 
           column(6,
-                 textInput("text_rte_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_rte_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -5823,8 +5819,8 @@ tabItem(tabName = "tab_sas",
           ),
 
           column(6,
-                 textInput("text_sas_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_sas_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -6291,8 +6287,8 @@ tabItem(tabName = "tab_mrl",
           ),
           
           column(6,
-                 textInput("text_mrl_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_mrl_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -6697,8 +6693,8 @@ tabItem(tabName = "tab_mvr",
           ),
 
           column(6,
-                 textInput("text_mvr_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_mvr_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -7024,8 +7020,8 @@ tabItem(tabName = "tab_touch",
           ),
           
           column(6,
-                 textInput("text_touch_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_touch_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
           
         ),
@@ -7161,8 +7157,8 @@ tabItem(tabName = "tab_elm",
           ),
 
           column(6,
-                 textInput("text_elm_childAge", h4("Child Age (in months):"),
-                           value = "")
+                 numericInput("text_elm_childAge", h4("Child Age (in months):"),
+                              value = "", min = 0, max = 60, step = 0.5)
           )
 
         ),
@@ -7282,8 +7278,17 @@ tabItem(tabName = "tab_elm",
 # Define server logic to plot various variables against mpg ----
 server <- function(input, output, session) {
 
+  
+## Executive Function (Gaze) data ----
+## Numerical Change Detection data ------
+## Spatial Change Detection data ------
+## Looking While Listening data ------
+## Mullen Expressive Language Observational data ------
+## Mullen Expressive Language Prompted data ----
+  
   melp_examiner_data <- reactive({
     req(input$melp_examiner_file)
+    
     melp_exam_df <- read.csv(input$melp_examiner_file$datapath) %>%
       select(Key, ItemID, Value) %>%
       filter(Key == "Score") %>%
@@ -7295,20 +7300,20 @@ server <- function(input, output, session) {
              "exam_EL11" = "EL11",
              "exam_EL15" = "EL15",
              "exam_EL16" = "EL16") ## Need to confirm what shows up if the test is NA
-
+    
     melp_exam_df <- data.frame(melp_exam_df)
   })
-
-
+  
+  
   melp_values <- eventReactive(input$melp_submit, {
-
+    
     melp_data <- data.frame(
       text_melp_person = c(input$text_melp_person),
       text_melp_site = c(input$text_melp_site),
       text_melp_date = format(as.Date(input$text_melp_date, origin="2023-01-01")),
       text_melp_certifier = c(input$text_melp_certifier),
       text_melp_childAge = c(input$text_melp_childAge),
-
+      
       "radio_melp_001" = c(input$radio_melp_001),
       "radio_melp_002" = c(input$radio_melp_002),
       "radio_melp_003" = c(input$radio_melp_003),
@@ -7324,41 +7329,41 @@ server <- function(input, output, session) {
       "radio_melp_010" = c(input$radio_melp_010),
       "radio_melp_el15" = c(input$radio_melp_el15),
       "radio_melp_011" = c(input$radio_melp_011),
-      "radio_melp_el16" = c(input$radio_melp_el16))#,
-
-    #   "value_melp_001" = as.numeric(c(input$radio_melp_001)),
-    #   "value_melp_002" = as.numeric(c(input$radio_melp_002)),
-    #   "value_melp_003" = as.numeric(c(input$radio_melp_003)),
-    #   "value_melp_004" = as.numeric(c(input$radio_melp_004)),
-    #   "value_melp_005" = as.numeric(c(input$radio_melp_005)),
-    #   "value_melp_006" = as.numeric(c(input$radio_melp_006)),
-    #   "value_melp_el7" = as.numeric(c(input$radio_melp_el7)),
-    #   "value_melp_007" = as.numeric(c(input$radio_melp_007)),
-    #   "value_melp_008" = as.numeric(c(input$radio_melp_008)),
-    #   "value_melp_el10" = as.numeric(c(input$radio_melp_el10)),
-    #   "value_melp_009" = as.numeric(c(input$radio_melp_009)),
-    #   "value_melp_el11" = as.numeric(c(input$radio_melp_el11)),
-    #   "value_melp_010" = as.numeric(c(input$radio_melp_010)),
-    #   "value_melp_el15" = as.numeric(c(input$radio_melp_el15)),
-    #   "value_melp_011" = as.numeric(c(input$radio_melp_011)),
-    #   "value_melp_el16" = as.numeric(c(input$radio_melp_el16)),
-    #
-    #   "notes_melp_001" = as.numeric(c(input$text_melp_001)),
-    #   "notes_melp_002" = as.numeric(c(input$text_melp_002)))
-    #
-    #
-    # melp_data$sum <- rowSums(melp_data %>% select(starts_with("value_melp_0")), na.rm = TRUE) * NA^!rowSums(!is.na(melp_data %>% select(starts_with("value_0"))))
-
-  #melp_combined <- cbind(melp_data, melp_examiner_data)
-
-  #return(melp_data)#combined)
-
-})
-
-  output$test <- renderTable({
-    melp_values()
+      "radio_melp_el16" = c(input$radio_melp_el16),
+      
+      "value_melp_001" = as.numeric(c(input$radio_melp_001)),
+      "value_melp_002" = as.numeric(c(input$radio_melp_002)),
+      "value_melp_003" = as.numeric(c(input$radio_melp_003)),
+      "value_melp_004" = as.numeric(c(input$radio_melp_004)),
+      "value_melp_005" = as.numeric(c(input$radio_melp_005)),
+      "value_melp_006" = as.numeric(c(input$radio_melp_006)),
+      "value_melp_el7" = as.numeric(c(input$radio_melp_el7)),
+      "value_melp_007" = as.numeric(c(input$radio_melp_007)),
+      "value_melp_008" = as.numeric(c(input$radio_melp_008)),
+      "value_melp_el10" = as.numeric(c(input$radio_melp_el10)),
+      "value_melp_009" = as.numeric(c(input$radio_melp_009)),
+      "value_melp_el11" = as.numeric(c(input$radio_melp_el11)),
+      "value_melp_010" = as.numeric(c(input$radio_melp_010)),
+      "value_melp_el15" = as.numeric(c(input$radio_melp_el15)),
+      "value_melp_011" = as.numeric(c(input$radio_melp_011)),
+      "value_melp_el16" = as.numeric(c(input$radio_melp_el16)),
+      
+      "notes_melp_001" = as.numeric(c(input$text_melp_001)),
+      "notes_melp_002" = as.numeric(c(input$text_melp_002)))
+    
+    
+    melp_data$sum <- rowSums(melp_data %>% select(starts_with("value_melp_0")), na.rm = TRUE) * NA^!rowSums(!is.na(melp_data %>% select(starts_with("value_0"))))
+    
+    #melp_combined <- cbind(melp_data, melp_examiner_data)
+    
+    #return(melp_data)#combined)
+    
   })
-
+  
+  output$test <- renderTable({
+    melp_examiner_data()#melp_values()
+  })
+  
   # output$melp_score <- renderText({
   #
   #   melp_data <- melp_values()
@@ -7368,7 +7373,25 @@ server <- function(input, output, session) {
   #   return(paste0(percent_correct, "%"))
   #
   # })
-
+  
+  
+## Picture Vocab data ------
+## Social Observational (younger) data ------
+## Social Observational (older) data ------
+## Who Has More data ------
+## Subitizing data ------
+## Object Counting data ------
+## Verbal Arithmetic data ------
+## Verbal Counting data ------
+## Get Up and Go data ------
+## Reach to Eat data ------
+## Sit and Stand data ------
+## Mullen Receptive Language data ------
+## Mullen Visual Reception data ------
+## Touch Tutorial data ------
+## EF Learning & Memory data ------
+  
+  
 
   lwl_values <- eventReactive(input$lwl_submit, {
 
