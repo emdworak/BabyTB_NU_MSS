@@ -4221,13 +4221,13 @@ tabItem(tabName = "tab_vc",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_vc_002", p("Seating is correct for child, caregiver and examiner."),
+                 radioButtons("radio_vc_002", p("Seating is correct for child, caregiver, and examiner."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = ""))
         ),
         
         fluidRow(
           column(6,
-                 textAreaInput("text_vc_001", h4("Notes about setup"),
+                 textAreaInput("text_vc_001", h4("Notes about setup."),
                                value = "")
           )
         ),
