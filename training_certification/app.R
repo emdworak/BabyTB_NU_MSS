@@ -47,7 +47,7 @@ library(shinydashboard)
 
 
 radio_labels <- c("Yes", "No", "NA")
-radio_values <- c(1, 0, 1)
+radio_values <- c(1, 0, NA)
 app_values2_noNA <- c(1, 0)
 app_values2 <- c(NA, 1, 0)
 app_values3 <- c(NA, 0, 1, 2)
@@ -1628,7 +1628,7 @@ tabItem(tabName = "tab_melo",
               column(6, h3("Testing")
                      ),
               
-              column(6, h3("How You Would Score the Task?")
+              column(6, h3("How Would You Score the Task?")
               )
             ),
 
@@ -1991,7 +1991,7 @@ tabItem(tabName = "tab_sobY",
           column(6, h3("Communicative Temptation 1: Minute One")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
       
@@ -2085,7 +2085,7 @@ tabItem(tabName = "tab_sobY",
           column(6, h3("Response to Name & Gaze/Point 1: Minute Two")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2194,7 +2194,7 @@ tabItem(tabName = "tab_sobY",
           column(6, h3("Communication Temptation 2: Minute Three")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2301,7 +2301,7 @@ tabItem(tabName = "tab_sobY",
           column(6, h3("Communicative Temptation 3, probe 2: Minute Four")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2415,7 +2415,7 @@ tabItem(tabName = "tab_sobY",
           column(6, h3("Sharing Books 1: Minute Five")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2505,7 +2505,7 @@ tabItem(tabName = "tab_sobY",
           column(6, h3("Sharing Books 2: Minute Six")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2594,7 +2594,7 @@ tabItem(tabName = "tab_sobY",
           column(6,  h3("Parent/Caregiver-Child Play 1: Minute Seven")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2679,7 +2679,7 @@ tabItem(tabName = "tab_sobY",
           column(6,  h3("Parent/Caregiver-Child Play 2: Minute Eight")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2756,7 +2756,7 @@ tabItem(tabName = "tab_sobY",
           column(6,  h3("Parent/Caregiver-Child Play 3: Minute Nine")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -2828,7 +2828,7 @@ tabItem(tabName = "tab_sobY",
           column(6,  h3("Parent/Caregiver-Child Play 4: Minute Ten")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -3003,7 +3003,7 @@ tabItem(tabName = "tab_sobO",
           column(6,  h3("Joint Attention: Minute One")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -3091,7 +3091,7 @@ tabItem(tabName = "tab_sobO",
           column(6,  h3("Pretend Play: Minutes Two-Three")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -3176,7 +3176,7 @@ tabItem(tabName = "tab_sobO",
           column(6,  h3("Prosocial Behavior: Minutes Four-Five")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -3285,7 +3285,7 @@ tabItem(tabName = "tab_sobO",
           column(6,  h3("Social Communication 1: Minutes Six-Seven")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -3364,7 +3364,7 @@ tabItem(tabName = "tab_sobO",
           column(6,  h3("Social Communications 2: Minutes Eight-Ten")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -4418,7 +4418,7 @@ tabItem(tabName = "tab_gug",
           column(6,  h3("Pre-Locomotion (PL) Testing")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -4846,7 +4846,7 @@ tabItem(tabName = "tab_rte",
           column(6, h3("Block (BT) Task")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -5015,7 +5015,7 @@ tabItem(tabName = "tab_rte",
           column(6, h3("Cheerio Small Base Task")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -5195,7 +5195,7 @@ tabItem(tabName = "tab_rte",
           column(6, h3("Cheerio Large Base Task")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -5357,7 +5357,7 @@ tabItem(tabName = "tab_rte",
           column(6, h3("Cheerio Spoon Easy & Hard Tasks")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -5938,7 +5938,7 @@ tabItem(tabName = "tab_sas",
           column(6, h3("Pull to Sit")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6015,7 +6015,7 @@ tabItem(tabName = "tab_sas",
           column(6, h3("Unsupported Sit")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6069,7 +6069,7 @@ tabItem(tabName = "tab_sas",
           column(6, h3("Unsupported Stand: Feet Apart")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6134,7 +6134,7 @@ tabItem(tabName = "tab_sas",
           column(6, h3("Unsupported Stand: Feet Together")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6189,7 +6189,7 @@ tabItem(tabName = "tab_sas",
           column(6, h3("Unsupported Stand: Tandem Stand")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6339,7 +6339,7 @@ tabItem(tabName = "tab_mrl",
           column(6, h3("Testing")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6559,7 +6559,7 @@ tabItem(tabName = "tab_mrl",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mrl_026", p("RL20: Age 1-32: Follows directions. Examiner places car and block on table in front of C."),
+                 radioButtons("radio_mrl_026", p("RL20: Age 1-32: Follows directions. Examiner places car and block on table in front of child."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
           
@@ -6594,7 +6594,7 @@ tabItem(tabName = "tab_mrl",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mrl_030", p("RL22: Age 1-34: Auditory spatial awareness. Examiner places 2 cups on table in front of C.  One cup is upside down and the other is right side up. Examiner puts block in the open cup and says “this block is in the cup.”"),
+                 radioButtons("radio_mrl_030", p("RL22: Age 1-34: Auditory spatial awareness. Examiner places 2 cups on table in front of child.  One cup is upside down and the other is right side up. Examiner puts block in the open cup and says “this block is in the cup.”"),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
           
@@ -6744,7 +6744,7 @@ tabItem(tabName = "tab_mvr",
           column(6, h3("Testing")
           ),
           
-          column(6, h3("How You Would Score the Task?")
+          column(6, h3("How Would You Score the Task?")
           )
         ),
         
@@ -6836,7 +6836,7 @@ tabItem(tabName = "tab_mvr",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mvr_012", p("MVR10: Turns cup right-side up. Examiner shows cup to child and flips cup upside down in front of C. Examiner should tap upside down cup to attract attention. Examiner observes child's reaction to incorrect position of cup."),
+                 radioButtons("radio_mvr_012", p("MVR10: Turns cup right-side up. Examiner shows cup to child and flips cup upside down in front of child. Examiner should tap upside down cup to attract attention. Examiner observes child's reaction to incorrect position of cup."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
           
@@ -6848,7 +6848,7 @@ tabItem(tabName = "tab_mvr",
         
         fluidRow(
           column(6,
-                 radioButtons("radio_mvr_013", p("MVR11: Makes object associations: examiner places objects (hairbrush, spoon, cup, ball) one at a time on the table in front of C."),
+                 radioButtons("radio_mvr_013", p("MVR11: Makes object associations: examiner places objects (hairbrush, spoon, cup, ball) one at a time on the table in front of child."),
                               choiceNames = radio_labels, choiceValues = radio_values,  selected = "")
           ),
           
@@ -6923,9 +6923,9 @@ tabItem(tabName = "tab_mvr",
         ),
         
         
-        h3("For the rest of the items: the child will respond by tapping the iPad",
-           br(),
-           "Before Beginning"),
+        h3("For the rest of the items: the child will respond by tapping the iPad."),
+        
+        h3("Before Beginning"),
         
         
         fluidRow(
@@ -7283,6 +7283,46 @@ server <- function(input, output, session) {
 ## Numerical Change Detection data ------
 ## Spatial Change Detection data ------
 ## Looking While Listening data ------
+  
+  lwl_values <- eventReactive(input$lwl_submit, {
+    
+    lwl_data <- data.frame(
+      "text_lwl_person" = c(input$text_lwl_person),
+      "text_lwl_site" = c(input$text_lwl_site),
+      "text_lwl_date" = format(as.Date(input$text_lwl_date, origin="2023-01-01")),
+      "text_lwl_certifier" = c(input$text_lwl_certifier),
+      "text_lwl_childAge" = c(input$text_lwl_childAge),
+      "radio_lwl_001" = c(input$radio_lwl_001),
+      "radio_lwl_002" = c(input$radio_lwl_002),
+      "radio_lwl_003" = c(input$radio_lwl_003),
+      "radio_lwl_004" = c(input$radio_lwl_004),
+      "radio_lwl_005" = c(input$radio_lwl_005),
+      "radio_lwl_006" = c(input$radio_lwl_006),
+      "radio_lwl_007" = c(input$radio_lwl_007),
+      "radio_lwl_008" = c(input$radio_lwl_008),
+      "value_lwl_001" = as.numeric(c(input$radio_lwl_001)),
+      "value_lwl_002" = as.numeric(c(input$radio_lwl_002)),
+      "value_lwl_003" = as.numeric(c(input$radio_lwl_003)),
+      "value_lwl_004" = as.numeric(c(input$radio_lwl_004)),
+      "value_lwl_005" = as.numeric(c(input$radio_lwl_005)),
+      "value_lwl_006" = as.numeric(c(input$radio_lwl_006)),
+      "value_lwl_007" = as.numeric(c(input$radio_lwl_007)),
+      "value_lwl_008" = as.numeric(c(input$radio_lwl_008)),
+      "notes_lwl_001" = as.numeric(c(input$text_lwl_001)),
+      "notes_lwl_002" = as.numeric(c(input$text_lwl_002))
+    )
+    
+    lwl_data$sum <- rowSums(lwl_data %>% select(starts_with("value_")), na.rm = TRUE) * NA^!rowSums(!is.na(lwl_data %>% select(starts_with("value_"))))
+    
+    percent_correct <- round((lwl_data$sum / 8)*100, 2)
+    
+    paste0(percent_correct, "%")
+    
+  })
+  
+  output$lwl_score <- renderText({
+    lwl_values()
+  })
 ## Mullen Expressive Language Observational data ------
 ## Mullen Expressive Language Prompted data ----
   
@@ -7349,19 +7389,49 @@ server <- function(input, output, session) {
       "value_melp_el16" = as.numeric(c(input$radio_melp_el16)),
       
       "notes_melp_001" = as.numeric(c(input$text_melp_001)),
-      "notes_melp_002" = as.numeric(c(input$text_melp_002)))
+      "notes_melp_002" = as.numeric(c(input$text_melp_002))) %>% 
+      mutate(radio_melp_el7 = factor(radio_melp_el7, levels = app_values2[-c(1)], labels = c("Yes", "No")),
+             radio_melp_el10 = factor(radio_melp_el10, levels = app_values2[-c(1)], labels = c("Yes", "No")),
+             radio_melp_el11 = factor(radio_melp_el11, levels = app_values4[-c(1)], labels = c("Zero", "One",
+                                                                                               "Two to seven", "Eight or more")),
+             radio_melp_el15 = factor(radio_melp_el15, levels = app_values4[-c(1)], labels = c("No endorsed buttons", "1-3 endorsed buttons",
+                                                                                               "4 or 5 endorsed buttons", "6 endorsed buttons")),
+             radio_melp_el16 = factor(radio_melp_el16, levels = app_values2[-c(1)], labels = c("Does not label labels at least one picture",
+                                                                                      "Labels at least one picture"))
+  ) %>% 
+      mutate(scoring_melp_001 = ifelse(is.na(value_melp_001), 1, value_melp_001),
+             scoring_melp_002 = ifelse(is.na(value_melp_002), 1, value_melp_002),
+             scoring_melp_003 = ifelse(is.na(value_melp_003), 1, value_melp_003),
+             scoring_melp_004 = ifelse(is.na(value_melp_004), 1, value_melp_004),
+             scoring_melp_005 = ifelse(is.na(value_melp_005), 1, value_melp_005),
+             scoring_melp_006 = ifelse(is.na(value_melp_006), 1, value_melp_006),
+             scoring_melp_007 = ifelse(is.na(value_melp_007), 1, value_melp_007),
+             scoring_melp_008 = ifelse(is.na(value_melp_008), 1, value_melp_008),
+             scoring_melp_009 = ifelse(is.na(value_melp_009), 1, value_melp_009),
+             scoring_melp_010 = ifelse(is.na(value_melp_010), 1, value_melp_010),
+             scoring_melp_011 = ifelse(is.na(value_melp_011), 1, value_melp_011))
     
     
-    melp_data$sum <- rowSums(melp_data %>% select(starts_with("value_melp_0")), na.rm = TRUE) * NA^!rowSums(!is.na(melp_data %>% select(starts_with("value_0"))))
+    pull_cols <- melp_data %>% 
+      select(starts_with("radio_melp_0")) %>% 
+      colnames()
+    
+    melp_data[,pull_cols] <- lapply(melp_data[,pull_cols], 
+                                    factor,
+                                    levels = c(0, 1),
+                                    labels = c("No", "Yes"))
+    
+    
+    melp_data$sum <- rowSums(melp_data %>% select(starts_with("scoring_melp_0")), na.rm = TRUE) * NA^!rowSums(!is.na(melp_data %>% select(starts_with("scoring_melp_0"))))
     
     #melp_combined <- cbind(melp_data, melp_examiner_data)
     
-    #return(melp_data)#combined)
+    return(melp_data)#combined)
     
   })
   
   output$test <- renderTable({
-    melp_examiner_data()#melp_values()
+    melp_values()
   })
   
   # output$melp_score <- renderText({
@@ -7393,45 +7463,7 @@ server <- function(input, output, session) {
   
   
 
-  lwl_values <- eventReactive(input$lwl_submit, {
-
-    lwl_data <- data.frame(
-      "text_lwl_person" = c(input$text_lwl_person),
-      "text_lwl_site" = c(input$text_lwl_site),
-      "text_lwl_date" = format(as.Date(input$text_lwl_date, origin="2023-01-01")),
-      "text_lwl_certifier" = c(input$text_lwl_certifier),
-      "text_lwl_childAge" = c(input$text_lwl_childAge),
-      "radio_lwl_001" = c(input$radio_lwl_001),
-      "radio_lwl_002" = c(input$radio_lwl_002),
-      "radio_lwl_003" = c(input$radio_lwl_003),
-      "radio_lwl_004" = c(input$radio_lwl_004),
-      "radio_lwl_005" = c(input$radio_lwl_005),
-      "radio_lwl_006" = c(input$radio_lwl_006),
-      "radio_lwl_007" = c(input$radio_lwl_007),
-      "radio_lwl_008" = c(input$radio_lwl_008),
-      "value_lwl_001" = as.numeric(c(input$radio_lwl_001)),
-      "value_lwl_002" = as.numeric(c(input$radio_lwl_002)),
-      "value_lwl_003" = as.numeric(c(input$radio_lwl_003)),
-      "value_lwl_004" = as.numeric(c(input$radio_lwl_004)),
-      "value_lwl_005" = as.numeric(c(input$radio_lwl_005)),
-      "value_lwl_006" = as.numeric(c(input$radio_lwl_006)),
-      "value_lwl_007" = as.numeric(c(input$radio_lwl_007)),
-      "value_lwl_008" = as.numeric(c(input$radio_lwl_008)),
-      "notes_lwl_001" = as.numeric(c(input$text_lwl_001)),
-      "notes_lwl_002" = as.numeric(c(input$text_lwl_002))
-      )
-
-    lwl_data$sum <- rowSums(lwl_data %>% select(starts_with("value_")), na.rm = TRUE) * NA^!rowSums(!is.na(lwl_data %>% select(starts_with("value_"))))
-
-    percent_correct <- round((lwl_data$sum / 8)*100, 2)
-
-    paste0(percent_correct, "%")
-
-    })
-
-  output$lwl_score <- renderText({
-    lwl_values()
-  })
+  
 
 
 }
