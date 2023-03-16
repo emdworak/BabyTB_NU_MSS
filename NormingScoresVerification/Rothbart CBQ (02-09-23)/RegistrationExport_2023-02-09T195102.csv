@@ -1,0 +1,2 @@
+PID,RegistrationID,DeviceID,Name,DateOfBirth,Age,TotalAgeInMonths,Education,MothersEducation,FathersEducation,GuardiansEducation,SexAssignedAtBirth,Handedness,Race,Ethnicity,DiagnosisCategory,UserDefinedFields,NonStandardAdmin,AssessmentName,AppVersion,FirmwareVersion,iPadVersion
+NBT_PROMIS_12m,7BDD7CDB-6EC6-47D8-8563-938B0DEC7650,NIH-BABY-TOOLBOX-NORMING-13D3BF54-94A6-410F-9B4C-7F502BCBF935,,2022-02-08T00:00:00-0600,1,12,1,21,,,1,1,1,1,,,,CBQ-VSF,3.0.4.19,16.3,"iPad Pro 4th Gen (11-inch) / iPad14,3"

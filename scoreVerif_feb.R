@@ -1,0 +1,228 @@
+
+library(tidyverse)
+library(readxl)
+
+verificationDir <- paste0("./NormingScoresVerification/",
+                          list.files("./NormingScoresVerification/", 
+                                     recursive=T, pattern="NarrowStructure_[0-9]*-[0-9]*-[0-9]*T[0-9]*.csv"))
+
+verificationFiles <- lapply(verificationDir, function(y) read_csv(y, col_types = cols(.default = "c")))
+names(verificationFiles) <- str_remove(str_remove(verificationDir, "./NormingScoresVerification/"),
+                                       "NarrowStructure_[0-9]*-[0-9]*-[0-9]*T[0-9]*.csv")
+
+
+scoresExport <- bind_rows(verificationFiles[str_detect(names(verificationFiles), "Scores")])
+itemExport <- bind_rows(verificationFiles[str_detect(names(verificationFiles), "Item")])
+
+table(scoresExport$InstrumentTitle)
+
+
+# modify this as needed to examine specific items
+itemExport %>%
+  select(PID, RegistrationID, AssessmentName, ItemID, Key, Value) %>%
+  filter(ItemID == "SelfReg_ibqrvsh24" & Key %in% c("Response","Score")) 
+
+
+reScored <- itemExport %>%
+  filter(Key == "Score") %>%
+  pivot_wider(id_cols = 1:5, names_from = 6, values_from=8) %>%
+  type_convert() %>%
+  rowwise() %>%
+  mutate(Surg_CBQ = if_else(all(is.na(c(SelfReg_CBQ1, SelfReg_CBQ4, SelfReg_CBQ7, SelfReg_CBQ10, SelfReg_CBQ13,
+                                        SelfReg_CBQ16, SelfReg_CBQ19, SelfReg_CBQ22,SelfReg_CBQ25,
+                                        SelfReg_CBQ28, SelfReg_CBQ31, SelfReg_CBQ34))), NA_real_,
+                            mean(c(SelfReg_CBQ1, SelfReg_CBQ4, SelfReg_CBQ7, SelfReg_CBQ10, SelfReg_CBQ13,
+                                   SelfReg_CBQ16, SelfReg_CBQ19, SelfReg_CBQ22,SelfReg_CBQ25,
+                                   SelfReg_CBQ28, SelfReg_CBQ31, SelfReg_CBQ34),na.rm=T)), 
+         NA_CBQ = if_else(all(is.na(c(SelfReg_CBQ2, SelfReg_CBQ5, SelfReg_CBQ8, SelfReg_CBQ11, SelfReg_CBQ14,
+                                      SelfReg_CBQ17,SelfReg_CBQ20, SelfReg_CBQ23, SelfReg_CBQ26, SelfReg_CBQ29,
+                                      SelfReg_CBQ35))), NA_real_,
+                          mean(c(SelfReg_CBQ2, SelfReg_CBQ5, SelfReg_CBQ8, SelfReg_CBQ11, SelfReg_CBQ14,
+                                 SelfReg_CBQ17,SelfReg_CBQ20, SelfReg_CBQ23, SelfReg_CBQ26, SelfReg_CBQ29,
+                                 SelfReg_CBQ35),na.rm=T)), 
+         EC_CBQ = if_else(all(is.na(c(SelfReg_CBQ3, SelfReg_CBQ6, SelfReg_CBQ9,  SelfReg_CBQ12, SelfReg_CBQ15,
+                                      SelfReg_CBQ18, SelfReg_CBQ21, SelfReg_CBQ24, SelfReg_CBQ27, SelfReg_CBQ30,
+                                      SelfReg_CBQ33, SelfReg_CBQ36))), NA_real_,
+                          mean(c(SelfReg_CBQ3, SelfReg_CBQ6, SelfReg_CBQ9,  SelfReg_CBQ12, SelfReg_CBQ15,
+                                 SelfReg_CBQ18, SelfReg_CBQ21, SelfReg_CBQ24, SelfReg_CBQ27, SelfReg_CBQ30,
+                                 SelfReg_CBQ33, SelfReg_CBQ36),na.rm=T)), 
+         CaregiverCL_raw = if_else(all(is.na(c(`CareCL_6-11_1`,`CareCL_6-11_2`,`CareCL_6-11_3`,`CareCL_6-11_4`,
+                                               `CareCL_6-11_5`,`CareCL_6-11_6`,`CareCL_6-11_7`,`CareCL_6-11_8`,
+                                               `CareCL_6-11_9`,`CareCL_6-11_10`,`CareCL_6-11_11`,`CareCL_6-11_12`,
+                                               `CareCL_6-11_13`,`CareCL_6-11_14`,`CareCL_6-11_15`,`CareCL_12-17_1`,
+                                               `CareCL_12-17_2`,`CareCL_12-17_3`,`CareCL_12-17_4`,`CareCL_12-17_5`,
+                                               `CareCL_12-17_6`,`CareCL_12-17_7`,`CareCL_12-17_8`,`CareCL_12-17_9`,
+                                               `CareCL_12-17_10`,`CareCL_12-17_11`,`CareCL_12-17_12`,`CareCL_12-17_13`,
+                                               `CareCL_12-17_14`,`CareCL_12-17_15`,`CareCL_12-17_16`,
+                                               `CareCL_18-23_1`,`CareCL_18-23_2`,`CareCL_18-23_3`,`CareCL_18-23_4`,
+                                               `CareCL_18-23_5`,`CareCL_18-23_6`,`CareCL_18-23_7`,`CareCL_18-23_8`,
+                                               `CareCL_18-23_9`,`CareCL_18-23_10`,`CareCL_18-23_11`,`CareCL_18-23_12`,
+                                               `CareCL_18-23_13`,`CareCL_18-23_14`,`CareCL_18-23_15`,`CareCL_18-23_16`,
+                                               `CareCL_24-29_1`,`CareCL_24-29_2`,`CareCL_24-29_3`,`CareCL_24-29_4`,
+                                               `CareCL_24-29_5`,`CareCL_24-29_6`,`CareCL_24-29_7`,`CareCL_24-29_8`,
+                                               `CareCL_24-29_9`,`CareCL_24-29_10`,`CareCL_36-41_1`,`CareCL_36-41_2`,
+                                               `CareCL_36-41_3`,`CareCL_36-41_4`,`CareCL_36-41_5`,`CareCL_36-41_6`,
+                                               `CareCL_36-41_7`,`CareCL_36-41_8`,`CareCL_36-41_9`,`CareCL_36-41_10`,
+                                               `CareCL_42-48_1`,`CareCL_42-48_2`,`CareCL_42-48_3`,`CareCL_42-48_4`,
+                                               `CareCL_42-48_5`,`CareCL_42-48_6`,`CareCL_42-48_7`,`CareCL_42-48_8`,
+                                               `CareCL_42-48_9`,`CareCL_42-48_10`))),
+                                   NA_real_,
+                                   sum(c(`CareCL_6-11_1`,`CareCL_6-11_2`,`CareCL_6-11_3`,`CareCL_6-11_4`,
+                                         `CareCL_6-11_5`,`CareCL_6-11_6`,`CareCL_6-11_7`,`CareCL_6-11_8`,
+                                         `CareCL_6-11_9`,`CareCL_6-11_10`,`CareCL_6-11_11`,`CareCL_6-11_12`,
+                                         `CareCL_6-11_13`,`CareCL_6-11_14`,`CareCL_6-11_15`,`CareCL_12-17_1`,
+                                         `CareCL_12-17_2`,`CareCL_12-17_3`,`CareCL_12-17_4`,`CareCL_12-17_5`,
+                                         `CareCL_12-17_6`,`CareCL_12-17_7`,`CareCL_12-17_8`,`CareCL_12-17_9`,
+                                         `CareCL_12-17_10`,`CareCL_12-17_11`,`CareCL_12-17_12`,`CareCL_12-17_13`,
+                                         `CareCL_12-17_14`,`CareCL_12-17_15`,`CareCL_12-17_16`,
+                                         `CareCL_18-23_1`,`CareCL_18-23_2`,`CareCL_18-23_3`,`CareCL_18-23_4`,
+                                         `CareCL_18-23_5`,`CareCL_18-23_6`,`CareCL_18-23_7`,`CareCL_18-23_8`,
+                                         `CareCL_18-23_9`,`CareCL_18-23_10`,`CareCL_18-23_11`,`CareCL_18-23_12`,
+                                         `CareCL_18-23_13`,`CareCL_18-23_14`,`CareCL_18-23_15`,`CareCL_18-23_16`,
+                                         `CareCL_24-29_1`,`CareCL_24-29_2`,`CareCL_24-29_3`,`CareCL_24-29_4`,
+                                         `CareCL_24-29_5`,`CareCL_24-29_6`,`CareCL_24-29_7`,`CareCL_24-29_8`,
+                                         `CareCL_24-29_9`,`CareCL_24-29_10`,`CareCL_36-41_1`,`CareCL_36-41_2`,
+                                         `CareCL_36-41_3`,`CareCL_36-41_4`,`CareCL_36-41_5`,`CareCL_36-41_6`,
+                                         `CareCL_36-41_7`,`CareCL_36-41_8`,`CareCL_36-41_9`,`CareCL_36-41_10`,
+                                         `CareCL_42-48_1`,`CareCL_42-48_2`,`CareCL_42-48_3`,`CareCL_42-48_4`,
+                                         `CareCL_42-48_5`,`CareCL_42-48_6`,`CareCL_42-48_7`,`CareCL_42-48_8`,
+                                         `CareCL_42-48_9`,`CareCL_42-48_10`),na.rm=T)), 
+         ObjCount_raw = if_else(all(is.na(c(OC_1r,OC_2r,OC_3r,OC_4r,OC_5r,OC_6r))), NA_real_, 
+                                sum(c(OC_1r,OC_2r,OC_3r,OC_4r,OC_5r,OC_6r),na.rm=T)),
+         Surg_ECBQ = if_else(all(is.na(c(SelfReg_ECBQ4, SelfReg_ECBQ13, SelfReg_ECBQ18, SelfReg_ECBQ20,SelfReg_ECBQ24,  
+                                         SelfReg_ECBQ6, SelfReg_ECBQ11, SelfReg_ECBQ9, SelfReg_ECBQ25, SelfReg_ECBQ3, 
+                                         SelfReg_ECBQ30, SelfReg_ECBQ36))), NA_real_, 
+                             mean(c(SelfReg_ECBQ4, SelfReg_ECBQ13, SelfReg_ECBQ18, SelfReg_ECBQ20,SelfReg_ECBQ24,
+                                    SelfReg_ECBQ6, SelfReg_ECBQ11, SelfReg_ECBQ9, SelfReg_ECBQ25, SelfReg_ECBQ3, 
+                                    SelfReg_ECBQ30, SelfReg_ECBQ36),na.rm=T)), 
+         NA_ECBQ = if_else(all(is.na(c(SelfReg_ECBQ16,SelfReg_ECBQ17, SelfReg_ECBQ19, SelfReg_ECBQ2, 
+                                       SelfReg_ECBQ26, SelfReg_ECBQ10, SelfReg_ECBQ22, SelfReg_ECBQ23, SelfReg_ECBQ1, 
+                                       SelfReg_ECBQ32,SelfReg_ECBQ33, SelfReg_ECBQ34))), NA_real_, 
+                             mean(c(SelfReg_ECBQ16,SelfReg_ECBQ17, SelfReg_ECBQ19, SelfReg_ECBQ2, 
+                                    SelfReg_ECBQ26, SelfReg_ECBQ10, SelfReg_ECBQ22, SelfReg_ECBQ23, SelfReg_ECBQ1, 
+                                    SelfReg_ECBQ32,SelfReg_ECBQ33, SelfReg_ECBQ34),na.rm=T)), 
+         EC_ECBQ = if_else(all(is.na(c(SelfReg_ECBQ21, SelfReg_ECBQ27, SelfReg_ECBQ31,  SelfReg_ECBQ8,SelfReg_ECBQ15, 
+                                       SelfReg_ECBQ35, SelfReg_ECBQ7, SelfReg_ECBQ14, SelfReg_ECBQ12, SelfReg_ECBQ29, 
+                                       SelfReg_ECBQ5, SelfReg_ECBQ28))), NA_real_, 
+                             mean(c(SelfReg_ECBQ21, SelfReg_ECBQ27, SelfReg_ECBQ31,  SelfReg_ECBQ8,SelfReg_ECBQ15, 
+                                    SelfReg_ECBQ35, SelfReg_ECBQ7, SelfReg_ECBQ14, SelfReg_ECBQ12, SelfReg_ECBQ29, 
+                                    SelfReg_ECBQ5, SelfReg_ECBQ28),na.rm=T)),
+         Surg_IBQ = if_else(all(is.na(c(SelfReg_ibqrvsh1, SelfReg_ibqrvsh2, SelfReg_ibqrvsh7,SelfReg_ibqrvsh8,  
+                                        SelfReg_ibqrvsh13, SelfReg_ibqrvsh14, SelfReg_ibqrvsh15, SelfReg_ibqrvsh20, 
+                                        SelfReg_ibqrvsh21, SelfReg_ibqrvsh26, SelfReg_ibqrvsh27, SelfReg_ibqrvsh36,
+                                        SelfReg_ibqrvsh37))), NA_real_, 
+                             mean(c(SelfReg_ibqrvsh1, SelfReg_ibqrvsh2, SelfReg_ibqrvsh7,  SelfReg_ibqrvsh8,
+                                    SelfReg_ibqrvsh13, SelfReg_ibqrvsh14, SelfReg_ibqrvsh15, SelfReg_ibqrvsh20, 
+                                    SelfReg_ibqrvsh21, SelfReg_ibqrvsh26, SelfReg_ibqrvsh27, SelfReg_ibqrvsh36,
+                                    SelfReg_ibqrvsh37),na.rm=T)), # exclude 8
+         NA_IBQ = if_else(all(is.na(c(SelfReg_ibqrvsh3,SelfReg_ibqrvsh16, SelfReg_ibqrvsh32,
+                                       SelfReg_ibqrvsh4, SelfReg_ibqrvsh9, SelfReg_ibqrvsh10, 
+                                       SelfReg_ibqrvsh17, SelfReg_ibqrvsh22, SelfReg_ibqrvsh23, 
+                                      SelfReg_ibqrvsh28, SelfReg_ibqrvsh29, SelfReg_ibqrvsh33))), NA_real_, 
+                           mean(c(SelfReg_ibqrvsh3,SelfReg_ibqrvsh16, SelfReg_ibqrvsh32,
+                                  SelfReg_ibqrvsh4, SelfReg_ibqrvsh9, SelfReg_ibqrvsh10, 
+                                  SelfReg_ibqrvsh17, SelfReg_ibqrvsh22, SelfReg_ibqrvsh23, 
+                                  SelfReg_ibqrvsh28, SelfReg_ibqrvsh29, SelfReg_ibqrvsh33),na.rm=T)), 
+         EC_IBQ = if_else(all(is.na(c(SelfReg_ibqrvsh5, SelfReg_ibqrvsh6, SelfReg_ibqrvsh11, SelfReg_ibqrvsh12, 
+                                      SelfReg_ibqrvsh18, SelfReg_ibqrvsh19,  SelfReg_ibqrvsh24, SelfReg_ibqrvsh25, 
+                                      SelfReg_ibqrvsh30, SelfReg_ibqrvsh31, SelfReg_ibqrvsh34, SelfReg_ibqrvsh35))), NA_real_, 
+                           mean(c(SelfReg_ibqrvsh5, SelfReg_ibqrvsh6, SelfReg_ibqrvsh11, SelfReg_ibqrvsh12, 
+                                  SelfReg_ibqrvsh18, SelfReg_ibqrvsh19, SelfReg_ibqrvsh24, SelfReg_ibqrvsh25, 
+                                  SelfReg_ibqrvsh30, SelfReg_ibqrvsh31, SelfReg_ibqrvsh34, SelfReg_ibqrvsh35),na.rm=T)), 
+         NRS = if_else(all(is.na(c(NRS_T_4InR, NRS_T_1InR, NRS_T_3TriR, NRS_T_2InR))), NA_real_,
+                       sum(c(NRS_T_4InR, NRS_T_1InR, NRS_T_3TriR, NRS_T_2InR),na.rm=T)),
+         REMA = if_else(all(is.na(c(REMA_5, REMA_7, REMA_3, REMA_8, REMA_4))), NA_real_,
+                        sum(c(REMA_5, REMA_7, REMA_3, REMA_8, REMA_4),na.rm=T)),
+         WHM = if_else(all(is.na(c(WHM1,WHM2,WHM3,WHM4,WHM5,WHM6,WHM7,WHM8,WHM9,WHM10,WHM11,WHM12,
+                                   WHM13,WHM14,WHM15,WHM16,WHM17,WHM18,WHM19,WHM20,WHM21,WHM22))), NA_real_,
+                       sum(c(WHM1,WHM2,WHM3,WHM4,WHM5,WHM6,WHM7,WHM8,WHM9,WHM10,WHM11,WHM12,
+                             WHM13,WHM14,WHM15,WHM16,WHM17,WHM18,WHM19,WHM20,WHM21,WHM22),na.rm=T)),
+         JA = if_else(all(is.na(c(`SO_24-48_1`,`SO_24-48_2`,`SO_24-48_3`,`SO_24-48_4`,`SO_24-48_5`,`SO_24-48_6`))), NA_real_,
+                      sum(c(`SO_24-48_1`,`SO_24-48_2`,`SO_24-48_3`,`SO_24-48_4`,`SO_24-48_5`,`SO_24-48_6`),na.rm=T)),
+         PP = if_else(all(is.na(c(`SO_24-48_7`,`SO_24-48_8`,`SO_24-48_9`,`SO_24-48_10`,`SO_24-48_11`))), NA_real_,
+                      sum(c(`SO_24-48_7`,`SO_24-48_8`,`SO_24-48_9`,`SO_24-48_10`,`SO_24-48_11`),na.rm=T)),
+         PB = if_else(all(is.na(c(`SO_24-48_12`,`SO_24-48_12`,`SO_24-48_14`,`SO_24-48_15`,
+                                  `SO_24-48_16`,`SO_24-48_17`,`SO_24-48_18`,`SO_24-48_19`))), NA_real_,
+                      sum(c(`SO_24-48_12`,`SO_24-48_12`,`SO_24-48_14`,`SO_24-48_15`,
+                            `SO_24-48_16`,`SO_24-48_17`,`SO_24-48_18`,`SO_24-48_19`),na.rm=T)),
+         SocCom1 = if_else(all(is.na(c(`SO_24-48_20`,`SO_24-48_21`,`SO_24-48_22`,`SO_24-48_23`))), NA_real_,
+                           sum(c(`SO_24-48_20`,`SO_24-48_21`,`SO_24-48_22`,`SO_24-48_23`),na.rm=T)),
+         SocCom2 = if_else(all(is.na(c(`SO_24-48_24`,`SO_24-48_25`,`SO_24-48_26`,`SO_24-48_27`,
+                                       `SO_24-48_28`,`SO_24-48_29`,`SO_24-48_30`,`SO_24-48_31`))), NA_real_,
+                           sum(c(`SO_24-48_24`,`SO_24-48_25`,`SO_24-48_26`,`SO_24-48_27`,
+                                 `SO_24-48_28`,`SO_24-48_29`,`SO_24-48_30`,`SO_24-48_31`),na.rm=T)),
+         ShrAtn = if_else(all(is.na(c(`SO_9-23_1`,`SO_9-23_2`,`SO_9-23_9`,`SO_9-23_10`,`SO_9-23_11`,`SO_9-23_12`,
+                                      `SO_9-23_19`,`SO_9-23_20`,`SO_9-23_27`,`SO_9-23_28`,`SO_9-23_29`,`SO_9-23_30`,
+                                      `SO_9-23_37`,`SO_9-23_38`,`SO_9-23_46`,`SO_9-23_45`))), NA_real_,
+                          sum(c(`SO_9-23_1`,`SO_9-23_2`,`SO_9-23_9`,`SO_9-23_10`,`SO_9-23_11`,`SO_9-23_12`,
+                                `SO_9-23_19`,`SO_9-23_20`,`SO_9-23_27`,`SO_9-23_28`,`SO_9-23_29`,`SO_9-23_30`,
+                                `SO_9-23_37`,`SO_9-23_38`,`SO_9-23_46`,`SO_9-23_45`),na.rm=T)),
+         ShrEnj = if_else(all(is.na(c(`SO_9-23_3`,`SO_9-23_4`,`SO_9-23_13`,`SO_9-23_14`,`SO_9-23_21`,`SO_9-23_22`,
+                                      `SO_9-23_31`,`SO_9-23_32`,`SO_9-23_39`,`SO_9-23_40`,
+                                      `SO_9-23_47`,`SO_9-23_48`))), NA_real_,
+                          sum(c(`SO_9-23_3`,`SO_9-23_4`,`SO_9-23_13`,`SO_9-23_14`,`SO_9-23_21`,`SO_9-23_22`,
+                                `SO_9-23_31`,`SO_9-23_32`,`SO_9-23_39`,`SO_9-23_40`,
+                                `SO_9-23_47`,`SO_9-23_48`),na.rm=T)),
+         ShrInt = if_else(all(is.na(c(`SO_9-23_5`,`SO_9-23_6`,`SO_9-23_7`,`SO_9-23_15`,`SO_9-23_16`,`SO_9-23_17`,
+                                      `SO_9-23_23`,`SO_9-23_24`,`SO_9-23_25`,`SO_9-23_33`,`SO_9-23_34`,`SO_9-23_35`,
+                                      `SO_9-23_41`,`SO_9-23_42`,`SO_9-23_43`,`SO_9-23_49`,`SO_9-23_50`,`SO_9-23_51`))), NA_real_,
+                          sum(c(`SO_9-23_5`,`SO_9-23_6`,`SO_9-23_7`,`SO_9-23_15`,`SO_9-23_16`,`SO_9-23_17`,
+                                `SO_9-23_23`,`SO_9-23_24`,`SO_9-23_25`,`SO_9-23_33`,`SO_9-23_34`,`SO_9-23_35`,
+                                `SO_9-23_41`,`SO_9-23_42`,`SO_9-23_43`,`SO_9-23_49`,`SO_9-23_50`,`SO_9-23_51`),na.rm=T)),
+         SOPlay = if_else(all(is.na(c(`SO_9-23_53`,`SO_9-23_54`,`SO_9-23_55`,`SO_9-23_56`,`SO_9-23_57`,
+                                      `SO_9-23_66`,`SO_9-23_67`,`SO_9-23_68`,`SO_9-23_69`,`SO_9-23_70`,
+                                      `SO_9-23_79`,`SO_9-23_80`,`SO_9-23_81`,`SO_9-23_82`,`SO_9-23_83`,
+                                      `SO_9-23_92`,`SO_9-23_93`,`SO_9-23_94`,`SO_9-23_95`,`SO_9-23_96`))), NA_real_,
+                          sum(c(`SO_9-23_53`,`SO_9-23_54`,`SO_9-23_55`,`SO_9-23_56`,`SO_9-23_57`,
+                                `SO_9-23_66`,`SO_9-23_67`,`SO_9-23_68`,`SO_9-23_69`,`SO_9-23_70`,
+                                `SO_9-23_79`,`SO_9-23_80`,`SO_9-23_81`,`SO_9-23_82`,`SO_9-23_83`,
+                                `SO_9-23_92`,`SO_9-23_93`,`SO_9-23_94`,`SO_9-23_95`,`SO_9-23_96`),na.rm=T)),
+         reVDRtouch = if_else(all(is.na(c(VDRTouch_4_11s,VDRTouch_5_11s,VDRTouch_6_11s,VDRTouch_7_11s,
+                                          VDRTouch_8_13s,VDRTouch_9_13s,VDRTouch_10_13s,VDRTouch_11_13s,
+                                          VDRTouch_4_9s,VDRTouch_5_9s,VDRTouch_6_9s,VDRTouch_7_9s,VDRTouch_4_7s,
+                                          VDRTouch_5_7s,VDRTouch_6_7s,VDRTouch_7_7s,VDRTouch_8_9s,
+                                          VDRTouch_9_9s,VDRTouch_10_9s,VDRTouch_11_9s))), NA_real_,
+                            sum(c(VDRTouch_4_11s,VDRTouch_5_11s,VDRTouch_6_11s,VDRTouch_7_11s,
+                                  VDRTouch_8_13s,VDRTouch_9_13s,VDRTouch_10_13s,VDRTouch_11_13s,
+                                  VDRTouch_4_9s,VDRTouch_5_9s,VDRTouch_6_9s,VDRTouch_7_9s,VDRTouch_4_7s,
+                                  VDRTouch_5_7s,VDRTouch_6_7s,VDRTouch_7_7s,VDRTouch_8_9s,
+                                  VDRTouch_9_9s,VDRTouch_10_9s,VDRTouch_11_9s),na.rm=T)),
+         touchTut = if_else(all(is.na(c(TsT_3a1,TsT_3a2,TsT_4a1,TsT_4a2))), NA_real_,
+                            sum(c(TsT_3a1,TsT_3a2,TsT_4a1,TsT_4a2),na.rm=T)),
+         FamEnc = if_else(all(is.na(c(Encoding1,Encoding2,Encoding3,Encoding4,Encoding5,Encoding6,
+                                      Encoding7,Encoding8,Encoding9,Encoding10,Encoding11))), NA_real_,
+                          sum(c(Encoding1,Encoding2,Encoding3,Encoding4,Encoding5,Encoding6,
+                                Encoding7,Encoding8,Encoding9,Encoding10,Encoding11),na.rm=T)),
+         FamMem = if_else(all(is.na(c(MemTest_1_1,MemTest_1_2,MemTest_1_3,MemTest_1_4,MemTest_1_5,
+                                      MemTest_1_6,MemTest_1_7,MemTest_1_8,MemTest_1_9,MemTest_1_10,
+                                      MemTest_1_11,MemTest_1_12,MemTest_1_13,MemTest_1_4,MemTest_1_15,
+                                      MemTest_1_16,MemTest_1_17,MemTest_1_18,MemTest_1_19,MemTest_1_20))), NA_real_,
+                          sum(c(MemTest_1_1,MemTest_1_2,MemTest_1_3,MemTest_1_4,MemTest_1_5,
+                                MemTest_1_6,MemTest_1_7,MemTest_1_8,MemTest_1_9,MemTest_1_10,
+                                MemTest_1_11,MemTest_1_12,MemTest_1_13,MemTest_1_4,MemTest_1_15,
+                                MemTest_1_16,MemTest_1_17,MemTest_1_18,MemTest_1_19,MemTest_1_20),na.rm=T))) %>% 
+  ungroup()
+
+combinedData <- scoresExport %>%
+  pivot_wider(id_cols=c(1,2,5,6), names_from=7, values_from=8) %>%
+  full_join(reScored %>%
+              select(RegistrationID, InstrumentTitle, Surg_CBQ, NA_CBQ, EC_CBQ, CaregiverCL_raw, ObjCount_raw,
+                     Surg_ECBQ, NA_ECBQ, EC_ECBQ, Surg_IBQ, NA_IBQ, EC_IBQ, NRS, REMA, WHM, JA, JA_sum, PP, PP_sum,
+                     PB, PB_sum, SocCom1, SC1_sum, SocCom2, SC2_sum, ShrAtn, ShrEnj, ShrInt, SOPlay,
+                     SA1_sum, SE1_sum, SI1_sum,SA2_sum, SE2_sum, SI2_sum,SA3_sum, SE3_sum, SI3_sum,
+                     SA4_sum, SE4_sum, SI4_sum,SA5_sum, SE5_sum, SI5_sum,SA6_sum, SE6_sum, SI6_sum,
+                     SA7_sum, SE7_sum, SI7_sum, PL7_sum ,SA8_sum, SE8_sum, SI8_sum, PL8_sum,
+                     SA8_sum,SE8_sum, SI8_sum, PL8_sum,SA9_sum,SE9_sum, SI9_sum, PL9_sum,
+                     SA10_sum,SE8_sum, SI10_sum, PL10_sum, reVDRtouch, touchTut,FamEnc,FamMem),
+            by=c('RegistrationID',"InstrumentTitle")) %>%
+  type_convert()
+
+colnames(combinedData)
+table(combinedData$InstrumentTitle)
+
+# change this to check each
+combinedData %>%
+  filter(str_detect(InstrumentTitle, "Caregiver Checklist")) %>% 
+  select(1,3,4,5,6,7,9,33) 
+
+

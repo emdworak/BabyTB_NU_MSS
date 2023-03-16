@@ -1,0 +1,3 @@
+PID,RegistrationID,DeviceID,Name,DateOfBirth,Age,TotalAgeInMonths,Education,MothersEducation,FathersEducation,GuardiansEducation,SexAssignedAtBirth,Handedness,Race,Ethnicity,DiagnosisCategory,UserDefinedFields,NonStandardAdmin,AssessmentName,AppVersion,FirmwareVersion,iPadVersion
+567,3ABD8656-7596-4C11-9D3E-07170E180F17,NIH-BABY-TOOLBOX-NORMING-F6E187B7-7DFC-4A03-8ECD-8FCE52FBE768,Opal,2020-09-15T00:00:00-0500,2,29,,,,,,,0,,,,,SO RT 2 2523,3.0.4.14,16.2,"iPad Pro 2nd Gen (11-inch) / iPad8,9"
+567,D6DAB0E8-644B-4488-A4CC-E75DFDEB0300,NIH-BABY-TOOLBOX-NORMING-F6E187B7-7DFC-4A03-8ECD-8FCE52FBE768,Opal,2020-09-15T00:00:00-0500,2,29,,,,,,,0,,,,,SO RT 1 2523,3.0.4.14,16.2,"iPad Pro 2nd Gen (11-inch) / iPad8,9"

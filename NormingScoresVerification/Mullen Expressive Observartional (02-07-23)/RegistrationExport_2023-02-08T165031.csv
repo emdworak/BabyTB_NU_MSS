@@ -1,0 +1,4 @@
+PID,RegistrationID,DeviceID,Name,DateOfBirth,Age,TotalAgeInMonths,Education,MothersEducation,FathersEducation,GuardiansEducation,SexAssignedAtBirth,Handedness,Race,Ethnicity,DiagnosisCategory,UserDefinedFields,NonStandardAdmin,AssessmentName,AppVersion,FirmwareVersion,iPadVersion
+567,651BA64C-3F6D-493B-9544-38B8A629A5D0,NIH-BABY-TOOLBOX-NORMING-F6E187B7-7DFC-4A03-8ECD-8FCE52FBE768,Opal,2022-01-15T00:00:00-0600,1,13,,,,,,,0,,,,,MEO RT 2823 3,3.0.4.16,16.2,"iPad Pro 2nd Gen (11-inch) / iPad8,9"
+567,2353FF1E-7FBE-4762-A019-E8AB8C4884AD,NIH-BABY-TOOLBOX-NORMING-F6E187B7-7DFC-4A03-8ECD-8FCE52FBE768,Opal,2022-01-15T00:00:00-0600,1,13,,,,,,,0,,,,,MEO RT 2723 1,3.0.4.16,16.2,"iPad Pro 2nd Gen (11-inch) / iPad8,9"
+567,18DA3CB5-4678-4AC1-B0A8-D191031C9254,NIH-BABY-TOOLBOX-NORMING-F6E187B7-7DFC-4A03-8ECD-8FCE52FBE768,Opal,2022-01-15T00:00:00-0600,1,13,,,,,,,0,,,,,MEO RT 2723 2,3.0.4.16,16.2,"iPad Pro 2nd Gen (11-inch) / iPad8,9"
