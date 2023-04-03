@@ -2,6 +2,8 @@
 library(tidyverse)
 library(jsonlite)
 
+#### Read in and combine gaze records ####
+
 miscFolder <- list.files("R:/MSS/Research/Projects/Baby_Toolbox/NBT_Norming_2023/misc", pattern="json")
 
 allJSON <- lapply(miscFolder, function(y) read_json(paste0("R:/MSS/Research/Projects/Baby_Toolbox/NBT_Norming_2023/misc/",y),
@@ -20,9 +22,9 @@ table(tmp$fileName)
 
 saveRDS(tmp, "DryRunGaze.rds")
 
-#### Pick up here ####
+#### Data cleaning and checks ####
 
-gazeRecords <- readRDS("DryRunGaze.rds")
+gazeRecords <- readRDS("C:/users/ajk128/Documents/DryRunGaze.rds")
 
 gazeRecords <- gazeRecords %>%
   mutate(instrument_calc = case_when(str_detect(itemID, "Mem|Hab|EXF|EFX|VDR") ~ "ExecutiveFunctioning",
@@ -47,6 +49,8 @@ gazeRecords_v2 <- gazeRecords %>%
          arFramesPerSecond_calibration_actual, arFramesPerSecond_test_actual,
          cameraFramesPerSecond_calibration_actual, cameraFramesPerSecond_test_actual,
          everything())
+
+#### Calibration Success ####
 
 endCalibrationRows <- which(gazeRecords_v2$eventName == "completedCalibration")
 lastEvent <- endCalibrationRows - 1
@@ -73,3 +77,75 @@ summary_x2 <- summary_x2[1:2,]
 gazeSummary <- bind_rows(summary_x1, summary_x2 %>% select(-elapsedTime))
 
 apply(gazeSummary[,3:6], 2, table, useNA='ifany')
+
+everCalibrated <- apply(gazeSummary[,3:6], 1, function(y) any(y == "calibrationAlignmentCheckPassed", na.rm=T))
+table(everCalibrated)
+
+#### LWL Before Prompt Salience ####
+
+LWLdata <- gazeRecords_v2 %>%
+  filter(instrument == "LookListening" & 
+           eventName != "cameraImageCaptured" &
+           gazeEngineState %in% c("testCompleted","testing")) %>%
+  select(1:13)
+
+timeStart <- which(LWLdata$eventName == "presentedLiveItem")
+timeEnded <- which(LWLdata$eventName == "audioStarted")
+
+startStop <- LWLdata %>%
+  filter(eventName %in% c("presentedLiveItem","audioStarted")) %>%
+  pivot_wider(id_cols=c(fileName, registrationID, itemID), names_from=eventName, values_from=elapsedTime, values_fn=min)
+
+
+prePromptLooking <- function(fullData, startStopTimes){
+  require(tidyverse)
+  useData <- fullData %>%
+    filter(fileName == startStopTimes$fileName & registrationID == startStopTimes$registrationID) %>%
+    filter(between(elapsedTime, startStopTimes$presentedLiveItem, startStopTimes$audioStarted))
+  
+  output <- useData %>%
+    count(gazeLocationOnScreen, gazeLocationName) %>%
+    mutate(fileName=startStopTimes$fileName, 
+           registrationID=startStopTimes$registrationID,
+           itemID = startStopTimes$itemID) %>%
+    select(fileName, registrationID, itemID, gazeLocationOnScreen, gazeLocationName, n)
+  
+  return(output)
+
+}
+
+resultsPreLooking <- list()
+for(i in 1:nrow(startStop)){
+  resultsPreLooking[[i]] <- prePromptLooking(LWLdata, startStop[i,])
+}
+
+resultsPreLooking <- bind_rows(resultsPreLooking)
+
+resultsPreLooking_wide <- resultsPreLooking %>%
+  filter(!is.na(gazeLocationOnScreen) & !is.na(gazeLocationName)) %>%
+  pivot_wider(id_cols=c(fileName, registrationID, itemID), names_from=c(gazeLocationOnScreen, gazeLocationName), values_from=n) %>%
+  rename(offAway = false_away, onAway = true_away, left = true_left, right = true_right)
+
+resultsPreLooking_summary <- resultsPreLooking_wide %>% 
+  group_by(itemID) %>% 
+  summarise(nPeople = n(),
+            offAway = sum(offAway, na.rm=T), 
+            onAway = sum(onAway, na.rm=T), 
+            left=sum(left, na.rm=T), 
+            right=sum(right, na.rm=T)) %>%
+  rowwise() %>%
+  mutate(propLeft = left/sum(c(left,right))*100,
+         propRight = right/sum(c(left,right))*100) %>%
+  ungroup()
+
+resultsPreLooking_summary %>% 
+  arrange(abs(propLeft-50)) %>% 
+  print(n=40)
+
+resultsPreLooking_summary %>% 
+  mutate(propLeft = round(propLeft, 1),
+         propRight = round(propRight, 1)) %>%
+  arrange(abs(propLeft-50)) %>% 
+  write_csv("./LWL_sidePreference.csv")
+
+
