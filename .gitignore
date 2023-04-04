@@ -3,8 +3,14 @@
 .RData
 .Ruserdata
 
-
+# Files to ignore for training certification 
 ## Make sure personal authentication information is not uploaded
 training_certification/rsconnect
 training_certification/authentication_files/authentication_info.R
 training_certification/authentication_files/authentication_info.rdata
+
+# Files to ignore for dry run analyses
+dry_run/EFCog_dryrun_20230330.html
+dry_run/EFCog_dryrun_20230404.html
+dry_run/EFCog_dryrun_20230404.pdf
+dry_run/EFCog_dryrun_20230404.log
