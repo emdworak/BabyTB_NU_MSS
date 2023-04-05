@@ -710,7 +710,6 @@ scores_summary %>%
 ### Executive Function 
 scores_summary %>% 
   filter(str_detect(item_id, "ExecutiveFunction") |
-           str_detect(item_id, "MVR_") |
            str_detect(item_id, "Touch") |
            str_detect(item_id, "MemTask")
          ) %>% 
@@ -740,7 +739,8 @@ scores_summary %>%
 
 ### Mullen 
 scores_summary %>% 
-  filter(str_detect(item_id, "Mullen_")) %>% 
+  filter(str_detect(item_id, "Mullen_") |
+           str_detect(item_id, "MVR_")) %>% 
   arrange(item_id)
 
 ### NIHTB
@@ -757,7 +757,7 @@ scores_age_pivot %>%
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, contains("CBQ"),  
          contains("CDI"),  
-         contains("Caregiver"),  
+         starts_with("Caregiver"),  
          contains("IBQ")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3)  
@@ -766,7 +766,7 @@ scores_age_pivot %>%
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, contains("CBQ"),  
          contains("CDI"),  
-         contains("Caregiver"),  
+         starts_with("Caregiver"),  
          contains("IBQ")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   cor.plot(., xlas = 3, main = "Parent Measures (not PROMIS)")  
@@ -790,7 +790,6 @@ scores_age_pivot %>%
 scores_age_pivot %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, contains("ExecutiveFunction"), 
-         contains("MVR_"), 
          contains("Touch"), 
          contains("MemTask")
   ) %>% 
@@ -800,7 +799,6 @@ scores_age_pivot %>%
 scores_age_pivot %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, contains("ExecutiveFunction"), 
-         contains("MVR_"), 
          contains("Touch"), 
          contains("MemTask")
   ) %>% 
@@ -879,13 +877,13 @@ scores_age_pivot %>%
 ### Mullen 
 scores_age_pivot %>% 
   select(-c(ends_with("_ItemCount"))) %>%
-  select(total_age_in_months, contains("Mullen_")) %>% 
+  select(total_age_in_months, contains("MVR_"), contains("Mullen_")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3)  
 
 scores_age_pivot %>% 
   select(-c(ends_with("_ItemCount"))) %>%
-  select(total_age_in_months, contains("Mullen_")) %>% 
+  select(total_age_in_months, contains("MVR_"), contains("Mullen_")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   cor.plot(., xlas = 3, main = "Mullen") 
 
@@ -925,7 +923,7 @@ scores_DP4_df %>%
   select(-c(ends_with("_ItemCount"))) %>%
   select(starts_with("growth"), contains("CBQ"),  
          contains("CDI"),  
-         contains("Caregiver"),  
+         starts_with("Caregiver"),  
          contains("IBQ")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3)  
@@ -934,7 +932,7 @@ scores_DP4_df %>%
   select(-c(ends_with("_ItemCount"))) %>%
   select(starts_with("growth"), contains("CBQ"),  
          contains("CDI"),  
-         contains("Caregiver"),  
+         starts_with("Caregiver"),  
          contains("IBQ")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   cor.plot(., xlas = 3, main = "Parent Measures (not PROMIS)")  
@@ -958,7 +956,6 @@ scores_DP4_df %>%
 scores_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(starts_with("growth"), contains("ExecutiveFunction"), 
-         contains("MVR_"), 
          contains("Touch"), 
          contains("MemTask")
   ) %>% 
@@ -968,7 +965,6 @@ scores_DP4_df %>%
 scores_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(starts_with("growth"), contains("ExecutiveFunction"), 
-         contains("MVR_"), 
          contains("Touch"), 
          contains("MemTask")
   ) %>% 
@@ -1029,31 +1025,31 @@ scores_DP4_df %>%
   cor(., use = "pairwise", method = "spearman") %>% 
   cor.plot(., xlas = 3, main = "Social Observation")
 
-### Motor Item Count
-scores_DP4_df %>% 
-  select(starts_with("growth"), 
-         starts_with("Sit"), starts_with("Get"),
-         starts_with("Reach")) %>% 
-  cor(., use = "pairwise", method = "spearman") %>% 
-  round(., digits = 3)  
-
-scores_DP4_df %>% 
-  select(starts_with("growth"), starts_with("Sit"), starts_with("Get"),
-         starts_with("Reach")) %>% 
-  cor(., use = "pairwise", method = "spearman") %>% 
-  cor.plot(., xlas = 3, main = "Motor (Item Counts)")
+# ### Motor Item Count
+# scores_DP4_df %>% 
+#   select(starts_with("growth"), 
+#          starts_with("Sit"), starts_with("Get"),
+#          starts_with("Reach")) %>% 
+#   cor(., use = "pairwise", method = "spearman") %>% 
+#   round(., digits = 3)  
+# 
+# scores_DP4_df %>% 
+#   select(starts_with("growth"), starts_with("Sit"), starts_with("Get"),
+#          starts_with("Reach")) %>% 
+#   cor(., use = "pairwise", method = "spearman") %>% 
+#   cor.plot(., xlas = 3, main = "Motor (Item Counts)")
 
 
 ### Mullen 
 scores_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
-  select(starts_with("growth"), contains("Mullen_")) %>% 
+  select(starts_with("growth"), contains("MVR_"), contains("Mullen_")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3)  
 
 scores_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
-  select(starts_with("growth"), contains("Mullen_")) %>% 
+  select(starts_with("growth"), contains("MVR_"), contains("Mullen_")) %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   cor.plot(., xlas = 3, main = "Mullen") 
 
