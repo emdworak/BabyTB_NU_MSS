@@ -194,6 +194,7 @@ scores_summary %>%
            str_detect(item_id, "CDI") | 
            str_detect(item_id, "Caregiver") | 
            str_detect(item_id, "IBQ")) %>% 
+  filter(str_detect(item_id, "PROMIS", negate = TRUE)) %>% 
   arrange(item_id) %>% 
 kbl(caption = "Descriptive Statistics for Parent Report Measures") %>% 
   kable_styling()
@@ -271,7 +272,7 @@ kbl(caption = "Descriptive Statistics for NIHTB Measures") %>%
 ## Parent Report
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
          contains("CBQ"),  
@@ -281,11 +282,18 @@ temp_cor <- scores_age_DP4_df %>%
   rename(age = total_age_in_months) %>% 
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
-              matches("growth\\_")) %>% 
+              matches("growth\\_")) 
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1:6)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of Parent Report with Age and DP4") %>% 
@@ -293,7 +301,7 @@ kbl(caption = "Correlation of Parent Report with Age and DP4") %>%
 ```
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
          contains("PROMIS")
@@ -302,10 +310,19 @@ temp_cor <- scores_age_DP4_df %>%
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
               matches("growth\\_")) %>% 
+  # 2023/04/05 we determined we should drop some of the variables
+  select(-c(ends_with("Error")))
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1:6)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of Parent Report PROMIS with Age and DP4") %>% 
@@ -314,8 +331,10 @@ kbl(caption = "Correlation of Parent Report PROMIS with Age and DP4") %>%
 
 ## Child Report
 
+### EF Cog
+
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
          contains("ExecutiveFunction"), 
@@ -326,43 +345,66 @@ temp_cor <- scores_age_DP4_df %>%
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
               matches("growth\\_")) %>% 
+  # 2023/04/05 we determined we should drop some of the variables
+  select(-c(ends_with("Round1"), ends_with("Round2"),
+            ends_with("1Scores"), ends_with("2Scores")
+            ))
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6),c(1, 5)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of EF Cog with Age and DP4") %>% 
   kable_styling() 
 ```
 
+### Language
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
-         contains("LookListening"), 
-         contains("ChangeDetect_")
+         contains("LookListening"),
+         contains("PV_")
          ) %>% 
   rename(age = total_age_in_months) %>% 
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
               matches("growth\\_")) %>% 
+  # 2023/04/05 we determined we should drop some of the variables
+  select(-c(ends_with("Error"), contains("AgeAdjusted"), PV_3_StartTheta))
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1, 5, 6)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
-kbl(caption = "Correlation of Other Gaze Measures with Age and DP4") %>% 
+kbl(caption = "Correlation of Language Measures with Age and DP4") %>% 
   kable_styling() 
 ```
 
+### Numeracy
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
+         contains("ChangeDetect_"),
          contains("Counting_"), 
          contains("Arithmetic_"), 
          contains("NumRecogSubitizing"), 
@@ -371,20 +413,28 @@ temp_cor <- scores_age_DP4_df %>%
   rename(age = total_age_in_months) %>% 
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
-              matches("growth\\_")) %>% 
+              matches("growth\\_"))
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1, 5)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of Numeracy Measures with Age and DP4") %>% 
   kable_styling() 
 ```
 
+### Social Observation
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
          contains("SocialObservation")
@@ -393,19 +443,31 @@ temp_cor <- scores_age_DP4_df %>%
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
               matches("growth\\_")) %>% 
+  # 2023/04/05 we determined we should drop some of the variables
+  select(-c(ends_with("Total"), ends_with("1"),
+            ends_with("2")
+            ))
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1, 3, 4, 6)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of Social Observation with Age and DP4") %>% 
   kable_styling() 
 ```
 
+### Mullen
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
          contains("MVR_"), contains("Mullen_")
@@ -413,39 +475,111 @@ temp_cor <- scores_age_DP4_df %>%
   rename(age = total_age_in_months) %>% 
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
-              matches("growth\\_")) %>% 
+              matches("growth\\_")) 
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1, 5, 6)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of Mullen with Age and DP4") %>% 
   kable_styling() 
 ```
 
+### NIHTB
 
 ```{r}
-temp_cor <- scores_age_DP4_df %>% 
+temp_df <- scores_age_DP4_df %>% 
   select(-c(ends_with("_ItemCount"))) %>%
   select(total_age_in_months, starts_with("growth"),
-         contains("SM_"),  
-         contains("PV_")
+         contains("SM_")
          ) %>% 
   rename(age = total_age_in_months) %>% 
   rename_with(stringr::str_replace, 
               pattern = "growth\\_", replacement = "", 
               matches("growth\\_")) %>% 
+  # 2023/04/05 we determined we should drop some of the variables
+  select(-c(ends_with("Error")))
+
+temp_cor <- temp_df %>% 
   cor(., use = "pairwise", method = "spearman") %>% 
   round(., digits = 3) 
 
-temp_cor <- temp_cor[-c(1:6),1:6]
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:6), c(1:6)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 
 temp_cor  %>% 
 kbl(caption = "Correlation of NIHTB with Age and DP4") %>% 
   kable_styling() 
 ```
 
+
+# Additional Language Cors
+
+```{r}
+scores_age_pivot2 <- scores_long_age_df %>% 
+  filter(!is.na(instrument_title)) %>% 
+  filter(key %nin% c("Language", "InstrumentSandSReason", 
+                     "InstrumentRCReasonOther", "InstrumentBreakoff",
+                     "InstrumentStatus2")) %>% 
+  pivot_wider(id_cols = c(pin, #pid, registration_id,
+                          #assessment_name, #instrument_title,
+                          total_age_in_months),
+              names_from = c("test_name", "key"),
+              values_from = "value") %>% 
+  select(pin:total_age_in_months, everything()) %>% 
+  type_convert()
+
+
+scores_age_DP4_df2 <- full_join(scores_age_pivot2, dryRun_dp4, 
+                                by = "pin") %>% 
+  select(-c(child_id, age, gender, age_at_testing, administration_form_id))
+```
+
+
+```{r}
+temp_df <- scores_age_DP4_df2 %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("LookListening"),
+         contains("PV_"),
+         contains("CDI"), 
+         contains("Mullen_")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  # 2023/04/05 we determined we should drop some of the variables
+  select(-c(ends_with("Error"), contains("AgeAdjusted"), ends_with("StartTheta"),
+            physical, adaptive_behavior, social_emotional))
+
+temp_cor <- temp_df %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(1:3, 7:8), c(1:3, 7:8)]
+
+temp_cor <- cbind(n = temp_count[-c(1:3, 7:8), 1], temp_cor)
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Language Measures with Age and DP4") %>% 
+  kable_styling() 
+```
 
 
 

@@ -164,28 +164,60 @@ pull_tetra <- describe_df %>%
 
 # Do the Analysis
 
+```{r}
+quick_item_df <- full_join(item_wide, dryRun_Registration_Age, 
+          by = "pin",
+          multiple = "all") %>% 
+  select(-c(registration_id, pid, assessment_name, age))
+```
+
+
 ## Spearman
 
 ```{r}
 ### Do all the polychoric measures ----
 
 for(i in 1:length(pull_poly)) {
-  df <- item_wide %>% 
+  df <- quick_item_df %>% 
     filter(instrument_title %in% paste(pull_poly[i])) %>% 
-    select(-c(pin, instrument_title))
+    filter(total_age_in_months < 24) %>% 
+    select(-c(pin, instrument_title, total_age_in_months)) %>% 
+    try(., TRUE)
   
-  df <- df[,colSums(is.na(df))<nrow(df)]
+  try(df <- df[,colSums(is.na(df))<nrow(df)], TRUE)
   
   cor_matrix <- df %>% 
     cor(., use = "pairwise", method = "spearman") %>% 
-    round(., digits = 3)  
+    round(., digits = 3)  %>% 
+    try(., TRUE)
   
   
   cor_matrix %>% 
-    cor.plot(., xlas = 3, main = paste(pull_poly[i]))
+    cor.plot(., xlas = 3, main = paste(c(pull_poly[i], " (<24 months)")))  %>% 
+    try(., TRUE)
   
   #print(cor_matrix) # This needs to be prettier
-}
+  
+  df <- quick_item_df %>% 
+    filter(instrument_title %in% paste(pull_poly[i])) %>% 
+    filter(total_age_in_months >= 24) %>% 
+    select(-c(pin, instrument_title, total_age_in_months))  %>% 
+    try(., TRUE)
+  
+  try(df <- df[,colSums(is.na(df))<nrow(df)], TRUE)
+  
+  cor_matrix <- df %>% 
+    cor(., use = "pairwise", method = "spearman") %>% 
+    round(., digits = 3)    %>% 
+    try(., TRUE)
+  
+  
+  cor_matrix %>% 
+    cor.plot(., xlas = 3, main = paste(c(pull_poly[i], " (24+ months)")))  %>% 
+    try(., TRUE)
+  
+  #print(cor_matrix) # This needs to be prettier
+} 
 
 ```
 
@@ -194,9 +226,10 @@ for(i in 1:length(pull_poly)) {
 
 ```{r}
 ### Do the tetrachoric matrices ----
+# PURPLE RABBITS This needs to be split by age
 
 for(i in 1:length(pull_tetra)) {
-  df <- item_wide %>% 
+  df <- quick_item_df %>% 
     filter(instrument_title %in% paste(pull_tetra[i])) %>% 
     select(-c(pin, instrument_title))
   
@@ -296,16 +329,16 @@ all_battery_times <- dryRun_ItemExportNarrow %>%
                                       "19-30 Month", "31-36 Month","37+ Month"),
          child_battery = ifelse(between(total_age_in_months, 1,5), "1-5 Month",
                                 ifelse(between(total_age_in_months, 6,8), "6-8 Month", 
-                               ifelse(between(total_age_in_months, 9,15), "9-15 Month", 
-                                ifelse(battery == "Gaze" & between(total_age_in_months, 16,21), "16-21 Month with gaze",
-                                 ifelse(battery == "Touch" & between(total_age_in_months, 16,21), "16-21 Month with touch",
+                               ifelse(between(total_age_in_months, 9,15), "9-21 Month", 
+                                ifelse(battery == "Gaze" & between(total_age_in_months, 16,21), "9-21 Month",
+                                 ifelse(battery == "Touch" & between(total_age_in_months, 16,21), "22-24 Month",
                                  ifelse(between(total_age_in_months, 22,24), "22-24 Month", 
                                   ifelse(between(total_age_in_months, 25,36), "25-36 Month", 
                                    ifelse(total_age_in_months >= 37, "37+ Month", NA)))))))),
          child_battery = ifelse(type == "Child", child_battery, NA),
          child_battery = as.factor(child_battery),
-         child_battery = fct_relevel(child_battery, "1-5 Month", "6-8 Month", "9-15 Month",  
-                                     "16-21 Month with gaze", "16-21 Month with touch", 
+         child_battery = fct_relevel(child_battery, "1-5 Month", "6-8 Month", "9-21 Month",  
+                                     
                                      "22-24 Month",  "25-36 Month", "37+ Month")
          ) %>% 
   arrange(pin) %>% 
@@ -318,13 +351,21 @@ battery_times_child <- all_battery_times %>%
 battery_times_parent <- all_battery_times %>% 
   filter(type == "Parent") %>% 
   select(-c(type))
+```
 
+## An overall graph of battery times
+```{r}
 all_battery_times %>% 
   ggplot(aes(x = diff_min)) +
   geom_histogram() +
-  facet_wrap(~type)
+  facet_wrap(~type) +
+  labs(title = "Distribution of Timing on Batteries",
+       x = "Time on Battery (min)",
+       y = "Count")
+```
 
-
+## Child Measures: Assessment times by battery
+```{r}
 ## Child Battery -----
 battery_times_child %>% 
   ggplot(aes(x = diff_min)) +
@@ -343,7 +384,10 @@ rownames(child_battery_times) <- NULL
 child_battery_times %>% 
   kbl(caption = "Descriptive Statistics of Child Batteries") %>% 
   kable_styling()
-  
+```
+
+## Parent Measures: Assessment times by battery
+```{r}
 ## Parent Battery -----
 battery_times_parent %>% 
   ggplot(aes(x = diff_min)) +
