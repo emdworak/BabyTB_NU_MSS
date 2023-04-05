@@ -1,0 +1,453 @@
+---
+title: "BabyTB: Scores"
+subtitle: 'Dry Run Results'
+author: "Elizabeth Dworak"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    code_folding: hide
+---
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+options(width = 400)
+```
+
+# Prepare the data
+
+```{r, message = FALSE}
+# install.packages("psych", repos = "http://personality-project.org/r", type = "source")
+# install.packages("psychTools", repos = "http://personality-project.org/r", type = "source")
+
+# Load the relevant libraries --------------------------
+library(psych)
+library(psychTools)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(ggpubr)
+library(kableExtra)
+
+# Make sure you're running the most recent version of psych
+# sessionInfo()
+
+```
+
+```{r}
+
+# Load the functions and data --------------------------
+`%nin%` <- Negate(`%in%`)
+
+## Load in the score data 
+dryRun_ScoreExportNarrow <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects/Baby_Toolbox/Data/Combined_Dry_Run_Data/dryRun_ScoreExportNarrow_20230323.csv") %>% 
+  janitor::clean_names()
+
+# dim(dryRun_ScoreExportNarrow)
+# colnames(dryRun_ScoreExportNarrow)
+
+## Load in the item data 
+# dryRun_ItemExportNarrow <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects/Baby_Toolbox/Data/Combined_Dry_Run_Data/dryRun_ItemExportNarrow_20230323.csv") %>% 
+#   janitor::clean_names()
+
+# dim(dryRun_ItemExportNarrow)
+# colnames(dryRun_ItemExportNarrow)
+
+## Load in the age data 
+dryRun_Registration_Age <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects/Baby_Toolbox/Data/Combined_Dry_Run_Data/dryRun_Registration_Age_20230323.csv") %>% 
+  janitor::clean_names()
+
+# dim(dryRun_Registration_Age)
+# colnames(dryRun_Registration_Age)
+
+## Load in the DP4 data 
+dryRun_dp4 <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects/Baby_Toolbox/Data/Combined_Dry_Run_Data/dryRun_DP4_20230323.csv") %>% 
+  janitor::clean_names()
+
+# dim(dryRun_dp4) 
+# colnames(dryRun_dp4)
+
+# These are the IDs we care about for analysis
+ids_for_analysis <- read_csv("data/2023-03-22T172307_shouldHavecorrected2.csv") %>% 
+  rename(PIN = PINsago)
+
+# dim(ids_for_analysis)
+
+analysis_ids <- ids_for_analysis %>% 
+  pull(PIN)
+
+
+
+```
+
+## Transform the data so that we can use it
+
+```{r}
+# Scores & Age Correlation ----
+scores_long_df <- dryRun_ScoreExportNarrow %>% 
+  filter(pin %in% analysis_ids) 
+
+scores_long_age_df <- full_join(scores_long_df, dryRun_Registration_Age, 
+                                by = c("pin", "pid", "registration_id", "assessment_name"),
+                                multiple = "all")
+
+
+```
+
+### Pivot the table 
+
+```{r}
+scores_age_pivot <- scores_long_age_df %>% 
+  filter(!is.na(instrument_title)) %>% 
+  filter(key %nin% c("Language", "InstrumentSandSReason", 
+                     "InstrumentRCReasonOther", "InstrumentBreakoff",
+                     "InstrumentStatus2")) %>% 
+  pivot_wider(id_cols = c(pin, pid, registration_id,
+                          assessment_name, #instrument_title,
+                          total_age_in_months),
+              names_from = c("test_name", "key"),
+              values_from = "value") %>% 
+  select(pin:total_age_in_months, everything()) %>% 
+  type_convert()
+
+scores_age_filtered_pivot <- scores_age_pivot %>% 
+  select(-c(ends_with("_ItemCount")))
+
+# colnames(scores_age_filtered_pivot)
+
+scores_age_DP4_df <- full_join(scores_age_pivot, dryRun_dp4, 
+                                by = "pin") %>% 
+  select(-c(child_id, age, gender, age_at_testing, administration_form_id))
+  
+```
+
+# Understanding the Data
+
+## How many children took each task?
+
+```{r}
+scores_long_age_df %>% 
+  filter(!is.na(test_name)) %>% 
+  select(pin, test_name, total_age_in_months) %>% 
+  unique() %>% 
+  group_by(test_name) %>% 
+  mutate(min_age = min(total_age_in_months),
+         max_age = max(total_age_in_months)) %>% 
+  ungroup() %>% 
+  count(test_name, min_age, max_age) %>% 
+  arrange(min_age, max_age) %>% 
+  rename("Test Name" = test_name,
+         "Min Age" = min_age,
+         "Max Age" = max_age) %>% 
+  kbl(caption = "Number of participants and age range by task") %>% 
+  kable_styling()
+
+```
+
+
+## Descriptive Statistics by Test
+
+```{r}
+### Descriptive Statistics by test -----
+
+describe_scores_df <- scores_age_DP4_df %>% 
+  select(-c(pin, pid, registration_id, assessment_name, total_age_in_months,
+            ends_with("_ItemCount"))) %>% 
+  describe(., skew = FALSE)  
+
+scores_summary <- describe_scores_df %>% 
+  mutate(across(where(is.numeric), round, digits = 2)) %>% 
+  data.frame() %>% 
+  select(-c(vars, range, se)) %>% 
+  mutate(item_id = rownames(describe_scores_df)) %>% 
+  select(item_id, everything()) 
+
+rownames(scores_summary) <- NULL
+```
+
+### Age & DP4
+
+```{r}
+#### Age -----
+scores_age_DP4_df %>% 
+  select(pin, total_age_in_months, starts_with("growth")) %>% 
+  unique() %>% 
+  #select(total_age_in_months) %>% #For some reason it won't run if I have select
+  describe(., skew = FALSE) %>% 
+  mutate(across(where(is.numeric), round, digits = 2)) %>% 
+  data.frame() %>% 
+  filter(vars != "1") %>% 
+  select(-c(vars, range, se)) %>% 
+kbl(caption = "Descriptive Statistics for Age (months) and DP4") %>% 
+  kable_styling()
+```
+
+### Parent Report
+
+```{r}
+#### Parent Measures -----
+##### Not PROMIS 
+scores_summary %>% 
+  filter(str_detect(item_id, "CBQ") | 
+           str_detect(item_id, "CDI") | 
+           str_detect(item_id, "Caregiver") | 
+           str_detect(item_id, "IBQ")) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for Parent Report Measures") %>% 
+  kable_styling()
+
+##### PROMIS
+scores_summary %>% 
+  filter(str_detect(item_id, "PROMIS")) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for PROMIS Measures") %>% 
+  kable_styling()
+```
+
+### Child Report
+```{r}
+#### Child Measures -----
+
+### Executive Function 
+scores_summary %>% 
+  filter(str_detect(item_id, "ExecutiveFunction") |
+           str_detect(item_id, "Touch") |
+           str_detect(item_id, "MemTask")
+         ) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for EF Cog") %>% 
+  kable_styling()
+  
+### Other Gaze Measures
+scores_summary %>% 
+  filter(str_detect(item_id, "LookListening") |
+           str_detect(item_id, "ChangeDetect_")
+         ) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for Gaze") %>% 
+  kable_styling()
+
+### Math/Counting
+scores_summary %>% 
+  filter(str_detect(item_id, "Counting_") |
+           str_detect(item_id, "Arithmetic_") |
+           str_detect(item_id, "NumRecogSubitizing") |
+           str_detect(item_id, "WhoHasMore")
+  ) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for Numeracy") %>% 
+  kable_styling()
+
+### Social
+scores_summary %>% 
+  filter(str_detect(item_id, "SocialObservation")
+  ) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for Social Observation") %>% 
+  kable_styling()
+
+### Mullen 
+scores_summary %>% 
+  filter(str_detect(item_id, "Mullen_") |
+           str_detect(item_id, "MVR_")) %>% 
+  arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for Mullen Measures") %>% 
+  kable_styling()
+
+### NIHTB
+scores_summary %>% 
+  filter(str_detect(item_id, "SM_") | 
+  str_detect(item_id, "PV_")) %>% 
+arrange(item_id) %>% 
+kbl(caption = "Descriptive Statistics for NIHTB Measures") %>% 
+  kable_styling()
+```
+
+
+# Correlations (all ages)
+
+## Parent Report
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("CBQ"),  
+         contains("CDI"),  
+         starts_with("Caregiver"),  
+         contains("IBQ")) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Parent Report with Age and DP4") %>% 
+  kable_styling() 
+```
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("PROMIS")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Parent Report PROMIS with Age and DP4") %>% 
+  kable_styling() 
+```
+
+## Child Report
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("ExecutiveFunction"), 
+         contains("Touch"), 
+         contains("MemTask")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of EF Cog with Age and DP4") %>% 
+  kable_styling() 
+```
+
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("LookListening"), 
+         contains("ChangeDetect_")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Other Gaze Measures with Age and DP4") %>% 
+  kable_styling() 
+```
+
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("Counting_"), 
+         contains("Arithmetic_"), 
+         contains("NumRecogSubitizing"), 
+         contains("WhoHasMore")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Numeracy Measures with Age and DP4") %>% 
+  kable_styling() 
+```
+
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("SocialObservation")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Social Observation with Age and DP4") %>% 
+  kable_styling() 
+```
+
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("MVR_"), contains("Mullen_")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Mullen with Age and DP4") %>% 
+  kable_styling() 
+```
+
+
+```{r}
+temp_cor <- scores_age_DP4_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         contains("SM_"),  
+         contains("PV_")
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_cor <- temp_cor[-c(1:6),1:6]
+
+temp_cor  %>% 
+kbl(caption = "Correlation of NIHTB with Age and DP4") %>% 
+  kable_styling() 
+```
+
+
+
+
+
+
