@@ -187,6 +187,7 @@ for(i in 1:length(pull_poly)) {
   try(df <- df[,colSums(is.na(df))<nrow(df)], TRUE)
   
   cor_matrix <- df %>% 
+    select(order(colnames(df))) %>% 
     cor(., use = "pairwise", method = "spearman") %>% 
     round(., digits = 3)  %>% 
     try(., TRUE)
@@ -207,6 +208,7 @@ for(i in 1:length(pull_poly)) {
   try(df <- df[,colSums(is.na(df))<nrow(df)], TRUE)
   
   cor_matrix <- df %>% 
+    select(order(colnames(df))) %>% 
     cor(., use = "pairwise", method = "spearman") %>% 
     round(., digits = 3)    %>% 
     try(., TRUE)
@@ -226,22 +228,50 @@ for(i in 1:length(pull_poly)) {
 
 ```{r}
 ### Do the tetrachoric matrices ----
-# PURPLE RABBITS This needs to be split by age
 
 for(i in 1:length(pull_tetra)) {
   df <- quick_item_df %>% 
     filter(instrument_title %in% paste(pull_tetra[i])) %>% 
-    select(-c(pin, instrument_title))
+    filter(total_age_in_months < 24) %>% 
+    select(-c(pin, instrument_title, total_age_in_months)) %>% 
+    try(., TRUE)
   
-  df <- df[,colSums(is.na(df))<nrow(df)]
+  try(df <- df[,colSums(is.na(df))<nrow(df)], TRUE)
   
   cor_matrix_all <- df %>% 
-    tetrachoric(., delete = FALSE, correct = FALSE) 
+    select(order(colnames(df))) %>% 
+    tetrachoric(., delete = FALSE, correct = FALSE) %>% 
+    try(., TRUE) 
   
-  cor_matrix <- round(cor_matrix_all$rho, digits = 3)
+  cor_matrix <- round(cor_matrix_all$rho, digits = 3) %>% 
+    try(., TRUE)
   
   cor_matrix %>% 
-    cor.plot(., xlas = 3, main = paste(pull_tetra[i]))
+    cor.plot(., xlas = 3, main = paste(c(pull_tetra[i], " (<24 months)"))) %>% 
+    try(., TRUE)
+  
+  #print(cor_matrix) # This needs to be prettier
+  
+  
+  df <- quick_item_df %>% 
+    filter(instrument_title %in% paste(pull_tetra[i])) %>% 
+    filter(total_age_in_months >= 24) %>% 
+    select(-c(pin, instrument_title, total_age_in_months)) %>% 
+    try(., TRUE)
+  
+  try(df <- df[,colSums(is.na(df))<nrow(df)], TRUE)
+  
+  cor_matrix_all <- df %>% 
+    select(order(colnames(df))) %>% 
+    tetrachoric(., delete = FALSE, correct = FALSE) %>% 
+    try(., TRUE) 
+  
+  cor_matrix <- round(cor_matrix_all$rho, digits = 3) %>% 
+    try(., TRUE)
+  
+  cor_matrix %>% 
+    cor.plot(., xlas = 3, main = paste(c(pull_tetra[i], " (24+ months)"))) %>% 
+    try(., TRUE)
   
   #print(cor_matrix) # This needs to be prettier
 }
