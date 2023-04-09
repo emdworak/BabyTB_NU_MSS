@@ -391,7 +391,17 @@ all_battery_times %>%
   facet_wrap(~type) +
   labs(title = "Distribution of Timing on Batteries",
        x = "Time on Battery (min)",
-       y = "Count")
+       y = "Count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        plot.title = element_text(hjust = 0.5,
+                                  size = 18),
+        strip.text.x = element_text(size = 16)
+        )
+  
 ```
 
 ## Child Measures: Assessment times by battery
@@ -403,7 +413,16 @@ battery_times_child %>%
   facet_wrap(~child_battery) +
   labs(title = "Distribution of Timing on Child Batteries",
        x = "Time on Battery (min)",
-       y = "Count")
+       y = "Count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        plot.title = element_text(hjust = 0.5,
+                                  size = 18),
+        strip.text.x = element_text(size = 16)
+        )
 
 child_battery_times <- describeBy(battery_times_child$diff_min, group = battery_times_child$child_battery,
            mat = TRUE, skew = FALSE) %>% 
@@ -425,7 +444,16 @@ battery_times_parent %>%
   facet_wrap(~parent_battery) +
   labs(title = "Distribution of Timing on Parent Batteries",
        x = "Time on Battery (min)",
-       y = "Count")
+       y = "Count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        plot.title = element_text(hjust = 0.5,
+                                  size = 18),
+        strip.text.x = element_text(size = 16)
+        )
 
 parent_battery_times <- describeBy(battery_times_parent$diff_min, group = battery_times_parent$parent_battery,
            mat = TRUE, skew = FALSE) %>% 

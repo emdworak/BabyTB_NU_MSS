@@ -30,6 +30,7 @@ library(janitor)
 library(readxl)
 library(ggpubr)
 library(kableExtra)
+library(writexl)
 
 # Make sure you're running the most recent version of psych
 # sessionInfo()
@@ -49,8 +50,8 @@ dryRun_ScoreExportNarrow <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects
 # colnames(dryRun_ScoreExportNarrow)
 
 ## Load in the item data 
-# dryRun_ItemExportNarrow <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects/Baby_Toolbox/Data/Combined_Dry_Run_Data/dryRun_ItemExportNarrow_20230323.csv") %>% 
-#   janitor::clean_names()
+dryRun_ItemExportNarrow <- read_csv("/Volumes/fsmresfiles/MSS/Research/Projects/Baby_Toolbox/Data/Combined_Dry_Run_Data/dryRun_ItemExportNarrow_20230323.csv") %>%
+  janitor::clean_names()
 
 # dim(dryRun_ItemExportNarrow)
 # colnames(dryRun_ItemExportNarrow)
@@ -366,6 +367,13 @@ kbl(caption = "Correlation of EF Cog with Age and DP4") %>%
   kable_styling() 
 ```
 
+```{r, eval = FALSE}
+save_cor <- data.frame(rownames(temp_cor), temp_cor)
+
+write_xlsx(save_cor, "output/cor_scores_ef_cog.xlsx")
+```
+
+
 ### Language
 
 ```{r}
@@ -398,6 +406,13 @@ kbl(caption = "Correlation of Language Measures with Age and DP4") %>%
   kable_styling() 
 ```
 
+```{r, eval = FALSE}
+save_cor <- data.frame(rownames(temp_cor), temp_cor)
+
+write_xlsx(save_cor, "output/cor_scores_language.xlsx")
+```
+
+
 ### Numeracy
 
 ```{r}
@@ -429,6 +444,12 @@ temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 temp_cor  %>% 
 kbl(caption = "Correlation of Numeracy Measures with Age and DP4") %>% 
   kable_styling() 
+```
+
+```{r, eval = FALSE}
+save_cor <- data.frame(rownames(temp_cor), temp_cor)
+
+write_xlsx(save_cor, "output/cor_scores_numeracy.xlsx")
 ```
 
 ### Social Observation
@@ -464,6 +485,12 @@ kbl(caption = "Correlation of Social Observation with Age and DP4") %>%
   kable_styling() 
 ```
 
+```{r, eval = FALSE}
+save_cor <- data.frame(rownames(temp_cor), temp_cor)
+
+write_xlsx(save_cor, "output/cor_scores_social_obs.xlsx")
+```
+
 ### Mullen
 
 ```{r}
@@ -491,6 +518,70 @@ temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
 temp_cor  %>% 
 kbl(caption = "Correlation of Mullen with Age and DP4") %>% 
   kable_styling() 
+```
+
+```{r, eval = FALSE}
+save_cor <- data.frame(rownames(temp_cor), temp_cor)
+
+write_xlsx(save_cor, "output/cor_scores_mullen.xlsx")
+```
+
+
+### Motor
+Miriam wants the distance
+
+```{r}
+item_wide <- dryRun_ItemExportNarrow %>% 
+  filter(key == "Score") %>% 
+  pivot_wider(id_cols = c(pin, instrument_title),
+              names_from = item_id,
+              values_from = value) %>% 
+  type_convert()
+
+
+limited_item_df <- full_join(item_wide, dryRun_Registration_Age, 
+          by = "pin",
+          multiple = "all") %>% 
+  filter(instrument_title == "Get Up and Go") %>% 
+  select(-c(registration_id, pid, assessment_name, age)) %>% 
+  full_join(., dryRun_dp4, by = "pin") %>% 
+  select(-c(child_id, age, gender, age_at_testing, administration_form_id)) %>% 
+  distinct() %>% 
+  filter(pin %in% analysis_ids) 
+  
+```
+
+```{r}
+temp_df <- limited_item_df %>% 
+  select(-c(ends_with("_ItemCount"))) %>%
+  select(total_age_in_months, starts_with("growth"),
+         `GuG-TraMeth`
+         ) %>% 
+  rename(age = total_age_in_months) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "growth\\_", replacement = "", 
+              matches("growth\\_")) 
+
+temp_cor <- temp_df %>% 
+  cor(., use = "pairwise", method = "spearman") %>% 
+  round(., digits = 3) 
+
+temp_count <- temp_df %>% 
+  pairwiseCount() 
+
+temp_cor <- temp_cor[-c(3:6), c(1, 2)]
+
+temp_cor <- cbind(n = temp_count[-c(1:6), 1], temp_cor)
+
+temp_cor  %>% 
+kbl(caption = "Correlation of Motor with Age and DP4") %>% 
+  kable_styling() 
+```
+
+```{r, eval = FALSE}
+save_cor <- data.frame(rownames(temp_cor), temp_cor)
+
+write_xlsx(save_cor, "output/cor_scores_motor.xlsx")
 ```
 
 ### NIHTB
