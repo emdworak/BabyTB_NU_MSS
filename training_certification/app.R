@@ -375,7 +375,14 @@ tabItem(tabName = "tab_somY_v1",
                  radioButtons("radio_sobY_v1_SO_9_23_41", p("Show gesture."),
                               choiceNames = c("Yes", "No"), choiceValues = app_values_1or0, selected = "")
           ),
-
+          
+          column(4,
+                 radioButtons("radio_sobY_v1_SO_9_23_42", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = app_values_1or0, selected = "")
+          )
+          ),
+        
+        fluidRow(
           column(4,
                  radioButtons("radio_sobY_v1_SO_9_23_43", p("Comments with sounds or words."),
                               choiceNames = c("Yes", "No"), choiceValues = app_values_1or0, selected = "")
@@ -590,17 +597,17 @@ tabItem(tabName = "tab_somY_v2",
 
         fluidRow(
           column(6,
-                 textInput("text_sobY_person", h4("Person being certified:"),
+                 textInput("text_sobY_v2_person", h4("Person being certified:"),
                            value = "")
           ),
 
           column(6,
-                 textInput("text_sobY_site", h4("Site:"),
+                 textInput("text_sobY_v2_site", h4("Site:"),
                            value = "")
           ),
 
           column(6,
-                 dateInput("text_sobY_date",
+                 dateInput("text_sobY_v2_date",
                            label = "Date (yyyy-mm-dd)",
                            value = Sys.Date()
                  )
@@ -608,7 +615,7 @@ tabItem(tabName = "tab_somY_v2",
 
 
           column(6,
-                 numericInput("text_sobY_childAge", h4("Child Age (in months):"),
+                 numericInput("text_sobY_v2_childAge", h4("Child Age (in months):"),
                               value = "", min = 0, max = 60, step = 0.5)
           )
 
@@ -846,7 +853,14 @@ tabItem(tabName = "tab_somY_v2",
                  radioButtons("radio_sobY_v2_SO_9_23_41", p("Show gesture."),
                               choiceNames = c("Yes", "No"), choiceValues = app_values_1or0, selected = "")
           ),
-
+          
+          column(4,
+                 radioButtons("radio_sobY_v2_SO_9_23_42", p("Uses point gesture."),
+                              choiceNames = c("Yes", "No"), choiceValues = app_values_1or0, selected = "")
+          )
+        ),
+        
+        fluidRow(
           column(4,
                  radioButtons("radio_sobY_v2_SO_9_23_43", p("Comments with sounds or words."),
                               choiceNames = c("Yes", "No"), choiceValues = app_values_1or0, selected = "")
@@ -1041,13 +1055,13 @@ tabItem(tabName = "tab_somY_v2",
 h2("Your Score"),
 fluidRow(
   column(12,
-         verbatimTextOutput("sobY_v1_score"))
+         verbatimTextOutput("sobY_v2_score"))
 ),
 
 h3("Incorrect scores and their answers are displayed below."),
 
 fluidRow(
-  column(12, tableOutput("sobY_v1_incorrect"))
+  column(12, tableOutput("sobY_v2_incorrect"))
 )
 ),
 
@@ -2998,7 +3012,6 @@ server <- function(input, output, session) {
 ## Social Observational (younger) data ------
 ### Video 1 ------ 
   sobY_v1_values <- eventReactive(input$sobY_v1_submit, {
-    ## PURPLE RABBITS: Figure out why this is breaking
     
     sobY_v1_data <- data.frame(
       task_id = c("sobY_v1"),
@@ -3395,7 +3408,8 @@ server <- function(input, output, session) {
       rename(name = text_sobY_v1_person,
              site = text_sobY_v1_site,
              date = text_sobY_v1_date,
-             c_age = text_sobY_v1_childAge)
+             c_age = text_sobY_v1_childAge) %>% 
+      filter(key != "Answer")
     
     sobY_v1_upload <- as.data.frame(sobY_v1_upload)
     
@@ -3461,6 +3475,470 @@ server <- function(input, output, session) {
   
 
 ### Video 2 ------
+  sobY_v2_values <- eventReactive(input$sobY_v2_submit, {
+    
+    sobY_v2_data <- data.frame(
+      task_id = c("sobY_v2"),
+      text_sobY_v2_person = c(input$text_sobY_v2_person),
+      text_sobY_v2_site = c(input$text_sobY_v2_site),
+      text_sobY_v2_date = Sys.time(),#format(as.Date(input$text_sobY_v2_date, origin="2023-01-01")),
+      text_sobY_v2_childAge = c(input$text_sobY_v2_childAge),
+      
+      sobY_v2_SO_9_23_1 = c(input$radio_sobY_v2_SO_9_23_1),
+      sobY_v2_SO_9_23_2 = c(input$radio_sobY_v2_SO_9_23_2),
+      sobY_v2_SO_9_23_3 = c(input$radio_sobY_v2_SO_9_23_3),
+      sobY_v2_SO_9_23_4 = c(input$radio_sobY_v2_SO_9_23_4),
+      sobY_v2_SO_9_23_5 = c(input$radio_sobY_v2_SO_9_23_5),
+      sobY_v2_SO_9_23_6 = c(input$radio_sobY_v2_SO_9_23_6),
+      sobY_v2_SO_9_23_7 = c(input$radio_sobY_v2_SO_9_23_7),
+      
+      sobY_v2_SO_9_23_9 = c(input$radio_sobY_v2_SO_9_23_9),
+      sobY_v2_SO_9_23_10 = c(input$radio_sobY_v2_SO_9_23_10),
+      sobY_v2_SO_9_23_11 = c(input$radio_sobY_v2_SO_9_23_11),
+      sobY_v2_SO_9_23_12 = c(input$radio_sobY_v2_SO_9_23_12),
+      sobY_v2_SO_9_23_13 = c(input$radio_sobY_v2_SO_9_23_13),
+      sobY_v2_SO_9_23_14 = c(input$radio_sobY_v2_SO_9_23_14),
+      sobY_v2_SO_9_23_15 = c(input$radio_sobY_v2_SO_9_23_15),
+      sobY_v2_SO_9_23_16 = c(input$radio_sobY_v2_SO_9_23_16),
+      sobY_v2_SO_9_23_17 = c(input$radio_sobY_v2_SO_9_23_17),
+      
+      sobY_v2_SO_9_23_19 = c(input$radio_sobY_v2_SO_9_23_19),
+      sobY_v2_SO_9_23_20 = c(input$radio_sobY_v2_SO_9_23_20),
+      sobY_v2_SO_9_23_21 = c(input$radio_sobY_v2_SO_9_23_21),
+      sobY_v2_SO_9_23_22 = c(input$radio_sobY_v2_SO_9_23_22),
+      sobY_v2_SO_9_23_23 = c(input$radio_sobY_v2_SO_9_23_23),
+      sobY_v2_SO_9_23_24 = c(input$radio_sobY_v2_SO_9_23_24),
+      sobY_v2_SO_9_23_25 = c(input$radio_sobY_v2_SO_9_23_25),
+      
+      sobY_v2_SO_9_23_27 = c(input$radio_sobY_v2_SO_9_23_27),
+      sobY_v2_SO_9_23_28 = c(input$radio_sobY_v2_SO_9_23_28),
+      sobY_v2_SO_9_23_29 = c(input$radio_sobY_v2_SO_9_23_29),
+      sobY_v2_SO_9_23_30 = c(input$radio_sobY_v2_SO_9_23_30),
+      sobY_v2_SO_9_23_31 = c(input$radio_sobY_v2_SO_9_23_31),
+      sobY_v2_SO_9_23_32 = c(input$radio_sobY_v2_SO_9_23_32),
+      sobY_v2_SO_9_23_33 = c(input$radio_sobY_v2_SO_9_23_33),
+      sobY_v2_SO_9_23_34 = c(input$radio_sobY_v2_SO_9_23_34),
+      sobY_v2_SO_9_23_35 = c(input$radio_sobY_v2_SO_9_23_35),
+      
+      sobY_v2_SO_9_23_37 = c(input$radio_sobY_v2_SO_9_23_37),
+      sobY_v2_SO_9_23_38 = c(input$radio_sobY_v2_SO_9_23_38),
+      sobY_v2_SO_9_23_39 = c(input$radio_sobY_v2_SO_9_23_39),
+      sobY_v2_SO_9_23_40 = c(input$radio_sobY_v2_SO_9_23_40),
+      sobY_v2_SO_9_23_41 = c(input$radio_sobY_v2_SO_9_23_41),
+      sobY_v2_SO_9_23_42 = c(input$radio_sobY_v2_SO_9_23_42),
+      sobY_v2_SO_9_23_43 = c(input$radio_sobY_v2_SO_9_23_43),
+      
+      sobY_v2_SO_9_23_45 = c(input$radio_sobY_v2_SO_9_23_45),
+      sobY_v2_SO_9_23_46 = c(input$radio_sobY_v2_SO_9_23_46),
+      sobY_v2_SO_9_23_47 = c(input$radio_sobY_v2_SO_9_23_47),
+      sobY_v2_SO_9_23_48 = c(input$radio_sobY_v2_SO_9_23_48),
+      sobY_v2_SO_9_23_49 = c(input$radio_sobY_v2_SO_9_23_49),
+      sobY_v2_SO_9_23_50 = c(input$radio_sobY_v2_SO_9_23_50),
+      sobY_v2_SO_9_23_51 = c(input$radio_sobY_v2_SO_9_23_51),
+      
+      sobY_v2_SO_9_23_53 = c(input$radio_sobY_v2_SO_9_23_53),
+      sobY_v2_SO_9_23_54 = c(input$radio_sobY_v2_SO_9_23_54),
+      sobY_v2_SO_9_23_55 = c(input$radio_sobY_v2_SO_9_23_55),
+      sobY_v2_SO_9_23_56 = c(input$radio_sobY_v2_SO_9_23_56),
+      sobY_v2_SO_9_23_57 = c(input$radio_sobY_v2_SO_9_23_57),
+      
+      sobY_v2_SO_9_23_66 = c(input$radio_sobY_v2_SO_9_23_66),
+      sobY_v2_SO_9_23_67 = c(input$radio_sobY_v2_SO_9_23_67),
+      sobY_v2_SO_9_23_68 = c(input$radio_sobY_v2_SO_9_23_68),
+      sobY_v2_SO_9_23_69 = c(input$radio_sobY_v2_SO_9_23_69),
+      sobY_v2_SO_9_23_70 = c(input$radio_sobY_v2_SO_9_23_70),
+      
+      sobY_v2_SO_9_23_79 = c(input$radio_sobY_v2_SO_9_23_79),
+      sobY_v2_SO_9_23_80 = c(input$radio_sobY_v2_SO_9_23_80),
+      sobY_v2_SO_9_23_81 = c(input$radio_sobY_v2_SO_9_23_81),
+      sobY_v2_SO_9_23_82 = c(input$radio_sobY_v2_SO_9_23_82),
+      sobY_v2_SO_9_23_83 = c(input$radio_sobY_v2_SO_9_23_83),
+      
+      sobY_v2_SO_9_23_92 = c(input$radio_sobY_v2_SO_9_23_92),
+      sobY_v2_SO_9_23_93 = c(input$radio_sobY_v2_SO_9_23_93),
+      sobY_v2_SO_9_23_94 = c(input$radio_sobY_v2_SO_9_23_94),
+      sobY_v2_SO_9_23_95 = c(input$radio_sobY_v2_SO_9_23_95),
+      sobY_v2_SO_9_23_96 = c(input$radio_sobY_v2_SO_9_23_96)
+      
+    ) %>%
+      mutate(
+        sobY_v2_SO_9_23_1 = as.numeric(sobY_v2_SO_9_23_1),
+        sobY_v2_SO_9_23_2 = as.numeric(sobY_v2_SO_9_23_2),
+        sobY_v2_SO_9_23_3 = as.numeric(sobY_v2_SO_9_23_3),
+        sobY_v2_SO_9_23_4 = as.numeric(sobY_v2_SO_9_23_4),
+        sobY_v2_SO_9_23_5 = as.numeric(sobY_v2_SO_9_23_5),
+        sobY_v2_SO_9_23_6 = as.numeric(sobY_v2_SO_9_23_6),
+        sobY_v2_SO_9_23_7 = as.numeric(sobY_v2_SO_9_23_7),
+        
+        sobY_v2_SO_9_23_9 = as.numeric(sobY_v2_SO_9_23_9),
+        sobY_v2_SO_9_23_10 = as.numeric(sobY_v2_SO_9_23_10),
+        sobY_v2_SO_9_23_11 = as.numeric(sobY_v2_SO_9_23_11),
+        sobY_v2_SO_9_23_12 = as.numeric(sobY_v2_SO_9_23_12),
+        sobY_v2_SO_9_23_13 = as.numeric(sobY_v2_SO_9_23_13),
+        sobY_v2_SO_9_23_14 = as.numeric(sobY_v2_SO_9_23_14),
+        sobY_v2_SO_9_23_15 = as.numeric(sobY_v2_SO_9_23_15),
+        sobY_v2_SO_9_23_16 = as.numeric(sobY_v2_SO_9_23_16),
+        sobY_v2_SO_9_23_17 = as.numeric(sobY_v2_SO_9_23_17),
+        
+        sobY_v2_SO_9_23_19 = as.numeric(sobY_v2_SO_9_23_19),
+        sobY_v2_SO_9_23_20 = as.numeric(sobY_v2_SO_9_23_20),
+        sobY_v2_SO_9_23_21 = as.numeric(sobY_v2_SO_9_23_21),
+        sobY_v2_SO_9_23_22 = as.numeric(sobY_v2_SO_9_23_22),
+        sobY_v2_SO_9_23_23 = as.numeric(sobY_v2_SO_9_23_23),
+        sobY_v2_SO_9_23_24 = as.numeric(sobY_v2_SO_9_23_24),
+        sobY_v2_SO_9_23_25 = as.numeric(sobY_v2_SO_9_23_25),
+        
+        sobY_v2_SO_9_23_27 = as.numeric(sobY_v2_SO_9_23_27),
+        sobY_v2_SO_9_23_28 = as.numeric(sobY_v2_SO_9_23_28),
+        sobY_v2_SO_9_23_29 = as.numeric(sobY_v2_SO_9_23_29),
+        sobY_v2_SO_9_23_30 = as.numeric(sobY_v2_SO_9_23_30),
+        sobY_v2_SO_9_23_31 = as.numeric(sobY_v2_SO_9_23_31),
+        sobY_v2_SO_9_23_32 = as.numeric(sobY_v2_SO_9_23_32),
+        sobY_v2_SO_9_23_33 = as.numeric(sobY_v2_SO_9_23_33),
+        sobY_v2_SO_9_23_34 = as.numeric(sobY_v2_SO_9_23_34),
+        sobY_v2_SO_9_23_35 = as.numeric(sobY_v2_SO_9_23_35),
+        
+        sobY_v2_SO_9_23_37 = as.numeric(sobY_v2_SO_9_23_37),
+        sobY_v2_SO_9_23_38 = as.numeric(sobY_v2_SO_9_23_38),
+        sobY_v2_SO_9_23_39 = as.numeric(sobY_v2_SO_9_23_39),
+        sobY_v2_SO_9_23_40 = as.numeric(sobY_v2_SO_9_23_40),
+        sobY_v2_SO_9_23_41 = as.numeric(sobY_v2_SO_9_23_41),
+        sobY_v2_SO_9_23_42 = as.numeric(sobY_v2_SO_9_23_42),
+        sobY_v2_SO_9_23_43 = as.numeric(sobY_v2_SO_9_23_43),
+        
+        sobY_v2_SO_9_23_45 = as.numeric(sobY_v2_SO_9_23_45),
+        sobY_v2_SO_9_23_46 = as.numeric(sobY_v2_SO_9_23_46),
+        sobY_v2_SO_9_23_47 = as.numeric(sobY_v2_SO_9_23_47),
+        sobY_v2_SO_9_23_48 = as.numeric(sobY_v2_SO_9_23_48),
+        sobY_v2_SO_9_23_49 = as.numeric(sobY_v2_SO_9_23_49),
+        sobY_v2_SO_9_23_50 = as.numeric(sobY_v2_SO_9_23_50),
+        sobY_v2_SO_9_23_51 = as.numeric(sobY_v2_SO_9_23_51),
+        
+        sobY_v2_SO_9_23_53 = as.numeric(sobY_v2_SO_9_23_53),
+        sobY_v2_SO_9_23_54 = as.numeric(sobY_v2_SO_9_23_54),
+        sobY_v2_SO_9_23_55 = as.numeric(sobY_v2_SO_9_23_55),
+        sobY_v2_SO_9_23_56 = as.numeric(sobY_v2_SO_9_23_56),
+        sobY_v2_SO_9_23_57 = as.numeric(sobY_v2_SO_9_23_57),
+        
+        sobY_v2_SO_9_23_66 = as.numeric(sobY_v2_SO_9_23_66),
+        sobY_v2_SO_9_23_67 = as.numeric(sobY_v2_SO_9_23_67),
+        sobY_v2_SO_9_23_68 = as.numeric(sobY_v2_SO_9_23_68),
+        sobY_v2_SO_9_23_69 = as.numeric(sobY_v2_SO_9_23_69),
+        sobY_v2_SO_9_23_70 = as.numeric(sobY_v2_SO_9_23_70),
+        
+        sobY_v2_SO_9_23_79 = as.numeric(sobY_v2_SO_9_23_79),
+        sobY_v2_SO_9_23_80 = as.numeric(sobY_v2_SO_9_23_80),
+        sobY_v2_SO_9_23_81 = as.numeric(sobY_v2_SO_9_23_81),
+        sobY_v2_SO_9_23_82 = as.numeric(sobY_v2_SO_9_23_82),
+        sobY_v2_SO_9_23_83 = as.numeric(sobY_v2_SO_9_23_83),
+        
+        sobY_v2_SO_9_23_92 = as.numeric(sobY_v2_SO_9_23_92),
+        sobY_v2_SO_9_23_93 = as.numeric(sobY_v2_SO_9_23_93),
+        sobY_v2_SO_9_23_94 = as.numeric(sobY_v2_SO_9_23_94),
+        sobY_v2_SO_9_23_95 = as.numeric(sobY_v2_SO_9_23_95),
+        sobY_v2_SO_9_23_96 = as.numeric(sobY_v2_SO_9_23_96)
+        
+      )
+    
+    sobY_key_df <- data.frame(
+      K_9_23_1 = c(1),
+      K_9_23_2 = c(1),
+      K_9_23_3 = c(1),
+      K_9_23_4 = c(1),
+      K_9_23_5 = c(0),
+      K_9_23_6 = c(0),
+      K_9_23_7 = c(0),
+      K_9_23_9 = c(1),
+      K_9_23_10 = c(1),
+      K_9_23_11 = c(1),
+      K_9_23_12 = c(0),
+      K_9_23_13 = c(1),
+      K_9_23_14 = c(1),
+      K_9_23_15 = c(0),
+      K_9_23_16 = c(0),
+      K_9_23_17 = c(1),
+      K_9_23_19 = c(1),
+      K_9_23_20 = c(1),
+      K_9_23_21 = c(1),
+      K_9_23_22 = c(1),
+      K_9_23_23 = c(0),
+      K_9_23_24 = c(0),
+      K_9_23_25 = c(1),
+      K_9_23_27 = c(1),
+      K_9_23_28 = c(1),
+      K_9_23_29 = c(1),
+      K_9_23_30 = c(1),
+      K_9_23_31 = c(0),
+      K_9_23_32 = c(1),
+      K_9_23_33 = c(1),
+      K_9_23_34 = c(0),
+      K_9_23_35 = c(1),
+      K_9_23_37 = c(1),
+      K_9_23_38 = c(1),
+      K_9_23_39 = c(1),
+      K_9_23_40 = c(1),
+      K_9_23_41 = c(0),
+      K_9_23_42 = c(0),
+      K_9_23_43 = c(1),
+      K_9_23_45 = c(1),
+      K_9_23_46 = c(1),
+      K_9_23_47 = c(1),
+      K_9_23_48 = c(1),
+      K_9_23_49 = c(0),
+      K_9_23_50 = c(1),
+      K_9_23_51 = c(1),
+      K_9_23_53 = c(0),
+      K_9_23_54 = c(0),
+      K_9_23_55 = c(0),
+      K_9_23_56 = c(1),
+      K_9_23_57 = c(0),
+      K_9_23_66 = c(0),
+      K_9_23_67 = c(1),
+      K_9_23_68 = c(1),
+      K_9_23_69 = c(1),
+      K_9_23_70 = c(0),
+      K_9_23_79 = c(0),
+      K_9_23_80 = c(1),
+      K_9_23_81 = c(1),
+      K_9_23_82 = c(1),
+      K_9_23_83 = c(0),
+      K_9_23_92 = c(1),
+      K_9_23_93 = c(1),
+      K_9_23_94 = c(0),
+      K_9_23_95 = c(0),
+      K_9_23_96 = c(0)
+    )
+    
+    sobY_v2_combined <- bind_cols(sobY_v2_data, sobY_key_df) %>% 
+      mutate(Score_sobY_v2_SO_9_23_1 = ifelse(sobY_v2_SO_9_23_1 == K_9_23_1, 1, 0),
+             Score_sobY_v2_SO_9_23_2 = ifelse(sobY_v2_SO_9_23_2 == K_9_23_2, 1, 0),
+             Score_sobY_v2_SO_9_23_3 = ifelse(sobY_v2_SO_9_23_3 == K_9_23_3, 1, 0),
+             Score_sobY_v2_SO_9_23_4 = ifelse(sobY_v2_SO_9_23_4 == K_9_23_4, 1, 0),
+             Score_sobY_v2_SO_9_23_5 = ifelse(sobY_v2_SO_9_23_5 == K_9_23_5, 1, 0),
+             Score_sobY_v2_SO_9_23_6 = ifelse(sobY_v2_SO_9_23_6 == K_9_23_6, 1, 0),
+             Score_sobY_v2_SO_9_23_7 = ifelse(sobY_v2_SO_9_23_7 == K_9_23_7, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_9 = ifelse(sobY_v2_SO_9_23_9 == K_9_23_9, 1, 0),
+             Score_sobY_v2_SO_9_23_10 = ifelse(sobY_v2_SO_9_23_10 == K_9_23_10, 1, 0),
+             Score_sobY_v2_SO_9_23_11 = ifelse(sobY_v2_SO_9_23_11 == K_9_23_11, 1, 0),
+             Score_sobY_v2_SO_9_23_12 = ifelse(sobY_v2_SO_9_23_12 == K_9_23_12, 1, 0),
+             Score_sobY_v2_SO_9_23_13 = ifelse(sobY_v2_SO_9_23_13 == K_9_23_13, 1, 0),
+             Score_sobY_v2_SO_9_23_14 = ifelse(sobY_v2_SO_9_23_14 == K_9_23_14, 1, 0),
+             Score_sobY_v2_SO_9_23_15 = ifelse(sobY_v2_SO_9_23_15 == K_9_23_15, 1, 0),
+             Score_sobY_v2_SO_9_23_16 = ifelse(sobY_v2_SO_9_23_16 == K_9_23_16, 1, 0),
+             Score_sobY_v2_SO_9_23_17 = ifelse(sobY_v2_SO_9_23_17 == K_9_23_17, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_19 = ifelse(sobY_v2_SO_9_23_19 == K_9_23_19, 1, 0),
+             Score_sobY_v2_SO_9_23_20 = ifelse(sobY_v2_SO_9_23_20 == K_9_23_20, 1, 0),
+             Score_sobY_v2_SO_9_23_21 = ifelse(sobY_v2_SO_9_23_21 == K_9_23_21, 1, 0),
+             Score_sobY_v2_SO_9_23_22 = ifelse(sobY_v2_SO_9_23_22 == K_9_23_22, 1, 0),
+             Score_sobY_v2_SO_9_23_23 = ifelse(sobY_v2_SO_9_23_23 == K_9_23_23, 1, 0),
+             Score_sobY_v2_SO_9_23_24 = ifelse(sobY_v2_SO_9_23_24 == K_9_23_24, 1, 0),
+             Score_sobY_v2_SO_9_23_25 = ifelse(sobY_v2_SO_9_23_25 == K_9_23_25, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_27 = ifelse(sobY_v2_SO_9_23_27 == K_9_23_27, 1, 0),
+             Score_sobY_v2_SO_9_23_28 = ifelse(sobY_v2_SO_9_23_28 == K_9_23_28, 1, 0),
+             Score_sobY_v2_SO_9_23_29 = ifelse(sobY_v2_SO_9_23_29 == K_9_23_29, 1, 0),
+             Score_sobY_v2_SO_9_23_30 = ifelse(sobY_v2_SO_9_23_30 == K_9_23_30, 1, 0),
+             Score_sobY_v2_SO_9_23_31 = ifelse(sobY_v2_SO_9_23_31 == K_9_23_31, 1, 0),
+             Score_sobY_v2_SO_9_23_32 = ifelse(sobY_v2_SO_9_23_32 == K_9_23_32, 1, 0),
+             Score_sobY_v2_SO_9_23_33 = ifelse(sobY_v2_SO_9_23_33 == K_9_23_33, 1, 0),
+             Score_sobY_v2_SO_9_23_34 = ifelse(sobY_v2_SO_9_23_34 == K_9_23_34, 1, 0),
+             Score_sobY_v2_SO_9_23_35 = ifelse(sobY_v2_SO_9_23_35 == K_9_23_35, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_37 = ifelse(sobY_v2_SO_9_23_37 == K_9_23_37, 1, 0),
+             Score_sobY_v2_SO_9_23_38 = ifelse(sobY_v2_SO_9_23_38 == K_9_23_38, 1, 0),
+             Score_sobY_v2_SO_9_23_39 = ifelse(sobY_v2_SO_9_23_39 == K_9_23_39, 1, 0),
+             Score_sobY_v2_SO_9_23_40 = ifelse(sobY_v2_SO_9_23_40 == K_9_23_40, 1, 0),
+             Score_sobY_v2_SO_9_23_41 = ifelse(sobY_v2_SO_9_23_41 == K_9_23_41, 1, 0),
+             Score_sobY_v2_SO_9_23_42 = ifelse(sobY_v2_SO_9_23_42 == K_9_23_42, 1, 0),
+             Score_sobY_v2_SO_9_23_43 = ifelse(sobY_v2_SO_9_23_43 == K_9_23_43, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_45 = ifelse(sobY_v2_SO_9_23_45 == K_9_23_45, 1, 0),
+             Score_sobY_v2_SO_9_23_46 = ifelse(sobY_v2_SO_9_23_46 == K_9_23_46, 1, 0),
+             Score_sobY_v2_SO_9_23_47 = ifelse(sobY_v2_SO_9_23_47 == K_9_23_47, 1, 0),
+             Score_sobY_v2_SO_9_23_48 = ifelse(sobY_v2_SO_9_23_48 == K_9_23_48, 1, 0),
+             Score_sobY_v2_SO_9_23_49 = ifelse(sobY_v2_SO_9_23_49 == K_9_23_49, 1, 0),
+             Score_sobY_v2_SO_9_23_50 = ifelse(sobY_v2_SO_9_23_50 == K_9_23_50, 1, 0),
+             Score_sobY_v2_SO_9_23_51 = ifelse(sobY_v2_SO_9_23_51 == K_9_23_51, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_53 = ifelse(sobY_v2_SO_9_23_53 == K_9_23_53, 1, 0),
+             Score_sobY_v2_SO_9_23_54 = ifelse(sobY_v2_SO_9_23_54 == K_9_23_54, 1, 0),
+             Score_sobY_v2_SO_9_23_55 = ifelse(sobY_v2_SO_9_23_55 == K_9_23_55, 1, 0),
+             Score_sobY_v2_SO_9_23_56 = ifelse(sobY_v2_SO_9_23_56 == K_9_23_56, 1, 0),
+             Score_sobY_v2_SO_9_23_57 = ifelse(sobY_v2_SO_9_23_57 == K_9_23_57, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_66 = ifelse(sobY_v2_SO_9_23_66 == K_9_23_66, 1, 0),
+             Score_sobY_v2_SO_9_23_67 = ifelse(sobY_v2_SO_9_23_67 == K_9_23_67, 1, 0),
+             Score_sobY_v2_SO_9_23_68 = ifelse(sobY_v2_SO_9_23_68 == K_9_23_68, 1, 0),
+             Score_sobY_v2_SO_9_23_69 = ifelse(sobY_v2_SO_9_23_69 == K_9_23_69, 1, 0),
+             Score_sobY_v2_SO_9_23_70 = ifelse(sobY_v2_SO_9_23_70 == K_9_23_70, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_79 = ifelse(sobY_v2_SO_9_23_79 == K_9_23_79, 1, 0),
+             Score_sobY_v2_SO_9_23_80 = ifelse(sobY_v2_SO_9_23_80 == K_9_23_80, 1, 0),
+             Score_sobY_v2_SO_9_23_81 = ifelse(sobY_v2_SO_9_23_81 == K_9_23_81, 1, 0),
+             Score_sobY_v2_SO_9_23_82 = ifelse(sobY_v2_SO_9_23_82 == K_9_23_82, 1, 0),
+             Score_sobY_v2_SO_9_23_83 = ifelse(sobY_v2_SO_9_23_83 == K_9_23_83, 1, 0),
+             
+             Score_sobY_v2_SO_9_23_92 = ifelse(sobY_v2_SO_9_23_92 == K_9_23_92, 1, 0),
+             Score_sobY_v2_SO_9_23_93 = ifelse(sobY_v2_SO_9_23_93 == K_9_23_93, 1, 0),
+             Score_sobY_v2_SO_9_23_94 = ifelse(sobY_v2_SO_9_23_94 == K_9_23_94, 1, 0),
+             Score_sobY_v2_SO_9_23_95 = ifelse(sobY_v2_SO_9_23_95 == K_9_23_95, 1, 0),
+             Score_sobY_v2_SO_9_23_96 = ifelse(sobY_v2_SO_9_23_96 == K_9_23_96, 1, 0),
+             
+             Score_sobY_v2 = sum(Score_sobY_v2_SO_9_23_1, Score_sobY_v2_SO_9_23_2,       
+                                 Score_sobY_v2_SO_9_23_3,       
+                                 Score_sobY_v2_SO_9_23_4,       
+                                 Score_sobY_v2_SO_9_23_5,       
+                                 Score_sobY_v2_SO_9_23_6, Score_sobY_v2_SO_9_23_7,
+                                 
+                                 Score_sobY_v2_SO_9_23_9,       
+                                 Score_sobY_v2_SO_9_23_10,       
+                                 Score_sobY_v2_SO_9_23_11,       
+                                 Score_sobY_v2_SO_9_23_12,       
+                                 Score_sobY_v2_SO_9_23_13,       
+                                 Score_sobY_v2_SO_9_23_14,       
+                                 Score_sobY_v2_SO_9_23_15,       
+                                 Score_sobY_v2_SO_9_23_16,       
+                                 Score_sobY_v2_SO_9_23_17,       
+                                 
+                                 Score_sobY_v2_SO_9_23_19,       
+                                 Score_sobY_v2_SO_9_23_20,       
+                                 Score_sobY_v2_SO_9_23_21,       
+                                 Score_sobY_v2_SO_9_23_22,       
+                                 Score_sobY_v2_SO_9_23_23,       
+                                 Score_sobY_v2_SO_9_23_24,       
+                                 Score_sobY_v2_SO_9_23_25,       
+                                 
+                                 Score_sobY_v2_SO_9_23_27,       
+                                 Score_sobY_v2_SO_9_23_28,       
+                                 Score_sobY_v2_SO_9_23_29,       
+                                 Score_sobY_v2_SO_9_23_30,       
+                                 Score_sobY_v2_SO_9_23_31,       
+                                 Score_sobY_v2_SO_9_23_32,       
+                                 Score_sobY_v2_SO_9_23_33,       
+                                 Score_sobY_v2_SO_9_23_34,       
+                                 Score_sobY_v2_SO_9_23_35,       
+                                 
+                                 Score_sobY_v2_SO_9_23_37,       
+                                 Score_sobY_v2_SO_9_23_38,       
+                                 Score_sobY_v2_SO_9_23_39,       
+                                 Score_sobY_v2_SO_9_23_40,       
+                                 Score_sobY_v2_SO_9_23_41,       
+                                 Score_sobY_v2_SO_9_23_42,       
+                                 Score_sobY_v2_SO_9_23_43,       
+                                 
+                                 Score_sobY_v2_SO_9_23_45,       
+                                 Score_sobY_v2_SO_9_23_46,       
+                                 Score_sobY_v2_SO_9_23_47,       
+                                 Score_sobY_v2_SO_9_23_48,       
+                                 Score_sobY_v2_SO_9_23_49,       
+                                 Score_sobY_v2_SO_9_23_50,       
+                                 Score_sobY_v2_SO_9_23_51,       
+                                 
+                                 Score_sobY_v2_SO_9_23_53,       
+                                 Score_sobY_v2_SO_9_23_54,       
+                                 Score_sobY_v2_SO_9_23_55,       
+                                 Score_sobY_v2_SO_9_23_56,       
+                                 Score_sobY_v2_SO_9_23_57,       
+                                 
+                                 Score_sobY_v2_SO_9_23_66,       
+                                 Score_sobY_v2_SO_9_23_67,       
+                                 Score_sobY_v2_SO_9_23_68,       
+                                 Score_sobY_v2_SO_9_23_69,       
+                                 Score_sobY_v2_SO_9_23_70,       
+                                 
+                                 Score_sobY_v2_SO_9_23_79,       
+                                 Score_sobY_v2_SO_9_23_80,       
+                                 Score_sobY_v2_SO_9_23_81,       
+                                 Score_sobY_v2_SO_9_23_82,       
+                                 Score_sobY_v2_SO_9_23_83,       
+                                 
+                                 Score_sobY_v2_SO_9_23_92, Score_sobY_v2_SO_9_23_93, 
+                                 Score_sobY_v2_SO_9_23_94,
+                                 Score_sobY_v2_SO_9_23_95, Score_sobY_v2_SO_9_23_96
+             ),
+             Score_sobY_v2 = round(Score_sobY_v2 / 66, 3)
+      ) 
+    
+    sobY_v2_upload <- sobY_v2_combined %>%
+      pivot_longer(.,
+                   cols = c(starts_with("sobY_v"), starts_with("K_"), starts_with("Score")),
+                   names_to = "item_id",
+                   values_to = "value"
+      ) %>%
+      mutate(key = c(rep("Response", 66), rep("Answer", 66), rep("Score", 66), "Overall")
+      ) %>%
+      rename(name = text_sobY_v2_person,
+             site = text_sobY_v2_site,
+             date = text_sobY_v2_date,
+             c_age = text_sobY_v2_childAge) %>% 
+      filter(key != "Answer")
+    
+    sobY_v2_upload <- as.data.frame(sobY_v2_upload)
+    
+    sheet_append(ss = sheet_id,
+                 data = sobY_v2_upload,
+                 sheet = "main")
+    
+    return(sobY_v2_combined)
+    
+  })
+  
+  output$sobY_v2_incorrect <- renderTable({
+    sobY_v2_data <- sobY_v2_values()
+    
+    pull_cols <- sobY_v2_data %>% 
+      select(starts_with("sobY_v2_SO_9_23_"), starts_with("K_")) %>% 
+      colnames()
+    
+    sobY_v2_data[ ,pull_cols] <- lapply(sobY_v2_data[ ,pull_cols], factor, levels = c(0, 1), labels = c("No", "Yes"))
+    
+    return_sobY_v2 <- sobY_v2_data %>%
+      mutate_all(as.character) %>%
+      select(-c(Score_sobY_v2)) %>%
+      pivot_longer(.,
+                   cols = c(starts_with("sobY_v"), starts_with("K_"), starts_with("Score")),
+                   names_to = "Question",
+                   values_to = "Score"
+      ) %>%
+      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
+                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
+                         "Q13", "Q14", "Q15", "Q16", "Q17", "Q18", 
+                         "Q19", "Q20", "Q21", "Q22", "Q23", "Q24", 
+                         "Q25", "Q26", "Q27", "Q28", "Q29", "Q30", 
+                         "Q31", "Q32", "Q33", "Q34", "Q35", "Q36",
+                         "Q37", "Q38", "Q39", "Q40", "Q41", "Q42",
+                         "Q43", "Q44", "Q45", "Q46", "Q47", "Q48", 
+                         "Q49", "Q50", "Q51", "Q52", "Q53", "Q54", 
+                         "Q55", "Q56", "Q57", "Q58", "Q59", "Q60",
+                         "Q61", "Q62", "Q63", "Q64", "Q65", "Q66"), 3)),
+             type = c(rep("Response", 66), rep("Answer", 66), rep("Score", 66))
+      ) %>%
+      select(-c(task_id:text_sobY_v2_childAge, Question)) %>%
+      rename(Question = Q) %>%
+      pivot_wider(.,
+                  id_cols = Question,
+                  names_from = type,
+                  values_from = Score) %>%
+      select(Question, Response, Answer, Score) %>%
+      filter(Score != 1)
+    
+    return(return_sobY_v2)
+  })
+  
+  output$sobY_v2_score <- renderText({
+    
+    sobY_v2_data <- sobY_v2_values()
+    
+    percent_correct <- sobY_v2_data$Score_sobY_v2 * 100
+    
+    return(paste0(percent_correct, "%"))
+  })
+  
+  
+  
+  
 
 ## Social Observational (older) data ------
   ### Video 1 ------
@@ -3647,7 +4125,8 @@ server <- function(input, output, session) {
       rename(name = text_sobO_v1_person,
              site = text_sobO_v1_site,
              date = text_sobO_v1_date,
-             c_age = text_sobO_v1_childAge)
+             c_age = text_sobO_v1_childAge) %>% 
+      filter(key != "Answer")
     
     sobO_v1_upload <- as.data.frame(sobO_v1_upload)
     
@@ -3890,7 +4369,8 @@ server <- function(input, output, session) {
       rename(name = text_sobO_v2_person,
              site = text_sobO_v2_site,
              date = text_sobO_v2_date,
-             c_age = text_sobO_v2_childAge)
+             c_age = text_sobO_v2_childAge) %>% 
+      filter(key != "Answer")
     
     sobO_v2_upload <- as.data.frame(sobO_v2_upload)
     
@@ -4062,7 +4542,8 @@ server <- function(input, output, session) {
       rename(name = text_gug_v1_person,
              site = text_gug_v1_site,
              date = text_gug_v1_date,
-             c_age = text_gug_v1_childAge)
+             c_age = text_gug_v1_childAge) %>% 
+      filter(key != "Answer")
 
     gug_v1_upload <- as.data.frame(gug_v1_upload)
 
@@ -4312,7 +4793,8 @@ server <- function(input, output, session) {
       rename(name = text_gug_v2_person,
              site = text_gug_v2_site,
              date = text_gug_v2_date,
-             c_age = text_gug_v2_childAge)
+             c_age = text_gug_v2_childAge) %>% 
+      filter(key != "Answer")
     
     gug_v2_upload <- as.data.frame(gug_v2_upload)
     
@@ -4604,7 +5086,8 @@ server <- function(input, output, session) {
       rename(name = text_rte_v1_person,
              site = text_rte_v1_site,
              date = text_rte_v1_date,
-             c_age = text_rte_v1_childAge) 
+             c_age = text_rte_v1_childAge) %>% 
+      filter(key != "Answer")
     
     rte_v1_upload <- as.data.frame(rte_v1_upload)
     
@@ -4804,7 +5287,8 @@ server <- function(input, output, session) {
       rename(name = text_rte_v2_person,
              site = text_rte_v2_site,
              date = text_rte_v2_date,
-             c_age = text_rte_v2_childAge) 
+             c_age = text_rte_v2_childAge) %>% 
+      filter(key != "Answer") 
     
     rte_v2_upload <- as.data.frame(rte_v2_upload)
     
@@ -4922,7 +5406,8 @@ server <- function(input, output, session) {
       rename(name = text_sas_v1_person,
              site = text_sas_v1_site,
              date = text_sas_v1_date,
-             c_age = text_sas_v1_childAge) 
+             c_age = text_sas_v1_childAge) %>% 
+      filter(key != "Answer") 
     
     sas_v1_upload <- as.data.frame(sas_v1_upload)
     
@@ -5047,7 +5532,8 @@ server <- function(input, output, session) {
       rename(name = text_sas_v2_person,
              site = text_sas_v2_site,
              date = text_sas_v2_date,
-             c_age = text_sas_v2_childAge) 
+             c_age = text_sas_v2_childAge) %>% 
+      filter(key != "Answer") 
     
     sas_v2_upload <- as.data.frame(sas_v2_upload)
     
@@ -5161,7 +5647,8 @@ server <- function(input, output, session) {
       rename(name = text_sas_v3_person,
              site = text_sas_v3_site,
              date = text_sas_v3_date,
-             c_age = text_sas_v3_childAge) 
+             c_age = text_sas_v3_childAge) %>% 
+      filter(key != "Answer") 
     
     sas_v3_upload <- as.data.frame(sas_v3_upload)
     
@@ -5284,7 +5771,8 @@ server <- function(input, output, session) {
       rename(name = text_sas_v4_person,
              site = text_sas_v4_site,
              date = text_sas_v4_date,
-             c_age = text_sas_v4_childAge) 
+             c_age = text_sas_v4_childAge) %>% 
+      filter(key != "Answer") 
     
     sas_v4_upload <- as.data.frame(sas_v4_upload)
     
