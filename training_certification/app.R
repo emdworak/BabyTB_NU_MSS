@@ -21,7 +21,6 @@ options(
 )
 
 sheet_id <- googledrive::drive_get("2023_BBTB_Cert")$id
-key_id <- googledrive::drive_get("scoring_key")$id
 
 
 
@@ -1677,7 +1676,7 @@ tabItem(tabName = "tab_gug_v1",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_gug_v1_roll", p("How child got off back? "),
+                 radioButtons("radio_gug_v1_roll", p("How child got off back?"),
                               choiceNames = c("Rolled to belly, hands trapped",
                                               "Rolled to belly, hands out", "Rolled to hands-knees",
                                               "Side lying", "Got up without rolling"),
@@ -1702,7 +1701,7 @@ tabItem(tabName = "tab_gug_v1",
         fluidRow(
 
           column(6,
-                 radioButtons("radio_gug_v1_turn", p("Child turned to face finish line? "),
+                 radioButtons("radio_gug_v1_turn", p("Child turned to face finish line?"),
                               choiceNames = c("Never faced finish",
                                               "Turned to face finish", "Already facing finish"),
                               choiceValues = app_values_1_3, selected = "")
@@ -1857,7 +1856,7 @@ tabItem(tabName = "tab_gug_v2",
 
         fluidRow(
           column(6,
-                 radioButtons("radio_gug_v2_roll", p("How child got off back? "),
+                 radioButtons("radio_gug_v2_roll", p("How child got off back?"),
                               choiceNames = c("Rolled to belly, hands trapped",
                                               "Rolled to belly, hands out", "Rolled to hands-knees",
                                               "Side lying", "Got up without rolling"),
@@ -1901,7 +1900,7 @@ tabItem(tabName = "tab_gug_v2",
         fluidRow(
 
           column(6,
-                 radioButtons("radio_gug_v2_turn", p("Child turned to face finish line? "),
+                 radioButtons("radio_gug_v2_turn", p("Child turned to face finish line?"),
                               choiceNames = c("Never faced finish",
                                               "Turned to face finish", "Already facing finish"),
                               choiceValues = app_values_1_3, selected = "")
@@ -3095,6 +3094,77 @@ server <- function(input, output, session) {
 ### Video 1 ------ 
   sobY_v1_values <- eventReactive(input$sobY_v1_submit, {
     
+    validate(
+      need(input$text_sobY_v1_person, "Please enter your name."),
+      need(input$text_sobY_v1_site, "Please select your site."),
+      need(input$radio_sobY_v1_SO_9_23_1, "Please select an answer for Communicative Temptation 1 (Minute One): 2-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_2, "Please select an answer for Communicative Temptation 1 (Minute One): 3-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_3, "Please select an answer for Communicative Temptation 1 (Minute One): Smiles without look"),
+      need(input$radio_sobY_v1_SO_9_23_4, "Please select an answer for Communicative Temptation 1 (Minute One): Smiles with look"),
+      need(input$radio_sobY_v1_SO_9_23_5, "Please select an answer for Communicative Temptation 1 (Minute One): Show gesture"),
+      need(input$radio_sobY_v1_SO_9_23_6, "Please select an answer for Communicative Temptation 1 (Minute One): Uses point gesture"),
+      need(input$radio_sobY_v1_SO_9_23_7, "Please select an answer for Communicative Temptation 1 (Minute One): Comments with sounds or words"),
+      need(input$radio_sobY_v1_SO_9_23_9, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Responds to name"),
+      need(input$radio_sobY_v1_SO_9_23_10, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Follows gaze/point"),
+      need(input$radio_sobY_v1_SO_9_23_11, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): 2-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_12, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): 3-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_13, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Smiles without look"),
+      need(input$radio_sobY_v1_SO_9_23_14, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Smiles with look"),
+      need(input$radio_sobY_v1_SO_9_23_15, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Show gesture"),
+      need(input$radio_sobY_v1_SO_9_23_16, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Uses point gesture"),
+      need(input$radio_sobY_v1_SO_9_23_17, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Comments with sounds or words"),
+      need(input$radio_sobY_v1_SO_9_23_19, "Please select an answer for Communicative Temptation 2 (Minute Three): 2-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_20, "Please select an answer for Communicative Temptation 2 (Minute Three): 3-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_21, "Please select an answer for Communicative Temptation 2 (Minute Three): Smiles without look"),
+      need(input$radio_sobY_v1_SO_9_23_22, "Please select an answer for Communicative Temptation 2 (Minute Three): Smiles with look"),
+      need(input$radio_sobY_v1_SO_9_23_23, "Please select an answer for Communicative Temptation 2 (Minute Three): Show gesture"),
+      need(input$radio_sobY_v1_SO_9_23_24, "Please select an answer for Communicative Temptation 2 (Minute Three): Uses point gesture"),
+      need(input$radio_sobY_v1_SO_9_23_25, "Please select an answer for Communicative Temptation 2 (Minute Three): Comments with sounds or words"),
+      need(input$radio_sobY_v1_SO_9_23_27, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Responds to name"),
+      need(input$radio_sobY_v1_SO_9_23_28, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Follows gaze/point"),
+      need(input$radio_sobY_v1_SO_9_23_29, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): 2-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_30, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): 3-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_31, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Smiles without look"),
+      need(input$radio_sobY_v1_SO_9_23_32, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Smiles with look"),
+      need(input$radio_sobY_v1_SO_9_23_33, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Show gesture"),
+      need(input$radio_sobY_v1_SO_9_23_34, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Uses point gesture"),
+      need(input$radio_sobY_v1_SO_9_23_35, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Comments with sounds or words"),
+      need(input$radio_sobY_v1_SO_9_23_37, "Please select an answer for Sharing Books 1 (Minute Five): 2-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_38, "Please select an answer for Sharing Books 1 (Minute Five): 3-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_39, "Please select an answer for Sharing Books 1 (Minute Five): Smiles without look"),
+      need(input$radio_sobY_v1_SO_9_23_40, "Please select an answer for Sharing Books 1 (Minute Five): Smiles with look"),
+      need(input$radio_sobY_v1_SO_9_23_41, "Please select an answer for Sharing Books 1 (Minute Five): Show gesture"),
+      need(input$radio_sobY_v1_SO_9_23_42, "Please select an answer for Sharing Books 1 (Minute Five): Uses point gesture"),
+      need(input$radio_sobY_v1_SO_9_23_43, "Please select an answer for Sharing Books 1 (Minute Five): Comments with sounds or words"),
+      need(input$radio_sobY_v1_SO_9_23_45, "Please select an answer for Sharing Books 2 (Minute Six): 2-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_46, "Please select an answer for Sharing Books 2 (Minute Six): 3-point gaze shift"),
+      need(input$radio_sobY_v1_SO_9_23_47, "Please select an answer for Sharing Books 2 (Minute Six): Smiles without look"),
+      need(input$radio_sobY_v1_SO_9_23_48, "Please select an answer for Sharing Books 2 (Minute Six): Smiles with look"),
+      need(input$radio_sobY_v1_SO_9_23_49, "Please select an answer for Sharing Books 2 (Minute Six): Show gesture"),
+      need(input$radio_sobY_v1_SO_9_23_50, "Please select an answer for Sharing Books 2 (Minute Six): Uses point gesture"),
+      need(input$radio_sobY_v1_SO_9_23_51, "Please select an answer for Sharing Books 2 (Minute Six): Comments with sounds or words"),
+      need(input$radio_sobY_v1_SO_9_23_53, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): Explores features of object"),
+      need(input$radio_sobY_v1_SO_9_23_54, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): Uses item functionally"),
+      need(input$radio_sobY_v1_SO_9_23_55, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v1_SO_9_23_56, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): 2 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_57, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): 3 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_66, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): Explores features of object"),
+      need(input$radio_sobY_v1_SO_9_23_67, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): Uses item functionally"),
+      need(input$radio_sobY_v1_SO_9_23_68, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v1_SO_9_23_69, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): 2 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_70, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): 3 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_79, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): Explores features of object"),
+      need(input$radio_sobY_v1_SO_9_23_80, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): Uses item functionally"),
+      need(input$radio_sobY_v1_SO_9_23_81, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v1_SO_9_23_82, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): 2 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_83, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): 3 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_92, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): Explores features of object"),
+      need(input$radio_sobY_v1_SO_9_23_93, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): Uses item functionally"),
+      need(input$radio_sobY_v1_SO_9_23_94, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v1_SO_9_23_95, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): 2 Pretend action sequences"),
+      need(input$radio_sobY_v1_SO_9_23_96, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): 3 Pretend action sequences")
+    )
+    
     sobY_v1_data <- data.frame(
       task_id = c("sobY_v1"),
       text_sobY_v1_person = c(input$text_sobY_v1_person),
@@ -3615,6 +3685,77 @@ server <- function(input, output, session) {
 
 ### Video 2 ------
   sobY_v2_values <- eventReactive(input$sobY_v2_submit, {
+    
+    validate(
+      need(input$text_sobY_v2_person, "Please enter your name."),
+      need(input$text_sobY_v2_site, "Please select your site."),
+      need(input$radio_sobY_v2_SO_9_23_1, "Please select an answer for Communicative Temptation 1 (Minute One): 2-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_2, "Please select an answer for Communicative Temptation 1 (Minute One): 3-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_3, "Please select an answer for Communicative Temptation 1 (Minute One): Smiles without look"),
+      need(input$radio_sobY_v2_SO_9_23_4, "Please select an answer for Communicative Temptation 1 (Minute One): Smiles with look"),
+      need(input$radio_sobY_v2_SO_9_23_5, "Please select an answer for Communicative Temptation 1 (Minute One): Show gesture"),
+      need(input$radio_sobY_v2_SO_9_23_6, "Please select an answer for Communicative Temptation 1 (Minute One): Uses point gesture"),
+      need(input$radio_sobY_v2_SO_9_23_7, "Please select an answer for Communicative Temptation 1 (Minute One): Comments with sounds or words"),
+      need(input$radio_sobY_v2_SO_9_23_9, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Responds to name"),
+      need(input$radio_sobY_v2_SO_9_23_10, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Follows gaze/point"),
+      need(input$radio_sobY_v2_SO_9_23_11, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): 2-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_12, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): 3-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_13, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Smiles without look"),
+      need(input$radio_sobY_v2_SO_9_23_14, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Smiles with look"),
+      need(input$radio_sobY_v2_SO_9_23_15, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Show gesture"),
+      need(input$radio_sobY_v2_SO_9_23_16, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Uses point gesture"),
+      need(input$radio_sobY_v2_SO_9_23_17, "Please select an answer for Response to Name & Gaze/Point 1 (Minute Two): Comments with sounds or words"),
+      need(input$radio_sobY_v2_SO_9_23_19, "Please select an answer for Communicative Temptation 2 (Minute Three): 2-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_20, "Please select an answer for Communicative Temptation 2 (Minute Three): 3-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_21, "Please select an answer for Communicative Temptation 2 (Minute Three): Smiles without look"),
+      need(input$radio_sobY_v2_SO_9_23_22, "Please select an answer for Communicative Temptation 2 (Minute Three): Smiles with look"),
+      need(input$radio_sobY_v2_SO_9_23_23, "Please select an answer for Communicative Temptation 2 (Minute Three): Show gesture"),
+      need(input$radio_sobY_v2_SO_9_23_24, "Please select an answer for Communicative Temptation 2 (Minute Three): Uses point gesture"),
+      need(input$radio_sobY_v2_SO_9_23_25, "Please select an answer for Communicative Temptation 2 (Minute Three): Comments with sounds or words"),
+      need(input$radio_sobY_v2_SO_9_23_27, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Responds to name"),
+      need(input$radio_sobY_v2_SO_9_23_28, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Follows gaze/point"),
+      need(input$radio_sobY_v2_SO_9_23_29, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): 2-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_30, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): 3-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_31, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Smiles without look"),
+      need(input$radio_sobY_v2_SO_9_23_32, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Smiles with look"),
+      need(input$radio_sobY_v2_SO_9_23_33, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Show gesture"),
+      need(input$radio_sobY_v2_SO_9_23_34, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Uses point gesture"),
+      need(input$radio_sobY_v2_SO_9_23_35, "Please select an answer for Communicative Temptation 3 probe 2 (Minute Four): Comments with sounds or words"),
+      need(input$radio_sobY_v2_SO_9_23_37, "Please select an answer for Sharing Books 1 (Minute Five): 2-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_38, "Please select an answer for Sharing Books 1 (Minute Five): 3-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_39, "Please select an answer for Sharing Books 1 (Minute Five): Smiles without look"),
+      need(input$radio_sobY_v2_SO_9_23_40, "Please select an answer for Sharing Books 1 (Minute Five): Smiles with look"),
+      need(input$radio_sobY_v2_SO_9_23_41, "Please select an answer for Sharing Books 1 (Minute Five): Show gesture"),
+      need(input$radio_sobY_v2_SO_9_23_42, "Please select an answer for Sharing Books 1 (Minute Five): Uses point gesture"),
+      need(input$radio_sobY_v2_SO_9_23_43, "Please select an answer for Sharing Books 1 (Minute Five): Comments with sounds or words"),
+      need(input$radio_sobY_v2_SO_9_23_45, "Please select an answer for Sharing Books 2 (Minute Six): 2-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_46, "Please select an answer for Sharing Books 2 (Minute Six): 3-point gaze shift"),
+      need(input$radio_sobY_v2_SO_9_23_47, "Please select an answer for Sharing Books 2 (Minute Six): Smiles without look"),
+      need(input$radio_sobY_v2_SO_9_23_48, "Please select an answer for Sharing Books 2 (Minute Six): Smiles with look"),
+      need(input$radio_sobY_v2_SO_9_23_49, "Please select an answer for Sharing Books 2 (Minute Six): Show gesture"),
+      need(input$radio_sobY_v2_SO_9_23_50, "Please select an answer for Sharing Books 2 (Minute Six): Uses point gesture"),
+      need(input$radio_sobY_v2_SO_9_23_51, "Please select an answer for Sharing Books 2 (Minute Six): Comments with sounds or words"),
+      need(input$radio_sobY_v2_SO_9_23_53, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): Explores features of object"),
+      need(input$radio_sobY_v2_SO_9_23_54, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): Uses item functionally"),
+      need(input$radio_sobY_v2_SO_9_23_55, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v2_SO_9_23_56, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): 2 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_57, "Please select an answer for Parent/Caregiver-Child Play 1 (Minute Seven): 3 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_66, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): Explores features of object"),
+      need(input$radio_sobY_v2_SO_9_23_67, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): Uses item functionally"),
+      need(input$radio_sobY_v2_SO_9_23_68, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v2_SO_9_23_69, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): 2 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_70, "Please select an answer for Parent/Caregiver-Child Play 2 (Minute Eight): 3 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_79, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): Explores features of object"),
+      need(input$radio_sobY_v2_SO_9_23_80, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): Uses item functionally"),
+      need(input$radio_sobY_v2_SO_9_23_81, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v2_SO_9_23_82, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): 2 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_83, "Please select an answer for Parent/Caregiver-Child Play 3 (Minute Nine): 3 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_92, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): Explores features of object"),
+      need(input$radio_sobY_v2_SO_9_23_93, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): Uses item functionally"),
+      need(input$radio_sobY_v2_SO_9_23_94, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): Pretends toward other (caregiver examiner doll)"),
+      need(input$radio_sobY_v2_SO_9_23_95, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): 2 Pretend action sequences"),
+      need(input$radio_sobY_v2_SO_9_23_96, "Please select an answer for Parent/Caregiver-Child Play 4 (Minute Ten): 3 Pretend action sequences")
+    )
     
     sobY_v2_data <- data.frame(
       task_id = c("sobY_v2"),
@@ -4146,6 +4287,47 @@ server <- function(input, output, session) {
   ### Video 1 ------
   sobO_v1_values <- eventReactive(input$sobO_v1_submit, {
     
+    validate(
+      need(input$text_sobO_v1_person, "Please enter your name."),
+      need(input$text_sobO_v1_site, "Please select your site."),
+      
+      need(input$radio_sobO_v1_SO_24_48_1, "Please select an answer for Joint Attention (Minute One): Following point"),
+      need(input$radio_sobO_v1_SO_24_48_2, "Please select an answer for Joint Attention (Minute One): Complies with request (pot) spontaneously"),
+      need(input$radio_sobO_v1_SO_24_48_3, "Please select an answer for Joint Attention (Minute One): Complies with request after prompt"),
+      need(input$radio_sobO_v1_SO_24_48_4, "Please select an answer for Joint Attention (Minute One): Comments on jungle animal"),
+      need(input$radio_sobO_v1_SO_24_48_5, "Please select an answer for Joint Attention (Minute One): Points to jungle animal"),
+      need(input$radio_sobO_v1_SO_24_48_6, "Please select an answer for Joint Attention (Minute One): Shows jungle animal"),
+      
+      need(input$radio_sobO_v1_SO_24_48_7, "Please select an answer for Pretend Play (Minutes Two-Three): Child-as-agent"),
+      need(input$radio_sobO_v1_SO_24_48_8, "Please select an answer for Pretend Play (Minutes Two-Three): Substitution"),
+      need(input$radio_sobO_v1_SO_24_48_9, "Please select an answer for Pretend Play (Minutes Two-Three): Substitution without object"),
+      need(input$radio_sobO_v1_SO_24_48_10, "Please select an answer for Pretend Play (Minutes Two-Three): Dolls-as-agent"),
+      need(input$radio_sobO_v1_SO_24_48_11, "Please select an answer for Pretend Play (Minutes Two-Three): Socio-dramatic play"),
+      
+      need(input$radio_sobO_v1_SO_24_48_12, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Shares blocks"),
+      need(input$radio_sobO_v1_SO_24_48_13, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Takes turns building tower"),
+      need(input$radio_sobO_v1_SO_24_48_14, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Picks up fallen blocks or repairs tower"),
+      need(input$radio_sobO_v1_SO_24_48_15, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Concerned facial expression"),
+      need(input$radio_sobO_v1_SO_24_48_16, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Verbal concern/comforting"),
+      need(input$radio_sobO_v1_SO_24_48_17, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Physical comforting"),
+      need(input$radio_sobO_v1_SO_24_48_18, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Helps clean up spontaneously"),
+      need(input$radio_sobO_v1_SO_24_48_19, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Helps clean up after prompt"),
+      
+      need(input$radio_sobO_v1_SO_24_48_20, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Rebuilds elephant at least 2-steps"),
+      need(input$radio_sobO_v1_SO_24_48_21, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Rebuilds elephant all steps"),
+      need(input$radio_sobO_v1_SO_24_48_22, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Steps in correct order"),
+      need(input$radio_sobO_v1_SO_24_48_23, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Asks for help opening container"),
+      
+      need(input$radio_sobO_v1_SO_24_48_24, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Initiates/responds to conversation"),
+      need(input$radio_sobO_v1_SO_24_48_25, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Takes a conversational turn"),
+      need(input$radio_sobO_v1_SO_24_48_26, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Responds to a shift in topic"),
+      need(input$radio_sobO_v1_SO_24_48_27, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by protest only"),
+      need(input$radio_sobO_v1_SO_24_48_28, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by giving correct label"),
+      need(input$radio_sobO_v1_SO_24_48_29, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Adapts speech register for doll"),
+      need(input$radio_sobO_v1_SO_24_48_30, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Turns book to face doll"),
+      need(input$radio_sobO_v1_SO_24_48_31, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Attempts to teach doll")
+    )
+    
     sobO_v1_data <- data.frame(
       task_id = c("sobO_v1"),
       text_sobO_v1_person = c(input$text_sobO_v1_person),
@@ -4417,6 +4599,47 @@ server <- function(input, output, session) {
   
   ### Video 2 ------
   sobO_v2_values <- eventReactive(input$sobO_v2_submit, {
+    
+    validate(
+      need(input$text_sobO_v2_person, "Please enter your name."),
+      need(input$text_sobO_v2_site, "Please select your site."),
+      
+      need(input$radio_sobO_v2_SO_24_48_1, "Please select an answer for Joint Attention (Minute One): Following point"),
+      need(input$radio_sobO_v2_SO_24_48_2, "Please select an answer for Joint Attention (Minute One): Complies with request (pot) spontaneously"),
+      need(input$radio_sobO_v2_SO_24_48_3, "Please select an answer for Joint Attention (Minute One): Complies with request after prompt"),
+      need(input$radio_sobO_v2_SO_24_48_4, "Please select an answer for Joint Attention (Minute One): Comments on jungle animal"),
+      need(input$radio_sobO_v2_SO_24_48_5, "Please select an answer for Joint Attention (Minute One): Points to jungle animal"),
+      need(input$radio_sobO_v2_SO_24_48_6, "Please select an answer for Joint Attention (Minute One): Shows jungle animal"),
+      
+      need(input$radio_sobO_v2_SO_24_48_7, "Please select an answer for Pretend Play (Minutes Two-Three): Child-as-agent"),
+      need(input$radio_sobO_v2_SO_24_48_8, "Please select an answer for Pretend Play (Minutes Two-Three): Substitution"),
+      need(input$radio_sobO_v2_SO_24_48_9, "Please select an answer for Pretend Play (Minutes Two-Three): Substitution without object"),
+      need(input$radio_sobO_v2_SO_24_48_10, "Please select an answer for Pretend Play (Minutes Two-Three): Dolls-as-agent"),
+      need(input$radio_sobO_v2_SO_24_48_11, "Please select an answer for Pretend Play (Minutes Two-Three): Socio-dramatic play"),
+      
+      need(input$radio_sobO_v2_SO_24_48_12, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Shares blocks"),
+      need(input$radio_sobO_v2_SO_24_48_13, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Takes turns building tower"),
+      need(input$radio_sobO_v2_SO_24_48_14, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Picks up fallen blocks or repairs tower"),
+      need(input$radio_sobO_v2_SO_24_48_15, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Concerned facial expression"),
+      need(input$radio_sobO_v2_SO_24_48_16, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Verbal concern/comforting"),
+      need(input$radio_sobO_v2_SO_24_48_17, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Physical comforting"),
+      need(input$radio_sobO_v2_SO_24_48_18, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Helps clean up spontaneously"),
+      need(input$radio_sobO_v2_SO_24_48_19, "Please select an answer for Prosocial Behavior (Minutes Four-Five): Helps clean up after prompt"),
+      
+      need(input$radio_sobO_v2_SO_24_48_20, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Rebuilds elephant at least 2-steps"),
+      need(input$radio_sobO_v2_SO_24_48_21, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Rebuilds elephant all steps"),
+      need(input$radio_sobO_v2_SO_24_48_22, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Steps in correct order"),
+      need(input$radio_sobO_v2_SO_24_48_23, "Please select an answer for Social Communication 1 (Minutes Six-Seven): Asks for help opening container"),
+      
+      need(input$radio_sobO_v2_SO_24_48_24, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Initiates/responds to conversation"),
+      need(input$radio_sobO_v2_SO_24_48_25, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Takes a conversational turn"),
+      need(input$radio_sobO_v2_SO_24_48_26, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Responds to a shift in topic"),
+      need(input$radio_sobO_v2_SO_24_48_27, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by protest only"),
+      need(input$radio_sobO_v2_SO_24_48_28, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by giving correct label"),
+      need(input$radio_sobO_v2_SO_24_48_29, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Adapts speech register for doll"),
+      need(input$radio_sobO_v2_SO_24_48_30, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Turns book to face doll"),
+      need(input$radio_sobO_v2_SO_24_48_31, "Please select an answer for Social Communications 2 (Minutes Eight-Ten): Attempts to teach doll")
+    )
     
     sobO_v2_data <- data.frame(
       task_id = c("sobO_v2"),
@@ -4692,6 +4915,26 @@ server <- function(input, output, session) {
   ### Video 1 ------
   gug_v1_values <- eventReactive(input$gug_v1_submit, {
     
+    validate(
+      need(input$text_gug_v1_person, "Please enter your name."),
+      need(input$text_gug_v1_site, "Please select your site."),
+      
+      need(input$radio_gug_v1_back, "Please select an answer for Did child get off back?"),
+      need(input$radio_gug_v1_roll, "Please select an answer for How child got off back?"),
+      need(input$radio_gug_v1_uppos, "Please select an answer for Most upright postures?"),
+      
+      need(input$radio_gug_v1_turn, "Please select an answer for Child turned to face finish line?"),
+      
+      need(input$radio_gug_v1_trameth, "Please select an answer for How child traveled?"),
+      need(input$radio_gug_v1_tradis, "Please select an answer for How far child traveled?"),
+      
+      need(input$radio_gug_v1_starttime, "Please select an answer for When did the child cross start line?"),
+      need(input$radio_gug_v1_endtime, "Please select an answer for When did the child cross finish line? "),
+      
+      need(input$radio_gug_v1_stairup, "Please select an answer for How did child get up stair? "),
+      need(input$radio_gug_v1_stairdo, "Please select an answer for How did child get down stair?")
+    )
+    
     gug_v1_data <- data.frame(
       task_id = c("gug_v1"),
       text_gug_v1_person = c(input$text_gug_v1_person),
@@ -4900,6 +5143,29 @@ server <- function(input, output, session) {
   
   ### Video 2 ------
   gug_v2_values <- eventReactive(input$gug_v2_submit, {
+    
+    validate(
+      need(input$text_gug_v2_person, "Please enter your name."),
+      need(input$text_gug_v2_site, "Please select your site."),
+      
+      need(input$radio_gug_v2_back, "Please select an answer for Did child get off back?"),
+      need(input$radio_gug_v2_roll, "Please select an answer for How child got off back?"),
+      need(input$radio_gug_v2_uppos, "Please select an answer for Most upright postures?"),
+      
+      need(input$radio_gug_v2_stand, "Please select an answer for How child got to standing?"),
+      need(input$radio_gug_v2_hands, "Please select an answer for How many hands child used?"),
+      need(input$radio_gug_v2_turn, "Please select an answer for Child turned to face finish line?"),
+      
+      need(input$radio_gug_v2_trameth, "Please select an answer for How child traveled?"),
+      need(input$radio_gug_v2_toes, "Please select an answer for Child walked on toes?"),
+      need(input$radio_gug_v2_tradis, "Please select an answer for How far child traveled?"),
+      
+      need(input$radio_gug_v2_starttime, "Please select an answer for When did the child cross start line?"),
+      need(input$radio_gug_v2_endtime, "Please select an answer for When did the child cross finish line? "),
+      
+      need(input$radio_gug_v2_stairup, "Please select an answer for How did child get up stair? "),
+      need(input$radio_gug_v2_stairdo, "Please select an answer for How did child get down stair?")
+    )
     
     gug_v2_data <- data.frame(
       task_id = c("gug_v2"),
@@ -5145,6 +5411,38 @@ server <- function(input, output, session) {
 ## Reach to Eat data ------
   ### Video 1 ------
   rte_v1_values <- eventReactive(input$rte_v1_submit, {
+    
+    validate(
+      need(input$text_rte_v1_person, "Please enter your name."),
+      need(input$text_rte_v1_site, "Please select your site."),
+      
+      need(input$radio_rte_v1_sctr_success, "Please select an answer for Cheerio Small Base Task Right Hand: Did child reach small base with right hand?"),
+      need(input$radio_rte_v1_sctr_grasp, "Please select an answer for Cheerio Small Base Task Right Hand: Child used which grasp with right hand? "),
+      need(input$radio_rte_v1_sctl_success, "Please select an answer for Cheerio Small Base Task Left Hand: Did child reach small base with left hand? "),
+      need(input$radio_rte_v1_sctl_grasp, "Please select an answer for Cheerio Small Base Task Left Hand: Child used which grasp with left hand?"),
+      
+      need(input$radio_rte_v1_spnter_purpose, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child use right hand to move spoon?"),
+      need(input$radio_rte_v1_spnter_move, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child use right hand to grasp or move handle? "),
+      need(input$radio_rte_v1_spnter_grasp, "Please select an answer for Cheerio Spoon Easy Right Hand: Child used which grasp with right hand? "),
+      need(input$radio_rte_v1_spnter_thumb, "Please select an answer for Cheerio Spoon Easy Right Hand: Where was right hand thumb pointing? "),
+      need(input$radio_rte_v1_spnter_success, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child bring cheerio to mouth with right hand? "),
+      need(input$radio_rte_v1_spnthr_purpose, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child use right hand to move spoon?"),
+      need(input$radio_rte_v1_spnthr_move, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child use right hand to grasp or move handle? "),
+      need(input$radio_rte_v1_spnthr_grasp, "Please select an answer for Cheerio Spoon Hard Right Hand: Child used which grasp with right hand? "),
+      need(input$radio_rte_v1_spnthr_thumb, "Please select an answer for Cheerio Spoon Hard Right Hand: Where was right hand thumb pointing? "),
+      need(input$radio_rte_v1_spnthr_success, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child bring cheerio to mouth with right hand?"),
+      
+      need(input$radio_rte_v1_spntel_purpose, "Please select an answer for Cheerio Spoon Easy Left Hand: Did child use left hand to move spoon? "),
+      need(input$radio_rte_v1_spntel_move, "Please select an answer for  Cheerio Spoon Easy Left Hand: Did child use left hand to grasp or move handle?"),
+      need(input$radio_rte_v1_spntel_grasp, "Please select an answer for  Cheerio Spoon Easy Left Hand: Child used which grasp with left hand?"),
+      need(input$radio_rte_v1_spntel_thumb, "Please select an answer for Cheerio Spoon Easy Left Hand: Where was left hand thumb pointing?"),
+      need(input$radio_rte_v1_spntel_success, "Please select an answer for Cheerio Spoon Easy Left Hand: Did child bring cheerio to mouth with left hand? "),
+      need(input$radio_rte_v1_spnthl_purpose, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child use left hand to move spoon? "),
+      need(input$radio_rte_v1_spnthl_move, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child use left hand to grasp or move handle?"),
+      need(input$radio_rte_v1_spnthl_grasp, "Please select an answer for Cheerio Spoon Hard Left Hand: Child used which grasp with left hand?  "),
+      need(input$radio_rte_v1_spnthl_thumb, "Please select an answer for Cheerio Spoon Hard Left Hand: Where was left hand thumb pointing?"),
+      need(input$radio_rte_v1_spnthl_success, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child bring cheerio to mouth with left hand?")
+    )
     
     rte_v1_data <- data.frame(
       task_id = c("rte_v1"),
@@ -5416,7 +5714,8 @@ server <- function(input, output, session) {
                          "Cheerio Spoon Hard Left Hand: Did child use left hand to grasp or move handle?",
                          "Cheerio Spoon Hard Left Hand: Child used which grasp with left hand?", 
                          "Cheerio Spoon Hard Left Hand: Where was left hand thumb pointing?", 
-                         "Cheerio Spoon Hard Left Hand: Did child bring cheerio to mouth with left hand?"), 3)),
+                         "Cheerio Spoon Hard Left Hand: Did child bring cheerio to mouth with left hand?"
+                         ), 3)),
              type = c(rep("Response", 24), rep("Answer", 24), rep("Score", 24))
       ) %>% 
       select(-c(task_id:text_rte_v1_date, Question)) %>% 
@@ -5443,6 +5742,21 @@ server <- function(input, output, session) {
   
   ### Video 2 ------
   rte_v2_values <- eventReactive(input$rte_v2_submit, {
+    
+    validate(
+      need(input$text_rte_v2_person, "Please enter your name."),
+      need(input$text_rte_v2_site, "Please select your site."),
+      
+      need(input$radio_rte_v2_sctr_success, "Please select an answer for Cheerio Small Base Task Right Hand: Did child reach small base with right hand?"),
+      need(input$radio_rte_v2_sctr_grasp, "Please select an answer for Cheerio Small Base Task Right Hand: Child used which grasp with right hand? "),
+      need(input$radio_rte_v2_sctl_success, "Please select an answer for Cheerio Small Base Task Left Hand: Did child reach small base with left hand? "),
+      need(input$radio_rte_v2_sctl_grasp, "Please select an answer for Cheerio Small Base Task Left Hand: Child used which grasp with left hand?"),
+      
+      need(input$radio_rte_v2_lctr_success, "Please select an answer for Cheerio Large Base Task Right Hand: Did child reach small base with right hand?"),
+      need(input$radio_rte_v2_lctr_grasp, "Please select an answer for Cheerio Large Base Task Right Hand: Child used which grasp with right hand?"),
+      need(input$radio_rte_v2_lctl_success, "Please select an answer for Cheerio Large Base Task Left Hand: Did child reach small base with left hand?"),
+      need(input$radio_rte_v2_lctl_grasp, "Please select an answer for Cheerio Large Base Task Left Hand: Child used which grasp with left hand?")
+    )
     
     rte_v2_data <- data.frame(
       task_id = c("rte_v2"),
@@ -5568,7 +5882,8 @@ server <- function(input, output, session) {
                          "Cheerio Large Base Task Right Hand: Did child reach small base with right hand?", 
                          "Cheerio Large Base Task Right Hand: Child used which grasp with right hand?", 
                          "Cheerio Large Base Task Left Hand: Did child reach small base with left hand?", 
-                         "Cheerio Large Base Task Left Hand: Child used which grasp with left hand?"), 3)),
+                         "Cheerio Large Base Task Left Hand: Child used which grasp with left hand?"
+                         ), 3)),
              type = c(rep("Response", 8), rep("Answer", 8), rep("Score", 8))
       ) %>% 
       select(-c(task_id:text_rte_v2_date, Question)) %>% 
@@ -5597,6 +5912,15 @@ server <- function(input, output, session) {
   ### Video 1 ------
   sas_v1_values <- eventReactive(input$sas_v1_submit, {
 
+    validate(
+      need(input$text_sas_v1_person, "Please enter your name."),
+      need(input$text_sas_v1_site, "Please select your site."),
+      
+      need(input$radio_sas_v1_usit_q1, "Please select an answer for Unsupported Sit: Did child sit for 30 seconds?"),
+      need(input$radio_sas_v1_usit_q2_starttime, "Please select an answer for Find Longest Segment: When did the child start sitting?"),
+      need(input$radio_sas_v1_usit_q2_endtime, "Please select an answer for Find Longest Segment: When did the child stop sitting?")
+    )
+    
     sas_v1_data <- data.frame(
       task_id = c("sas_v1"),
       text_sas_v1_person = c(input$text_sas_v1_person),
@@ -5703,6 +6027,19 @@ server <- function(input, output, session) {
   ### Video 2 ------
   
   sas_v2_values <- eventReactive(input$sas_v2_submit, {
+    
+    validate(
+      need(input$text_sas_v2_person, "Please enter your name."),
+      need(input$text_sas_v2_site, "Please select your site."),
+      
+      need(input$radio_sas_v2_std_q1, "Please select an answer for Feet Together Stand: Unsupported for 30 seconds?"),
+      need(input$radio_sas_v2_std_q2_starttime, "Please select an answer for Feet Together Stand Find Timing: When did the child start standing? "),
+      need(input$radio_sas_v2_std_q2_endtime, "Please select an answer for Feet Together Stand Find Timing: When did the child stop standing? "),
+      
+      need(input$radio_sas_v2_std_q3, "Please select an answer for Tandem Stand: Unsupported for 30 seconds? "),
+      need(input$radio_sas_v2_std_q4_starttime, "Please select an answer for Tandem Stand Find Timing: When did the child start standing? "),
+      need(input$radio_sas_v2_std_q4_endtime, "Please select an answer for Tandem Stand Find Timing: When did the child stop standing?")
+    )
     
     sas_v2_data <- data.frame(
       task_id = c("sas_v2"),
@@ -5836,6 +6173,16 @@ server <- function(input, output, session) {
   
   sas_v3_values <- eventReactive(input$sas_v3_submit, {
     
+    validate(
+      need(input$text_sas_v3_person, "Please enter your name."),
+      need(input$text_sas_v3_site, "Please select your site."),
+      
+      need(input$radio_sas_v3_pts_q1, "Please select an answer for Pull to Sit: head in line with torso?"),
+      need(input$radio_sas_v3_usit_q1, "Please select an answer for Unsupported Sit: Did child sit for 30 seconds?"),
+      need(input$radio_sas_v3_usit_q2_starttime, "Please select an answer for Find Longest Segment: When did the child start sitting?"),
+      need(input$radio_sas_v3_usit_q2_endtime, "Please select an answer for Find Longest Segment: When did the child stop sitting?")
+    )
+    
     sas_v3_data <- data.frame(
       task_id = c("sas_v3"),
       text_sas_v3_person = c(input$text_sas_v3_person),
@@ -5946,6 +6293,19 @@ server <- function(input, output, session) {
   
   ### Video 4 ------
   sas_v4_values <- eventReactive(input$sas_v4_submit, {
+    
+    validate(
+      need(input$text_sas_v4_person, "Please enter your name."),
+      need(input$text_sas_v4_site, "Please select your site."),
+      
+      need(input$radio_sas_v4_std_q1, "Please select an answer for Feet Together Stand: Unsupported for 30 seconds?"),
+      need(input$radio_sas_v4_std_q2_starttime, "Please select an answer for Feet Together Stand Find Timing: When did the child start standing? "),
+      need(input$radio_sas_v4_std_q2_endtime, "Please select an answer for Feet Together Stand Find Timing: When did the child stop standing? "),
+      
+      need(input$radio_sas_v4_std_q3, "Please select an answer for Tandem Stand: Unsupported for 30 seconds? "),
+      need(input$radio_sas_v4_std_q4_starttime, "Please select an answer for Tandem Stand Find Timing: When did the child start standing? "),
+      need(input$radio_sas_v4_std_q4_endtime, "Please select an answer for Tandem Stand Find Timing: When did the child stop standing?")
+    )
     
     sas_v4_data <- data.frame(
       task_id = c("sas_v4"),
