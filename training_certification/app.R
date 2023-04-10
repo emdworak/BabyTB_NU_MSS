@@ -4929,9 +4929,9 @@ server <- function(input, output, session) {
       need(input$radio_gug_v1_tradis, "Please select an answer for How far child traveled?"),
       
       need(input$radio_gug_v1_starttime, "Please select an answer for When did the child cross start line?"),
-      need(input$radio_gug_v1_endtime, "Please select an answer for When did the child cross finish line? "),
+      need(input$radio_gug_v1_endtime, "Please select an answer for When did the child cross finish line?"),
       
-      need(input$radio_gug_v1_stairup, "Please select an answer for How did child get up stair? "),
+      need(input$radio_gug_v1_stairup, "Please select an answer for How did child get up stair?"),
       need(input$radio_gug_v1_stairdo, "Please select an answer for How did child get down stair?")
     )
     
@@ -5161,9 +5161,9 @@ server <- function(input, output, session) {
       need(input$radio_gug_v2_tradis, "Please select an answer for How far child traveled?"),
       
       need(input$radio_gug_v2_starttime, "Please select an answer for When did the child cross start line?"),
-      need(input$radio_gug_v2_endtime, "Please select an answer for When did the child cross finish line? "),
+      need(input$radio_gug_v2_endtime, "Please select an answer for When did the child cross finish line?"),
       
-      need(input$radio_gug_v2_stairup, "Please select an answer for How did child get up stair? "),
+      need(input$radio_gug_v2_stairup, "Please select an answer for How did child get up stair?"),
       need(input$radio_gug_v2_stairdo, "Please select an answer for How did child get down stair?")
     )
     
@@ -5417,29 +5417,29 @@ server <- function(input, output, session) {
       need(input$text_rte_v1_site, "Please select your site."),
       
       need(input$radio_rte_v1_sctr_success, "Please select an answer for Cheerio Small Base Task Right Hand: Did child reach small base with right hand?"),
-      need(input$radio_rte_v1_sctr_grasp, "Please select an answer for Cheerio Small Base Task Right Hand: Child used which grasp with right hand? "),
-      need(input$radio_rte_v1_sctl_success, "Please select an answer for Cheerio Small Base Task Left Hand: Did child reach small base with left hand? "),
+      need(input$radio_rte_v1_sctr_grasp, "Please select an answer for Cheerio Small Base Task Right Hand: Child used which grasp with right hand?"),
+      need(input$radio_rte_v1_sctl_success, "Please select an answer for Cheerio Small Base Task Left Hand: Did child reach small base with left hand?"),
       need(input$radio_rte_v1_sctl_grasp, "Please select an answer for Cheerio Small Base Task Left Hand: Child used which grasp with left hand?"),
       
       need(input$radio_rte_v1_spnter_purpose, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child use right hand to move spoon?"),
-      need(input$radio_rte_v1_spnter_move, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child use right hand to grasp or move handle? "),
-      need(input$radio_rte_v1_spnter_grasp, "Please select an answer for Cheerio Spoon Easy Right Hand: Child used which grasp with right hand? "),
-      need(input$radio_rte_v1_spnter_thumb, "Please select an answer for Cheerio Spoon Easy Right Hand: Where was right hand thumb pointing? "),
-      need(input$radio_rte_v1_spnter_success, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child bring cheerio to mouth with right hand? "),
+      need(input$radio_rte_v1_spnter_move, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child use right hand to grasp or move handle?"),
+      need(input$radio_rte_v1_spnter_grasp, "Please select an answer for Cheerio Spoon Easy Right Hand: Child used which grasp with right hand?"),
+      need(input$radio_rte_v1_spnter_thumb, "Please select an answer for Cheerio Spoon Easy Right Hand: Where was right hand thumb pointing?"),
+      need(input$radio_rte_v1_spnter_success, "Please select an answer for Cheerio Spoon Easy Right Hand: Did child bring cheerio to mouth with right hand?"),
       need(input$radio_rte_v1_spnthr_purpose, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child use right hand to move spoon?"),
-      need(input$radio_rte_v1_spnthr_move, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child use right hand to grasp or move handle? "),
-      need(input$radio_rte_v1_spnthr_grasp, "Please select an answer for Cheerio Spoon Hard Right Hand: Child used which grasp with right hand? "),
-      need(input$radio_rte_v1_spnthr_thumb, "Please select an answer for Cheerio Spoon Hard Right Hand: Where was right hand thumb pointing? "),
+      need(input$radio_rte_v1_spnthr_move, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child use right hand to grasp or move handle?"),
+      need(input$radio_rte_v1_spnthr_grasp, "Please select an answer for Cheerio Spoon Hard Right Hand: Child used which grasp with right hand?"),
+      need(input$radio_rte_v1_spnthr_thumb, "Please select an answer for Cheerio Spoon Hard Right Hand: Where was right hand thumb pointing?"),
       need(input$radio_rte_v1_spnthr_success, "Please select an answer for Cheerio Spoon Hard Right Hand: Did child bring cheerio to mouth with right hand?"),
       
-      need(input$radio_rte_v1_spntel_purpose, "Please select an answer for Cheerio Spoon Easy Left Hand: Did child use left hand to move spoon? "),
+      need(input$radio_rte_v1_spntel_purpose, "Please select an answer for Cheerio Spoon Easy Left Hand: Did child use left hand to move spoon?"),
       need(input$radio_rte_v1_spntel_move, "Please select an answer for  Cheerio Spoon Easy Left Hand: Did child use left hand to grasp or move handle?"),
       need(input$radio_rte_v1_spntel_grasp, "Please select an answer for  Cheerio Spoon Easy Left Hand: Child used which grasp with left hand?"),
       need(input$radio_rte_v1_spntel_thumb, "Please select an answer for Cheerio Spoon Easy Left Hand: Where was left hand thumb pointing?"),
-      need(input$radio_rte_v1_spntel_success, "Please select an answer for Cheerio Spoon Easy Left Hand: Did child bring cheerio to mouth with left hand? "),
-      need(input$radio_rte_v1_spnthl_purpose, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child use left hand to move spoon? "),
+      need(input$radio_rte_v1_spntel_success, "Please select an answer for Cheerio Spoon Easy Left Hand: Did child bring cheerio to mouth with left hand?"),
+      need(input$radio_rte_v1_spnthl_purpose, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child use left hand to move spoon?"),
       need(input$radio_rte_v1_spnthl_move, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child use left hand to grasp or move handle?"),
-      need(input$radio_rte_v1_spnthl_grasp, "Please select an answer for Cheerio Spoon Hard Left Hand: Child used which grasp with left hand?  "),
+      need(input$radio_rte_v1_spnthl_grasp, "Please select an answer for Cheerio Spoon Hard Left Hand: Child used which grasp with left hand?"),
       need(input$radio_rte_v1_spnthl_thumb, "Please select an answer for Cheerio Spoon Hard Left Hand: Where was left hand thumb pointing?"),
       need(input$radio_rte_v1_spnthl_success, "Please select an answer for Cheerio Spoon Hard Left Hand: Did child bring cheerio to mouth with left hand?")
     )
@@ -5748,8 +5748,8 @@ server <- function(input, output, session) {
       need(input$text_rte_v2_site, "Please select your site."),
       
       need(input$radio_rte_v2_sctr_success, "Please select an answer for Cheerio Small Base Task Right Hand: Did child reach small base with right hand?"),
-      need(input$radio_rte_v2_sctr_grasp, "Please select an answer for Cheerio Small Base Task Right Hand: Child used which grasp with right hand? "),
-      need(input$radio_rte_v2_sctl_success, "Please select an answer for Cheerio Small Base Task Left Hand: Did child reach small base with left hand? "),
+      need(input$radio_rte_v2_sctr_grasp, "Please select an answer for Cheerio Small Base Task Right Hand: Child used which grasp with right hand?"),
+      need(input$radio_rte_v2_sctl_success, "Please select an answer for Cheerio Small Base Task Left Hand: Did child reach small base with left hand?"),
       need(input$radio_rte_v2_sctl_grasp, "Please select an answer for Cheerio Small Base Task Left Hand: Child used which grasp with left hand?"),
       
       need(input$radio_rte_v2_lctr_success, "Please select an answer for Cheerio Large Base Task Right Hand: Did child reach small base with right hand?"),
@@ -6033,11 +6033,11 @@ server <- function(input, output, session) {
       need(input$text_sas_v2_site, "Please select your site."),
       
       need(input$radio_sas_v2_std_q1, "Please select an answer for Feet Together Stand: Unsupported for 30 seconds?"),
-      need(input$radio_sas_v2_std_q2_starttime, "Please select an answer for Feet Together Stand Find Timing: When did the child start standing? "),
-      need(input$radio_sas_v2_std_q2_endtime, "Please select an answer for Feet Together Stand Find Timing: When did the child stop standing? "),
+      need(input$radio_sas_v2_std_q2_starttime, "Please select an answer for Feet Together Stand Find Timing: When did the child start standing?"),
+      need(input$radio_sas_v2_std_q2_endtime, "Please select an answer for Feet Together Stand Find Timing: When did the child stop standing?"),
       
-      need(input$radio_sas_v2_std_q3, "Please select an answer for Tandem Stand: Unsupported for 30 seconds? "),
-      need(input$radio_sas_v2_std_q4_starttime, "Please select an answer for Tandem Stand Find Timing: When did the child start standing? "),
+      need(input$radio_sas_v2_std_q3, "Please select an answer for Tandem Stand: Unsupported for 30 seconds?"),
+      need(input$radio_sas_v2_std_q4_starttime, "Please select an answer for Tandem Stand Find Timing: When did the child start standing?"),
       need(input$radio_sas_v2_std_q4_endtime, "Please select an answer for Tandem Stand Find Timing: When did the child stop standing?")
     )
     
@@ -6299,11 +6299,11 @@ server <- function(input, output, session) {
       need(input$text_sas_v4_site, "Please select your site."),
       
       need(input$radio_sas_v4_std_q1, "Please select an answer for Feet Together Stand: Unsupported for 30 seconds?"),
-      need(input$radio_sas_v4_std_q2_starttime, "Please select an answer for Feet Together Stand Find Timing: When did the child start standing? "),
-      need(input$radio_sas_v4_std_q2_endtime, "Please select an answer for Feet Together Stand Find Timing: When did the child stop standing? "),
+      need(input$radio_sas_v4_std_q2_starttime, "Please select an answer for Feet Together Stand Find Timing: When did the child start standing?"),
+      need(input$radio_sas_v4_std_q2_endtime, "Please select an answer for Feet Together Stand Find Timing: When did the child stop standing?"),
       
-      need(input$radio_sas_v4_std_q3, "Please select an answer for Tandem Stand: Unsupported for 30 seconds? "),
-      need(input$radio_sas_v4_std_q4_starttime, "Please select an answer for Tandem Stand Find Timing: When did the child start standing? "),
+      need(input$radio_sas_v4_std_q3, "Please select an answer for Tandem Stand: Unsupported for 30 seconds?"),
+      need(input$radio_sas_v4_std_q4_starttime, "Please select an answer for Tandem Stand Find Timing: When did the child start standing?"),
       need(input$radio_sas_v4_std_q4_endtime, "Please select an answer for Tandem Stand Find Timing: When did the child stop standing?")
     )
     
