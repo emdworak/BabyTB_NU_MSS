@@ -3404,23 +3404,17 @@ server <- function(input, output, session) {
              Score_sobY_v1_SO_9_23_96 = ifelse(sobY_v1_SO_9_23_96 == K_9_23_96, 1, 0),
              
              Score_sobY_v1 = sum(Score_sobY_v1_SO_9_23_1, Score_sobY_v1_SO_9_23_2,       
-                                 Score_sobY_v1_SO_9_23_3,       
-                                 Score_sobY_v1_SO_9_23_4,       
-                                 Score_sobY_v1_SO_9_23_5,       
-                                 Score_sobY_v1_SO_9_23_6, Score_sobY_v1_SO_9_23_7,
+                                 Score_sobY_v1_SO_9_23_3, Score_sobY_v1_SO_9_23_4,       
+                                 Score_sobY_v1_SO_9_23_5, Score_sobY_v1_SO_9_23_6, 
+                                 Score_sobY_v1_SO_9_23_7,
                                  
-                                 Score_sobY_v1_SO_9_23_9,       
-                                 Score_sobY_v1_SO_9_23_10,       
-                                 Score_sobY_v1_SO_9_23_11,       
-                                 Score_sobY_v1_SO_9_23_12,       
-                                 Score_sobY_v1_SO_9_23_13,       
-                                 Score_sobY_v1_SO_9_23_14,       
-                                 Score_sobY_v1_SO_9_23_15,       
-                                 Score_sobY_v1_SO_9_23_16,       
+                                 Score_sobY_v1_SO_9_23_9, Score_sobY_v1_SO_9_23_10,       
+                                 Score_sobY_v1_SO_9_23_11, Score_sobY_v1_SO_9_23_12,       
+                                 Score_sobY_v1_SO_9_23_13, Score_sobY_v1_SO_9_23_14,       
+                                 Score_sobY_v1_SO_9_23_15, Score_sobY_v1_SO_9_23_16,       
                                  Score_sobY_v1_SO_9_23_17,       
                                  
-                                 Score_sobY_v1_SO_9_23_19,       
-                                 Score_sobY_v1_SO_9_23_20,       
+                                 Score_sobY_v1_SO_9_23_19, Score_sobY_v1_SO_9_23_20,       
                                  Score_sobY_v1_SO_9_23_21,       
                                  Score_sobY_v1_SO_9_23_22,       
                                  Score_sobY_v1_SO_9_23_23,       
@@ -3518,17 +3512,82 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>%
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
-                         "Q13", "Q14", "Q15", "Q16", "Q17", "Q18", 
-                         "Q19", "Q20", "Q21", "Q22", "Q23", "Q24", 
-                         "Q25", "Q26", "Q27", "Q28", "Q29", "Q30", 
-                         "Q31", "Q32", "Q33", "Q34", "Q35", "Q36",
-                         "Q37", "Q38", "Q39", "Q40", "Q41", "Q42",
-                         "Q43", "Q44", "Q45", "Q46", "Q47", "Q48", 
-                         "Q49", "Q50", "Q51", "Q52", "Q53", "Q54", 
-                         "Q55", "Q56", "Q57", "Q58", "Q59", "Q60",
-                         "Q61", "Q62", "Q63", "Q64", "Q65", "Q66"), 3)),
+      mutate(Q = c(rep(c("Communicative Temptation 1 (Minute One): 2-point gaze shift",
+                         "Communicative Temptation 1 (Minute One): 3-point gaze shift", 
+                         "Communicative Temptation 1 (Minute One): Smiles without look",
+                         "Communicative Temptation 1 (Minute One): Smiles with look",
+                         "Communicative Temptation 1 (Minute One): Show gesture",
+                         "Communicative Temptation 1 (Minute One): Uses point gesture",
+                         "Communicative Temptation 1 (Minute One): Comments with sounds or words",
+                         
+                         "Response to Name & Gaze/Point 1 (Minute Two): Responds to name", 
+                         "Response to Name & Gaze/Point 1 (Minute Two): Follows gaze/point",                         
+                         "Response to Name & Gaze/Point 1 (Minute Two): 2-point gaze shift",
+                         "Response to Name & Gaze/Point 1 (Minute Two): 3-point gaze shift", 
+                         "Response to Name & Gaze/Point 1 (Minute Two): Smiles without look",
+                         "Response to Name & Gaze/Point 1 (Minute Two): Smiles with look",
+                         "Response to Name & Gaze/Point 1 (Minute Two): Show gesture",
+                         "Response to Name & Gaze/Point 1 (Minute Two): Uses point gesture", 
+                         "Response to Name & Gaze/Point 1 (Minute Two): Comments with sounds or words",
+                         
+                         "Communicative Temptation 2 (Minute Three): 2-point gaze shift",
+                         "Communicative Temptation 2 (Minute Three): 3-point gaze shift", 
+                         "Communicative Temptation 2 (Minute Three): Smiles without look",
+                         "Communicative Temptation 2 (Minute Three): Smiles with look",
+                         "Communicative Temptation 2 (Minute Three): Show gesture",
+                         "Communicative Temptation 2 (Minute Three): Uses point gesture",
+                         "Communicative Temptation 2 (Minute Three): Comments with sounds or words",
+                         
+                         "Communicative Temptation 3, probe 2 (Minute Four): Responds to name", 
+                         "Communicative Temptation 3, probe 2 (Minute Four): Follows gaze/point",                         
+                         "Communicative Temptation 3, probe 2 (Minute Four): 2-point gaze shift",
+                         "Communicative Temptation 3, probe 2 (Minute Four): 3-point gaze shift", 
+                         "Communicative Temptation 3, probe 2 (Minute Four): Smiles without look",
+                         "Communicative Temptation 3, probe 2 (Minute Four): Smiles with look",
+                         "Communicative Temptation 3, probe 2 (Minute Four): Show gesture",
+                         "Communicative Temptation 3, probe 2 (Minute Four): Uses point gesture", 
+                         "Communicative Temptation 3, probe 2 (Minute Four): Comments with sounds or words",
+                         
+                         "Sharing Books 1 (Minute Five): 2-point gaze shift",
+                         "Sharing Books 1 (Minute Five): 3-point gaze shift", 
+                         "Sharing Books 1 (Minute Five): Smiles without look",
+                         "Sharing Books 1 (Minute Five): Smiles with look",
+                         "Sharing Books 1 (Minute Five): Show gesture",
+                         "Sharing Books 1 (Minute Five): Uses point gesture",
+                         "Sharing Books 1 (Minute Five): Comments with sounds or words",
+                         
+                         "Sharing Books 2 (Minute Six): 2-point gaze shift",
+                         "Sharing Books 2 (Minute Six): 3-point gaze shift", 
+                         "Sharing Books 2 (Minute Six): Smiles without look",
+                         "Sharing Books 2 (Minute Six): Smiles with look",
+                         "Sharing Books 2 (Minute Six): Show gesture",
+                         "Sharing Books 2 (Minute Six): Uses point gesture",
+                         "Sharing Books 2 (Minute Six): Comments with sounds or words",
+                         
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): Explores features of object",
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): 3 Pretend action sequences",
+                         
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): Explores features of object",
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): 3 Pretend action sequences",
+                         
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): Explores features of object",
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): 3 Pretend action sequences",
+                         
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): Explores features of object",
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): 3 Pretend action sequences"
+                         ), 3)),
              type = c(rep("Response", 66), rep("Answer", 66), rep("Score", 66))
       ) %>%
       select(-c(task_id:text_sobY_v1_date, Question)) %>%
@@ -3980,17 +4039,82 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>%
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
-                         "Q13", "Q14", "Q15", "Q16", "Q17", "Q18", 
-                         "Q19", "Q20", "Q21", "Q22", "Q23", "Q24", 
-                         "Q25", "Q26", "Q27", "Q28", "Q29", "Q30", 
-                         "Q31", "Q32", "Q33", "Q34", "Q35", "Q36",
-                         "Q37", "Q38", "Q39", "Q40", "Q41", "Q42",
-                         "Q43", "Q44", "Q45", "Q46", "Q47", "Q48", 
-                         "Q49", "Q50", "Q51", "Q52", "Q53", "Q54", 
-                         "Q55", "Q56", "Q57", "Q58", "Q59", "Q60",
-                         "Q61", "Q62", "Q63", "Q64", "Q65", "Q66"), 3)),
+      mutate(Q = c(rep(c("Communicative Temptation 1 (Minute One): 2-point gaze shift",
+                         "Communicative Temptation 1 (Minute One): 3-point gaze shift", 
+                         "Communicative Temptation 1 (Minute One): Smiles without look",
+                         "Communicative Temptation 1 (Minute One): Smiles with look",
+                         "Communicative Temptation 1 (Minute One): Show gesture",
+                         "Communicative Temptation 1 (Minute One): Uses point gesture",
+                         "Communicative Temptation 1 (Minute One): Comments with sounds or words",
+                         
+                         "Response to Name & Gaze/Point 1 (Minute Two): Responds to name", 
+                         "Response to Name & Gaze/Point 1 (Minute Two): Follows gaze/point",                         
+                         "Response to Name & Gaze/Point 1 (Minute Two): 2-point gaze shift",
+                         "Response to Name & Gaze/Point 1 (Minute Two): 3-point gaze shift", 
+                         "Response to Name & Gaze/Point 1 (Minute Two): Smiles without look",
+                         "Response to Name & Gaze/Point 1 (Minute Two): Smiles with look",
+                         "Response to Name & Gaze/Point 1 (Minute Two): Show gesture",
+                         "Response to Name & Gaze/Point 1 (Minute Two): Uses point gesture", 
+                         "Response to Name & Gaze/Point 1 (Minute Two): Comments with sounds or words",
+                         
+                         "Communicative Temptation 2 (Minute Three): 2-point gaze shift",
+                         "Communicative Temptation 2 (Minute Three): 3-point gaze shift", 
+                         "Communicative Temptation 2 (Minute Three): Smiles without look",
+                         "Communicative Temptation 2 (Minute Three): Smiles with look",
+                         "Communicative Temptation 2 (Minute Three): Show gesture",
+                         "Communicative Temptation 2 (Minute Three): Uses point gesture",
+                         "Communicative Temptation 2 (Minute Three): Comments with sounds or words",
+                         
+                         "Communicative Temptation 3, probe 2 (Minute Four): Responds to name", 
+                         "Communicative Temptation 3, probe 2 (Minute Four): Follows gaze/point",                         
+                         "Communicative Temptation 3, probe 2 (Minute Four): 2-point gaze shift",
+                         "Communicative Temptation 3, probe 2 (Minute Four): 3-point gaze shift", 
+                         "Communicative Temptation 3, probe 2 (Minute Four): Smiles without look",
+                         "Communicative Temptation 3, probe 2 (Minute Four): Smiles with look",
+                         "Communicative Temptation 3, probe 2 (Minute Four): Show gesture",
+                         "Communicative Temptation 3, probe 2 (Minute Four): Uses point gesture", 
+                         "Communicative Temptation 3, probe 2 (Minute Four): Comments with sounds or words",
+                         
+                         "Sharing Books 1 (Minute Five): 2-point gaze shift",
+                         "Sharing Books 1 (Minute Five): 3-point gaze shift", 
+                         "Sharing Books 1 (Minute Five): Smiles without look",
+                         "Sharing Books 1 (Minute Five): Smiles with look",
+                         "Sharing Books 1 (Minute Five): Show gesture",
+                         "Sharing Books 1 (Minute Five): Uses point gesture",
+                         "Sharing Books 1 (Minute Five): Comments with sounds or words",
+                         
+                         "Sharing Books 2 (Minute Six): 2-point gaze shift",
+                         "Sharing Books 2 (Minute Six): 3-point gaze shift", 
+                         "Sharing Books 2 (Minute Six): Smiles without look",
+                         "Sharing Books 2 (Minute Six): Smiles with look",
+                         "Sharing Books 2 (Minute Six): Show gesture",
+                         "Sharing Books 2 (Minute Six): Uses point gesture",
+                         "Sharing Books 2 (Minute Six): Comments with sounds or words",
+                         
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): Explores features of object",
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 1 (Minute Seven): 3 Pretend action sequences",
+                         
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): Explores features of object",
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 2 (Minute Eight): 3 Pretend action sequences",
+                         
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): Explores features of object",
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 3 (Minute Nine): 3 Pretend action sequences",
+                         
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): Explores features of object",
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): Uses item functionally", 
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): Pretends toward other (caregiver, examiner, doll)",
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): 2 Pretend action sequences",
+                         "Parent/Caregiver-Child Play 4 (Minute Ten): 3 Pretend action sequences"
+                         ), 3)),
              type = c(rep("Response", 66), rep("Answer", 66), rep("Score", 66))
       ) %>%
       select(-c(task_id:text_sobY_v2_date, Question)) %>%
@@ -4231,12 +4355,42 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>%
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
-                         "Q13", "Q14", "Q15", "Q16", "Q17", "Q18", 
-                         "Q19", "Q20", "Q21", "Q22", "Q23", "Q24", 
-                         "Q25", "Q26", "Q27", "Q28", "Q29", "Q30", 
-                         "Q31"), 3)),
+      mutate(Q = c(rep(c("Joint Attention (Minute One): Following point",
+                         "Joint Attention (Minute One): Complies with request (pot) spontaneously", 
+                         "Joint Attention (Minute One): Complies with request after prompt",
+                         "Joint Attention (Minute One): Comments on jungle animal",
+                         "Joint Attention (Minute One): Points to jungle animal",
+                         "Joint Attention (Minute One): Shows jungle animal",
+                         
+                         "Pretend Play (Minutes Two-Three): Child-as-agent", 
+                         "Pretend Play (Minutes Two-Three): Substitution",                         
+                         "Pretend Play (Minutes Two-Three): Substitution without object",
+                         "Pretend Play (Minutes Two-Three): Dolls-as-agent", 
+                         "Pretend Play (Minutes Two-Three): Socio-dramatic play",
+                         
+                         "Prosocial Behavior (Minutes Four-Five): Shares blocks",
+                         "Prosocial Behavior (Minutes Four-Five): Takes turns building tower", 
+                         "Prosocial Behavior (Minutes Four-Five): Picks up fallen blocks or repairs tower",
+                         "Prosocial Behavior (Minutes Four-Five): Concerned facial expression",
+                         "Prosocial Behavior (Minutes Four-Five): Verbal concern/comforting",
+                         "Prosocial Behavior (Minutes Four-Five): Physical comforting",
+                         "Prosocial Behavior (Minutes Four-Five): Helps clean up spontaneously",
+                         "Prosocial Behavior (Minutes Four-Five): Helps clean up after prompt",
+                         
+                         "Social Communication 1 (Minutes Six-Seven): Rebuilds elephant at least 2-steps", 
+                         "Social Communication 1 (Minutes Six-Seven): Rebuilds elephant all steps",                         
+                         "Social Communication 1 (Minutes Six-Seven): Steps in correct order",
+                         "Social Communication 1 (Minutes Six-Seven): Asks for help opening container",
+                         
+                         "Social Communications 2 (Minutes Eight-Ten): Initiates/responds to conversation",
+                         "Social Communications 2 (Minutes Eight-Ten): Takes a conversational turn", 
+                         "Social Communications 2 (Minutes Eight-Ten): Responds to a shift in topic",
+                         "Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by protest only",
+                         "Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by giving correct label",
+                         "Social Communications 2 (Minutes Eight-Ten): Adapts speech register for doll",
+                         "Social Communications 2 (Minutes Eight-Ten): Turns book to face doll",
+                         "Social Communications 2 (Minutes Eight-Ten): Attempts to teach doll"
+                         ), 3)),
              type = c(rep("Response", 31), rep("Answer", 31), rep("Score", 31))
       ) %>%
       select(-c(task_id:text_sobO_v1_date, Question)) %>%
@@ -4473,12 +4627,42 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>%
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
-                         "Q13", "Q14", "Q15", "Q16", "Q17", "Q18", 
-                         "Q19", "Q20", "Q21", "Q22", "Q23", "Q24", 
-                         "Q25", "Q26", "Q27", "Q28", "Q29", "Q30", 
-                         "Q31"), 3)),
+      mutate(Q = c(rep(c("Joint Attention (Minute One): Following point",
+                         "Joint Attention (Minute One): Complies with request (pot) spontaneously", 
+                         "Joint Attention (Minute One): Complies with request after prompt",
+                         "Joint Attention (Minute One): Comments on jungle animal",
+                         "Joint Attention (Minute One): Points to jungle animal",
+                         "Joint Attention (Minute One): Shows jungle animal",
+                         
+                         "Pretend Play (Minutes Two-Three): Child-as-agent", 
+                         "Pretend Play (Minutes Two-Three): Substitution",                         
+                         "Pretend Play (Minutes Two-Three): Substitution without object",
+                         "Pretend Play (Minutes Two-Three): Dolls-as-agent", 
+                         "Pretend Play (Minutes Two-Three): Socio-dramatic play",
+                         
+                         "Prosocial Behavior (Minutes Four-Five): Shares blocks",
+                         "Prosocial Behavior (Minutes Four-Five): Takes turns building tower", 
+                         "Prosocial Behavior (Minutes Four-Five): Picks up fallen blocks or repairs tower",
+                         "Prosocial Behavior (Minutes Four-Five): Concerned facial expression",
+                         "Prosocial Behavior (Minutes Four-Five): Verbal concern/comforting",
+                         "Prosocial Behavior (Minutes Four-Five): Physical comforting",
+                         "Prosocial Behavior (Minutes Four-Five): Helps clean up spontaneously",
+                         "Prosocial Behavior (Minutes Four-Five): Helps clean up after prompt",
+                         
+                         "Social Communication 1 (Minutes Six-Seven): Rebuilds elephant at least 2-steps", 
+                         "Social Communication 1 (Minutes Six-Seven): Rebuilds elephant all steps",                         
+                         "Social Communication 1 (Minutes Six-Seven): Steps in correct order",
+                         "Social Communication 1 (Minutes Six-Seven): Asks for help opening container",
+                         
+                         "Social Communications 2 (Minutes Eight-Ten): Initiates/responds to conversation",
+                         "Social Communications 2 (Minutes Eight-Ten): Takes a conversational turn", 
+                         "Social Communications 2 (Minutes Eight-Ten): Responds to a shift in topic",
+                         "Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by protest only",
+                         "Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by giving correct label",
+                         "Social Communications 2 (Minutes Eight-Ten): Adapts speech register for doll",
+                         "Social Communications 2 (Minutes Eight-Ten): Turns book to face doll",
+                         "Social Communications 2 (Minutes Eight-Ten): Attempts to teach doll"
+                         ), 3)),
              type = c(rep("Response", 31), rep("Answer", 31), rep("Score", 31))
       ) %>%
       select(-c(task_id:text_sobO_v2_date, Question)) %>%
@@ -4680,8 +4864,16 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>%
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10"), 3)),
+      mutate(Q = c(rep(c("Did child get off back?", 
+                         "How child got off back?", 
+                         "Most upright postures?", 
+                         "Child turned to face finish line?", 
+                         "How child traveled?", 
+                         "How far child traveled?",
+                         "When did the child cross start line?", 
+                         "When did the child cross finish line?", 
+                         "How did child get up stair?", 
+                         "How did child get down stair?"), 3)),
              type = c(rep("Response", 10), rep("Answer", 10), rep("Score", 10))
       ) %>%
       select(-c(task_id:text_gug_v1_date, Question)) %>%
@@ -4913,9 +5105,19 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>%
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
-                         "Q13"), 3)),
+      mutate(Q = c(rep(c("Did child get off back?", 
+                         "How child got off back?", 
+                         "Most upright postures?", 
+                         "How child got to standing?", 
+                         "How many hands child used?", 
+                         "Child turned to face finish line?",
+                         "How child traveled?", 
+                         "Child walked on toes?", 
+                         "How far child traveled?", 
+                         "When did the child cross start line?", 
+                         "When did the child cross finish line?", 
+                         "How did child get up stair?",
+                         "How did child get down stair?"), 3)),
              type = c(rep("Response", 13), rep("Answer", 13), rep("Score", 13))
       ) %>%
       select(-c(task_id:text_gug_v2_date, Question)) %>%
@@ -5187,10 +5389,34 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>% 
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
-                         "Q13", "Q14", "Q15", "Q16", "Q17", "Q18",
-                         "Q19", "Q20", "Q21", "Q22", "Q23", "Q24"), 3)),
+      mutate(Q = c(rep(c("Cheerio Small Base Task Right Hand: Did child reach small base with right hand?", 
+                         "Cheerio Small Base Task Right Hand: Child used which grasp with right hand?", 
+                         "Cheerio Small Base Task Left Hand: Did child reach small base with left hand?", 
+                         "Cheerio Small Base Task Left Hand: Child used which grasp with left hand?", 
+                         
+                         "Cheerio Spoon Easy Right Hand: Did child use right hand to move spoon?", 
+                         "Cheerio Spoon Easy Right Hand: Did child use right hand to grasp or move handle?",
+                         "Cheerio Spoon Easy Right Hand: Child used which grasp with right hand?", 
+                         "Cheerio Spoon Easy Right Hand: Where was right hand thumb pointing?", 
+                         "Cheerio Spoon Easy Right Hand: Did child bring cheerio to mouth with right hand?", 
+                         
+                         "Cheerio Spoon Hard Right Hand: Did child use right hand to move spoon?", 
+                         "Cheerio Spoon Hard Right Hand: Did child use right hand to grasp or move handle?",
+                         "Cheerio Spoon Hard Right Hand: Child used which grasp with right hand?", 
+                         "Cheerio Spoon Hard Right Hand: Where was right hand thumb pointing?", 
+                         "Cheerio Spoon Hard Right Hand: Did child bring cheerio to mouth with right hand?", 
+                         
+                         "Cheerio Spoon Easy Left Hand: Did child use left hand to move spoon?", 
+                         "Cheerio Spoon Easy Left Hand: Did child use left hand to grasp or move handle?",
+                         "Cheerio Spoon Easy Left Hand: Child used which grasp with left hand?", 
+                         "Cheerio Spoon Easy Left Hand: Where was left hand thumb pointing?", 
+                         "Cheerio Spoon Easy Left Hand: Did child bring cheerio to mouth with left hand?", 
+                         
+                         "Cheerio Spoon Hard Left Hand: Did child use left hand to move spoon?", 
+                         "Cheerio Spoon Hard Left Hand: Did child use left hand to grasp or move handle?",
+                         "Cheerio Spoon Hard Left Hand: Child used which grasp with left hand?", 
+                         "Cheerio Spoon Hard Left Hand: Where was left hand thumb pointing?", 
+                         "Cheerio Spoon Hard Left Hand: Did child bring cheerio to mouth with left hand?"), 3)),
              type = c(rep("Response", 24), rep("Answer", 24), rep("Score", 24))
       ) %>% 
       select(-c(task_id:text_rte_v1_date, Question)) %>% 
@@ -5334,8 +5560,15 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>% 
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6",
-                         "Q7", "Q8"), 3)),
+      mutate(Q = c(rep(c("Cheerio Small Base Task Right Hand: Did child reach small base with right hand?", 
+                         "Cheerio Small Base Task Right Hand: Child used which grasp with right hand?", 
+                         "Cheerio Small Base Task Left Hand: Did child reach small base with left hand?", 
+                         "Cheerio Small Base Task Left Hand: Child used which grasp with left hand?", 
+                         
+                         "Cheerio Large Base Task Right Hand: Did child reach small base with right hand?", 
+                         "Cheerio Large Base Task Right Hand: Child used which grasp with right hand?", 
+                         "Cheerio Large Base Task Left Hand: Did child reach small base with left hand?", 
+                         "Cheerio Large Base Task Left Hand: Child used which grasp with left hand?"), 3)),
              type = c(rep("Response", 8), rep("Answer", 8), rep("Score", 8))
       ) %>% 
       select(-c(task_id:text_rte_v2_date, Question)) %>% 
@@ -5437,7 +5670,9 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>% 
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3"), 3)),
+      mutate(Q = c(rep(c("Unsupported Sit: Did child sit for 30 seconds?", 
+                         "Find Longest Segment: When did the child start sitting?",
+                         "Find Longest Segment: When did the child stop sitting?"), 3)),
              type = c(rep("Response", 3), rep("Answer", 3), rep("Score", 3))
       ) %>% 
       select(-c(task_id:text_sas_v1_date, Question)) %>% 
@@ -5568,7 +5803,12 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>% 
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6"), 3)),
+      mutate(Q = c(rep(c("Feet Together Stand: Unsupported for 30 seconds?", 
+                         "Feet Together Stand Find Timing: When did the child start standing?", 
+                         "Feet Together Stand Find Timing: When did the child stop standing?", 
+                         "Tandem Stand: Unsupported for 30 seconds?", 
+                         "Tandem Stand Find Timing: When did the child start standing?", 
+                         "Tandem Stand Find Timing: When did the child stop standing?"), 3)),
              type = c(rep("Response", 6), rep("Answer", 6), rep("Score", 6))
       ) %>% 
       select(-c(task_id:text_sas_v2_date, Question)) %>% 
@@ -5676,7 +5916,10 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>% 
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4"), 3)),
+      mutate(Q = c(rep(c("Pull to Sit: head in line with torso?", 
+                         "Unsupported Sit: Did child sit for 30 seconds?", 
+                         "Find Longest Segment: When did the child start sitting?", 
+                         "Find Longest Segment: When did the child stop sitting?"), 3)),
              type = c(rep("Response", 4), rep("Answer", 4), rep("Score", 4))
       ) %>% 
       select(-c(task_id:text_sas_v3_date, Question)) %>% 
@@ -5803,7 +6046,12 @@ server <- function(input, output, session) {
                    names_to = "Question",
                    values_to = "Score"
       ) %>% 
-      mutate(Q = c(rep(c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6"), 3)),
+      mutate(Q = c(rep(c("Feet Together Stand: Unsupported for 30 seconds?", 
+                         "Feet Together Stand Find Timing: When did the child start standing?", 
+                         "Feet Together Stand Find Timing: When did the child stop standing?", 
+                         "Tandem Stand: Unsupported for 30 seconds?", 
+                         "Tandem Stand Find Timing: When did the child start standing?", 
+                         "Tandem Stand Find Timing: When did the child start standing?"), 3)),
              type = c(rep("Response", 6), rep("Answer", 6), rep("Score", 6))
       ) %>% 
       select(-c(task_id:text_sas_v4_date, Question)) %>% 
