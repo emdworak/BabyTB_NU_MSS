@@ -124,8 +124,12 @@ tabItem(tabName = "tab_somY_v1",
           ),
 
           column(6,
-                 textInput("text_sobY_v1_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sobY_v1_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sobY_v1_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -602,8 +606,12 @@ tabItem(tabName = "tab_somY_v2",
           ),
 
           column(6,
-                 textInput("text_sobY_v2_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sobY_v2_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sobY_v2_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -1080,8 +1088,12 @@ tabItem(tabName = "tab_somO_v1",
           ),
 
           column(6,
-                 textInput("text_sobO_v1_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sobO_v1_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sobO_v1_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -1332,8 +1344,12 @@ tabItem(tabName = "tab_somO_v2",
           ),
 
           column(6,
-                 textInput("text_sobO_v2_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sobO_v2_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sobO_v2_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -1585,8 +1601,12 @@ tabItem(tabName = "tab_gug_v1",
           ),
 
           column(6,
-                 textInput("text_gug_v1_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_gug_v1_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_gug_v1_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -1798,8 +1818,12 @@ tabItem(tabName = "tab_gug_v2",
           ),
 
           column(6,
-                 textInput("text_gug_v2_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_gug_v2_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_gug_v2_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -2012,8 +2036,12 @@ tabItem(tabName = "tab_rte_v1",
           ),
 
           column(6,
-                 textInput("text_rte_v1_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_rte_v1_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_rte_v1_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -2404,8 +2432,12 @@ tabItem(tabName = "tab_rte_v2",
           ),
 
           column(6,
-                 textInput("text_rte_v2_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_rte_v2_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_rte_v2_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -2628,8 +2660,13 @@ tabItem(tabName = "tab_sas_v2",
           ),
 
           column(6,
-                 textInput("text_sas_v2_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sas_v2_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sas_v2_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
+                 
           ),
 
           column(6,
@@ -2741,8 +2778,12 @@ tabItem(tabName = "tab_sas_v3",
           ),
 
           column(6,
-                 textInput("text_sas_v3_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sas_v3_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sas_v3_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
@@ -2831,8 +2872,12 @@ tabItem(tabName = "tab_sas_v4",
           ),
 
           column(6,
-                 textInput("text_sas_v4_site", h4("Site:"),
-                           value = "")
+                 # textInput("text_sas_v4_site", h4("Site:"),
+                 #           value = "")
+                 selectInput("text_sas_v4_site", h4("Site:"),
+                             c("Site 1" = "Site 1",
+                               "Site 2" = "Site 2",
+                               "Site 3" = "Site 3")) # PURPLE RABBITS: Need to update all the sites to dropdown menus
           ),
 
           column(6,
