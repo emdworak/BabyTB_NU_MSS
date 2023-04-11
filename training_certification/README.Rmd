@@ -1,0 +1,35 @@
+---
+title: "Training Certification Shiny App"
+subtitle: "NIH BabyTB GitHub Repository"
+author: "Elizabeth Dworak"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  github_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    highlight: "tango"
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Overview
+
+Welcome to the NBT Training Certification folder (`training_certification`). This folder includes code used for the training certification Shiny application. This application is intended to certify examiners undergoing training in the administration of the NIH BabyTB.
+
+
+# Folder organization
+
+As of `r format(Sys.time(), '%B %Y')`, this folder contains a limited number of files used to create, score, and collect data from the Shiny application. Below is a brief description of the organization of the files and folders:
+
+-   `app.R` - This file contains the primary code to run, score, and collect data from the Shiny application designed for scoring certification for those undergoing training on the NBT.
+
+-   `deploy.R` - This file contains a the code used for deploying and terminating the Shiny application. 
+
+-   `authentication_files` - This folder contains hidden files for authenticating the Shiny application for data collection. The file will appear blank on GitHub to keep the authentication information confidential. However, the file has been uploaded to show the structures to those interested in creating their own Shiny application.  
+
+

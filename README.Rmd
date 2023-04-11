@@ -26,7 +26,7 @@ While there are several well-known assessment batteries for use by children unde
 
 # Repo organization
 
-As of April 2023, this repo is organized into two folders. Each folder will have a README that explains the purpose of the folder as well as the necessary steps to run and/or obtain the files in that folder. Below is a brief description of the organization of the folders:
+As of `r format(Sys.time(), '%B %Y')`, this repo is organized into two folders. Each folder will have a README that explains the purpose of the folder as well as the necessary steps to run and/or obtain the files in that folder. Below is a brief description of the organization of the folders:
 
 -   `training_certification` - This folder contains the code to run the Shiny App designed for scoring certification for those undergoing training on the NBT.
 
