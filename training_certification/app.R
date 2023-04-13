@@ -2193,7 +2193,7 @@ tabItem(tabName = "tab_rte_v1",
                               choiceNames = c("Noncompliant", "Refused to pick up spoon",
                                               "Picked up to play", "Grasped Cheerio",
                                               "Grasped spoon for transport"),
-                              choiceValues = app_values_1_5, selected = "")
+                              choiceValues = app_values_0_4, selected = "")
           )
         ),
 
@@ -2244,7 +2244,7 @@ tabItem(tabName = "tab_rte_v1",
                               choiceNames = c("Noncompliant", "Refused to pick up spoon",
                                               "Picked up to play", "Grasped Cheerio",
                                               "Grasped spoon for transport"),
-                              choiceValues = app_values_1_5, selected = "")
+                              choiceValues = app_values_0_4, selected = "")
           )
         ),
 
@@ -2296,7 +2296,7 @@ tabItem(tabName = "tab_rte_v1",
                               choiceNames = c("Noncompliant", "Refused to pick up spoon",
                                               "Picked up to play", "Grasped Cheerio",
                                               "Grasped spoon for transport"),
-                              choiceValues = app_values_1_5, selected = "")
+                              choiceValues = app_values_0_4, selected = "")
           )
         ),
 
@@ -2350,7 +2350,7 @@ tabItem(tabName = "tab_rte_v1",
                               choiceNames = c("Noncompliant", "Refused to pick up spoon",
                                               "Picked up to play", "Grasped Cheerio",
                                               "Grasped spoon for transport"),
-                              choiceValues = app_values_1_5, selected = "")
+                              choiceValues = app_values_0_4, selected = "")
           )
         ),
 
