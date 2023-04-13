@@ -1849,7 +1849,7 @@ tabItem(tabName = "tab_gug_v2",
           column(6,
                  radioButtons("radio_gug_v2_back", p("Did child get off back?"),
                               choiceNames = c("No (didn’t try)", "No (tried but couldn’t)", "Yes"),
-                              choiceValues = app_values_1_3, selected = "")
+                              choiceValues = app_values_0_2, selected = "")
           )
         ),
 
@@ -1966,7 +1966,7 @@ tabItem(tabName = "tab_gug_v2",
                                               "Climbed up, stayed prone", "Climbed up, stood up",
                                               "Tried to step & fell", "Stepped up, not integrated",
                                               "Stepped up, gait integrated"),
-                              choiceValues = app_values_1_9, selected = "")
+                              choiceValues = app_values_0_8, selected = "")
           )
         ),
 
@@ -6411,7 +6411,7 @@ server <- function(input, output, session) {
                          "Feet Together Stand Find Timing: When did the child stop standing?", 
                          "Tandem Stand: Unsupported for 30 seconds?", 
                          "Tandem Stand Find Timing: When did the child start standing?", 
-                         "Tandem Stand Find Timing: When did the child start standing?"), 3)),
+                         "Tandem Stand Find Timing: When did the child stop standing?"), 3)),
              type = c(rep("Response", 6), rep("Answer", 6), rep("Score", 6))
       ) %>% 
       select(-c(task_id:text_sas_v4_date, Question)) %>% 
