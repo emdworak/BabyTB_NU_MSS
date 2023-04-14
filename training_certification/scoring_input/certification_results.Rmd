@@ -1,0 +1,1813 @@
+---
+title: "BabyTB Certification Scoring"
+subtitle: 'Individuallized Results'
+author: "Elizabeth Dworak"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    code_folding: hide
+---
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+options(width = 400)
+```
+
+# Prepare the data
+
+```{r, message = FALSE}
+# install.packages("psych", repos = "http://personality-project.org/r", type = "source")
+# install.packages("psychTools", repos = "http://personality-project.org/r", type = "source")
+
+# Load the relevant libraries --------------------------
+library(psych)
+library(psychTools)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(ggpubr)
+library(kableExtra)
+
+# Make sure you're running the most recent version of psych
+# sessionInfo()
+
+```
+
+```{r}
+setwd("~/Desktop/MSS/BabyTB/BabyTB_Github/BabyTB_NU_MSS/training_certification/scoring_input")
+
+# Load the functions and data --------------------------
+`%nin%` <- Negate(`%in%`)
+
+## Load in the score data 
+cert_df_app_v1 <- read_xlsx("data/2023_BBTB_Cert_20230413.xlsx") %>% 
+  janitor::clean_names() %>% 
+  filter(name %nin% c("QA Testing", "QA Test", "TEST-MIRIAM")) %>% 
+  filter(key == "Response")
+
+# dim(cert_df_app_v1)
+# colnames(cert_df_app_v1)
+
+## Load in the item data 
+cert_df_app_v2 <- read_xlsx("data/2023_BBTB_Cert_20230414.xlsx") %>% 
+  janitor::clean_names() %>% 
+  filter(name %nin% c("QA Testing", "QA Test", "TEST-MIRIAM")) %>% 
+  filter(key == "Response") %>% 
+  filter(app_version != 1) %>% 
+  mutate(app_version = ifelse(is.na(app_version), 2, app_version))
+
+## Bind the cols
+cert_df_app_v1v2 <- bind_rows(cert_df_app_v1, cert_df_app_v2) 
+
+```
+
+## Deal with Duplicates
+We want to make sure we're only pulling the first instance. 
+
+### Confirm that the names are the same 
+
+We need to make sure there aren't errors in name entries before transforming the data
+```{r}
+cert_df_app_v1v2 %>% 
+  count(name, site)
+```
+
+### Deal with duplicates
+See how many duplicates we're dealing with.
+
+So far there appears to be not duplicates between version 1 and version 2. This is something that needs to be checked every time we read in an updated version of the file. 
+
+This is not information that needs to be printed out in the report as it's over 200 rows long.
+```{r, eval=FALSE}
+cert_df_app_v1v2 %>% 
+  count(name, site, item_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  mutate(sum = sum(n))
+```
+
+See which specific tests are being duplicated and by whom. 
+```{r}
+cert_df_app_v1v2 %>% 
+  count(name, site, item_id, task_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  select(-c(item_id)) %>% 
+  unique() %>% 
+  arrange(name)
+```
+
+We have approximately the following number of extra cases:
+```{r}
+pull_sum <- cert_df_app_v1v2 %>% 
+  count(name, site, item_id, task_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  mutate(sum = sum(n)) %>% 
+  select(sum) %>% 
+  unique() %>% 
+  pull(sum)
+
+pull_cases <- cert_df_app_v1v2 %>% 
+  count(name, site, item_id, task_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  mutate(sum = sum(n)) %>% 
+  nrow()
+
+pull_sum - pull_cases
+```
+
+However, it's expected that there should only be the following number of "real" cases:
+```{r}
+nrow(cert_df_app_v1v2) - (pull_sum - pull_cases)
+```
+
+A break down looking at the date of submission is provided below:
+```{r}
+cert_df_app_v1v2 %>% 
+  group_by(name, site, item_id) %>% 
+  mutate(dup = ifelse(date == min(date), "original", "duplicate")) %>% 
+  ungroup() %>% 
+  count(dup)
+
+# cert_df_app_v1v2 %>% 
+#   group_by(name, site, item_id) %>% 
+#   filter(date == min(date)) %>% 
+#   ungroup() %>% 
+#   dim()
+
+cert_df_app_v1v2_nodups <- cert_df_app_v1v2 %>% 
+  group_by(name, site, item_id) %>% 
+  filter(date == min(date)) %>% 
+  ungroup() 
+
+cert_df_app_v1_nodups <- cert_df_app_v1v2_nodups %>% 
+  filter(app_version == 1)
+
+cert_df_app_v2_nodups <- cert_df_app_v1v2_nodups %>% 
+  filter(app_version != 1)
+```
+
+
+## Fix the mis-scaled data from version 1 of the app 
+
+```{r}
+cert_df_app_v1_corrected_fix_scaling <- cert_df_app_v1_nodups %>% 
+  filter(item_id %in% c("gug_v2_back", "gug_v2_stairup",
+                        "rte_v1_spnter_purpose", "rte_v1_spnthr_purpose",
+                        "rte_v1_spntel_purpose",  "rte_v1_spnthl_purpose"
+                        )) %>% 
+  mutate(value = value - 1)
+
+cert_df_app_v1_correct_values <- cert_df_app_v1_nodups %>% 
+  filter(item_id %nin% c("gug_v2_back", "gug_v2_stairup",
+                        "rte_v1_spnter_purpose", "rte_v1_spnthr_purpose",
+                        "rte_v1_spntel_purpose",  "rte_v1_spnthl_purpose"
+                        ))
+
+
+cert_df_app_v1_corrected <- bind_rows(cert_df_app_v1_correct_values,
+                                      cert_df_app_v1_corrected_fix_scaling)
+
+## Combine the corrected V1 data with the V2 data
+cert_df_long <- bind_rows(cert_df_app_v1_corrected, cert_df_app_v2_nodups)
+```
+
+
+```{r, eval = FALSE}
+## Make sure the combined data are the same size
+dim(cert_df_app_v1v2_nodups)
+dim(cert_df_long)
+```
+
+## Make a wide dataframe
+```{r}
+cert_df_wide <- cert_df_long %>% 
+  pivot_wider(., id_cols = c(name, site),
+              names_from = item_id,
+              values_from = value)
+
+## These folks have finished certification
+cert_df_wide_full <- cert_df_wide %>% 
+  na.omit()
+
+
+## These are the folks that have not finished their certification
+cert_df_wide_NA <- setdiff(cert_df_wide, cert_df_wide_full)
+```
+
+Who has complete data:
+```{r}
+cert_df_wide_full %>% 
+  count(name, site)
+```
+
+Who has incomplete data:
+```{r}
+cert_df_wide_NA %>% 
+  count(name, site)
+```
+
+
+
+
+
+# Score the data
+
+## Create the Answer Keys
+```{r}
+sobY_v1_key_df <- data.frame(
+    K_sob_v1_9_23_1 = c(1),
+    K_sob_v1_9_23_2 = c(1),
+    K_sob_v1_9_23_3 = c(1),
+    K_sob_v1_9_23_4 = c(1),
+    K_sob_v1_9_23_5 = c(1),
+    K_sob_v1_9_23_6 = c(0),
+    K_sob_v1_9_23_7 = c(0),
+    K_sob_v1_9_23_9 = c(1),
+    K_sob_v1_9_23_10 = c(1),
+    K_sob_v1_9_23_11 = c(1),
+    K_sob_v1_9_23_12 = c(0),
+    K_sob_v1_9_23_13 = c(1),
+    K_sob_v1_9_23_14 = c(1),
+    K_sob_v1_9_23_15 = c(0),
+    K_sob_v1_9_23_16 = c(0),
+    K_sob_v1_9_23_17 = c(1),
+    K_sob_v1_9_23_19 = c(1),
+    K_sob_v1_9_23_20 = c(1),
+    K_sob_v1_9_23_21 = c(1),
+    K_sob_v1_9_23_22 = c(1),
+    K_sob_v1_9_23_23 = c(0),
+    K_sob_v1_9_23_24 = c(0),
+    K_sob_v1_9_23_25 = c(1),
+    K_sob_v1_9_23_27 = c(1),
+    K_sob_v1_9_23_28 = c(1),
+    K_sob_v1_9_23_29 = c(1),
+    K_sob_v1_9_23_30 = c(1),
+    K_sob_v1_9_23_31 = c(1),
+    K_sob_v1_9_23_32 = c(1),
+    K_sob_v1_9_23_33 = c(0),
+    K_sob_v1_9_23_34 = c(1),
+    K_sob_v1_9_23_35 = c(1),
+    K_sob_v1_9_23_37 = c(0),
+    K_sob_v1_9_23_38 = c(1),
+    K_sob_v1_9_23_39 = c(1),
+    K_sob_v1_9_23_40 = c(1),
+    K_sob_v1_9_23_41 = c(0),
+    K_sob_v1_9_23_42 = c(1),
+    K_sob_v1_9_23_43 = c(1),
+    K_sob_v1_9_23_45 = c(1),
+    K_sob_v1_9_23_46 = c(1),
+    K_sob_v1_9_23_47 = c(1),
+    K_sob_v1_9_23_48 = c(1),
+    K_sob_v1_9_23_49 = c(0),
+    K_sob_v1_9_23_50 = c(1),
+    K_sob_v1_9_23_51 = c(1),
+    K_sob_v1_9_23_53 = c(1),
+    K_sob_v1_9_23_54 = c(1),
+    K_sob_v1_9_23_55 = c(1),
+    K_sob_v1_9_23_56 = c(0),
+    K_sob_v1_9_23_57 = c(0),
+    K_sob_v1_9_23_66 = c(0),
+    K_sob_v1_9_23_67 = c(1),
+    K_sob_v1_9_23_68 = c(1),
+    K_sob_v1_9_23_69 = c(0),
+    K_sob_v1_9_23_70 = c(0),
+    K_sob_v1_9_23_79 = c(1),
+    K_sob_v1_9_23_80 = c(1),
+    K_sob_v1_9_23_81 = c(0),
+    K_sob_v1_9_23_82 = c(0),
+    K_sob_v1_9_23_83 = c(0),
+    K_sob_v1_9_23_92 = c(1),
+    K_sob_v1_9_23_93 = c(1),
+    K_sob_v1_9_23_94 = c(1),
+    K_sob_v1_9_23_95 = c(1),
+    K_sob_v1_9_23_96 = c(0)
+  )
+
+sobY_v2_key_df <- data.frame(
+    K_sob_v2_9_23_1 = c(1),
+    K_sob_v2_9_23_2 = c(1),
+    K_sob_v2_9_23_3 = c(1),
+    K_sob_v2_9_23_4 = c(1),
+    K_sob_v2_9_23_5 = c(0),
+    K_sob_v2_9_23_6 = c(0),
+    K_sob_v2_9_23_7 = c(0),
+    K_sob_v2_9_23_9 = c(1),
+    K_sob_v2_9_23_10 = c(1),
+    K_sob_v2_9_23_11 = c(1),
+    K_sob_v2_9_23_12 = c(0),
+    K_sob_v2_9_23_13 = c(1),
+    K_sob_v2_9_23_14 = c(1),
+    K_sob_v2_9_23_15 = c(0),
+    K_sob_v2_9_23_16 = c(0),
+    K_sob_v2_9_23_17 = c(1),
+    K_sob_v2_9_23_19 = c(1),
+    K_sob_v2_9_23_20 = c(1),
+    K_sob_v2_9_23_21 = c(1),
+    K_sob_v2_9_23_22 = c(1),
+    K_sob_v2_9_23_23 = c(0),
+    K_sob_v2_9_23_24 = c(0),
+    K_sob_v2_9_23_25 = c(1),
+    K_sob_v2_9_23_27 = c(1),
+    K_sob_v2_9_23_28 = c(1),
+    K_sob_v2_9_23_29 = c(1),
+    K_sob_v2_9_23_30 = c(1),
+    K_sob_v2_9_23_31 = c(0),
+    K_sob_v2_9_23_32 = c(1),
+    K_sob_v2_9_23_33 = c(1),
+    K_sob_v2_9_23_34 = c(0),
+    K_sob_v2_9_23_35 = c(1),
+    K_sob_v2_9_23_37 = c(1),
+    K_sob_v2_9_23_38 = c(1),
+    K_sob_v2_9_23_39 = c(1),
+    K_sob_v2_9_23_40 = c(1),
+    K_sob_v2_9_23_41 = c(0),
+    K_sob_v2_9_23_42 = c(0),
+    K_sob_v2_9_23_43 = c(1),
+    K_sob_v2_9_23_45 = c(1),
+    K_sob_v2_9_23_46 = c(1),
+    K_sob_v2_9_23_47 = c(1),
+    K_sob_v2_9_23_48 = c(1),
+    K_sob_v2_9_23_49 = c(0),
+    K_sob_v2_9_23_50 = c(1),
+    K_sob_v2_9_23_51 = c(1),
+    K_sob_v2_9_23_53 = c(0),
+    K_sob_v2_9_23_54 = c(0),
+    K_sob_v2_9_23_55 = c(0),
+    K_sob_v2_9_23_56 = c(1),
+    K_sob_v2_9_23_57 = c(0),
+    K_sob_v2_9_23_66 = c(0),
+    K_sob_v2_9_23_67 = c(1),
+    K_sob_v2_9_23_68 = c(1),
+    K_sob_v2_9_23_69 = c(1),
+    K_sob_v2_9_23_70 = c(0),
+    K_sob_v2_9_23_79 = c(0),
+    K_sob_v2_9_23_80 = c(1),
+    K_sob_v2_9_23_81 = c(1),
+    K_sob_v2_9_23_82 = c(1),
+    K_sob_v2_9_23_83 = c(0),
+    K_sob_v2_9_23_92 = c(1),
+    K_sob_v2_9_23_93 = c(1),
+    K_sob_v2_9_23_94 = c(0),
+    K_sob_v2_9_23_95 = c(0),
+    K_sob_v2_9_23_96 = c(0)
+  )
+
+sobO_v1_key_df <- data.frame(
+    K_sob_v1_24_48_1 = c(1),
+    K_sob_v1_24_48_2 = c(1),
+    K_sob_v1_24_48_3 = c(0),
+    K_sob_v1_24_48_4 = c(1),
+    K_sob_v1_24_48_5 = c(0),
+    K_sob_v1_24_48_6 = c(1),
+    K_sob_v1_24_48_7 = c(1),
+    K_sob_v1_24_48_8 = c(1),
+    K_sob_v1_24_48_9 = c(0),
+    K_sob_v1_24_48_10 = c(0),
+    K_sob_v1_24_48_11 = c(1),
+    K_sob_v1_24_48_12 = c(0),
+    K_sob_v1_24_48_13 = c(0),
+    K_sob_v1_24_48_14 = c(0),
+    K_sob_v1_24_48_15 = c(0),
+    K_sob_v1_24_48_16 = c(0),
+    K_sob_v1_24_48_17 = c(0),
+    K_sob_v1_24_48_18 = c(0),
+    K_sob_v1_24_48_19 = c(0),
+    K_sob_v1_24_48_20 = c(1),
+    K_sob_v1_24_48_21 = c(0),
+    K_sob_v1_24_48_22 = c(0),
+    K_sob_v1_24_48_23 = c(1),
+    K_sob_v1_24_48_24 = c(1),
+    K_sob_v1_24_48_25 = c(1),
+    K_sob_v1_24_48_26 = c(1),
+    K_sob_v1_24_48_27 = c(1),
+    K_sob_v1_24_48_28 = c(0),
+    K_sob_v1_24_48_29 = c(0),
+    K_sob_v1_24_48_30 = c(1),
+    K_sob_v1_24_48_31 = c(1)
+  )
+
+sobO_v2_key_df <- data.frame(
+    K_sob_v2_24_48_1 = c(1),
+    K_sob_v2_24_48_2 = c(1),
+    K_sob_v2_24_48_3 = c(0),
+    K_sob_v2_24_48_4 = c(1),
+    K_sob_v2_24_48_5 = c(0),
+    K_sob_v2_24_48_6 = c(0),
+    K_sob_v2_24_48_7 = c(1),
+    K_sob_v2_24_48_8 = c(0),
+    K_sob_v2_24_48_9 = c(0),
+    K_sob_v2_24_48_10 = c(1),
+    K_sob_v2_24_48_11 = c(0),
+    K_sob_v2_24_48_12 = c(0),
+    K_sob_v2_24_48_13 = c(0),
+    K_sob_v2_24_48_14 = c(1),
+    K_sob_v2_24_48_15 = c(0),
+    K_sob_v2_24_48_16 = c(0),
+    K_sob_v2_24_48_17 = c(0),
+    K_sob_v2_24_48_18 = c(1),
+    K_sob_v2_24_48_19 = c(0),
+    K_sob_v2_24_48_20 = c(0),
+    K_sob_v2_24_48_21 = c(0),
+    K_sob_v2_24_48_22 = c(0),
+    K_sob_v2_24_48_23 = c(0),
+    K_sob_v2_24_48_24 = c(1),
+    K_sob_v2_24_48_25 = c(1),
+    K_sob_v2_24_48_26 = c(1),
+    K_sob_v2_24_48_27 = c(0),
+    K_sob_v2_24_48_28 = c(0),
+    K_sob_v2_24_48_29 = c(0),
+    K_sob_v2_24_48_30 = c(1),
+    K_sob_v2_24_48_31 = c(0)
+  )
+
+  gug_v1_key_df <- data.frame(
+    K_gug_v1_Back = c(2),
+    K_gug_v1_Roll = c(2),
+    K_gug_v1_UpPos = c(2),
+    K_gug_v1_Turn = c(2),
+    K_gug_v1_TraMeth = c(5),
+    K_gug_v1_TraDis = c(5),
+    K_gug_v1_Start = c(.27),
+    K_gug_v1_End = c(.38),
+    K_gug_v1_StairUp = c(4),
+    K_gug_v1_StairDo = c(2)
+  )
+  
+  gug_v2_key_df <- data.frame(
+    K_gug_v2_Back = c(2),
+    K_gug_v2_Roll = c(5),
+    K_gug_v2_UpPos = c(4),
+    K_gug_v2_Stand = c(2),
+    K_gug_v2_Hands = c(1),
+    K_gug_v2_Turn = c(3),
+    K_gug_v2_TraMeth = c(7),
+    K_gug_v2_Toes = c(2),
+    K_gug_v2_TraDis = c(5),
+    K_gug_v2_Start = c(.08),
+    K_gug_v2_End = c(.09),
+    K_gug_v2_StairUp = c(8),
+    K_gug_v2_StairDo = c(8)
+  )
+
+  rte_v1_key_df <- data.frame(
+    K_rte_v1_SCTR_Success = c(5),
+    K_rte_v1_SCTR_Grasp = c(3),
+    K_rte_v1_SCTL_Success = c(5),
+    K_rte_v1_SCTL_Grasp = c(3),
+    
+    K_rte_v1_SpnTer_Purpose = c(4),
+    K_rte_v1_SpnTer_Move = c(1),
+    K_rte_v1_SpnTer_Grasp = c(2),
+    K_rte_v1_SpnTer_Thumb = c(2),
+    K_rte_v1_SpnTer_Success = c(3),
+    K_rte_v1_SpnThr_Purpose = c(4),
+    K_rte_v1_SpnThr_Move = c(2),
+    K_rte_v1_SpnThr_Grasp = c(1),
+    K_rte_v1_SpnThr_Thumb = c(1),
+    K_rte_v1_SpnThr_Success = c(2),
+    
+    K_rte_v1_SpnTel_Purpose = c(4),
+    K_rte_v1_SpnTel_Move = c(1),
+    K_rte_v1_SpnTel_Grasp = c(2),
+    K_rte_v1_SpnTel_Thumb = c(2),
+    K_rte_v1_SpnTel_Success = c(2),
+    K_rte_v1_SpnThl_Purpose = c(4),
+    K_rte_v1_SpnThl_Move = c(2),
+    K_rte_v1_SpnThl_Grasp = c(2),
+    K_rte_v1_SpnThl_Thumb = c(2),
+    K_rte_v1_SpnThl_Success = c(2)
+  )
+  
+    rte_v2_key_df <- data.frame(
+    K_rte_v2_SCTR_Success = c(4),
+    K_rte_v2_SCTR_Grasp = c(2),
+    K_rte_v2_SCTL_Success = c(4),
+    K_rte_v2_SCTL_Grasp = c(3),
+    
+    K_rte_v2_LCTR_Success = c(5),
+    K_rte_v2_LCTR_Grasp = c(3),
+    K_rte_v2_LCTL_Success = c(5),
+    K_rte_v2_LCTL_Grasp = c(2)
+  )
+
+  sas_v1_key_df <- data.frame(
+    K_sas_v1_Usit_Q1 = c(3),
+    K_sas_v1_Usit_Q2_St = c(.40),
+    K_sas_v1_Usit_Q2_End = c(.44)
+  )
+  
+    sas_v2_key_df <- data.frame(
+    K_sas_v2_StD_Q1 = c(4),
+    K_sas_v2_StD_Q2_St = c(.15),
+    K_sas_v2_StD_Q2_End = c(.25),
+    K_sas_v2_StD_Q3 = c(4),
+    K_sas_v2_StD_Q4_St = c(.32),
+    K_sas_v2_StD_Q4_End = c(.34)
+  )
+    
+  sas_v3_key_df <- data.frame(
+    K_sas_v3_PtS_Q1 = c(2),
+    K_sas_v3_Usit_Q1 = c(2),
+    K_sas_v3_Usit_Q2_St = c(.39),
+    K_sas_v3_Usit_Q2_End = c(.39)
+  )
+  
+  sas_v4_key_df <- data.frame(
+    K_sas_v4_StD_Q1 = c(5),
+    K_sas_v4_StD_Q2_St = c(.21),
+    K_sas_v4_StD_Q2_End = c(.51),
+    K_sas_v4_StD_Q3 = c(5),
+    K_sas_v4_StD_Q4_St = c(1.36),
+    K_sas_v4_StD_Q4_End = c(2.34)
+  )
+  
+  all_keys <- bind_cols(sobY_v1_key_df, sobY_v2_key_df,
+                        sobO_v1_key_df, sobO_v2_key_df,
+                        gug_v1_key_df, gug_v2_key_df,
+                        rte_v1_key_df, rte_v2_key_df,
+                        sas_v1_key_df, sas_v2_key_df,
+                        sas_v3_key_df, sas_v4_key_df
+                        )
+```
+
+## Score the Data
+
+```{r}
+scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>% 
+  group_by(name, site) %>% 
+    mutate(Score_sobY_v1_SO_9_23_1 = ifelse(sobY_v1_SO_9_23_1 == K_sob_v1_9_23_1, 1, 0),
+           Score_sobY_v1_SO_9_23_2 = ifelse(sobY_v1_SO_9_23_2 == K_sob_v1_9_23_2, 1, 0),
+           Score_sobY_v1_SO_9_23_3 = ifelse(sobY_v1_SO_9_23_3 == K_sob_v1_9_23_3, 1, 0),
+           Score_sobY_v1_SO_9_23_4 = ifelse(sobY_v1_SO_9_23_4 == K_sob_v1_9_23_4, 1, 0),
+           Score_sobY_v1_SO_9_23_5 = ifelse(sobY_v1_SO_9_23_5 == K_sob_v1_9_23_5, 1, 0),
+           Score_sobY_v1_SO_9_23_6 = ifelse(sobY_v1_SO_9_23_6 == K_sob_v1_9_23_6, 1, 0),
+           Score_sobY_v1_SO_9_23_7 = ifelse(sobY_v1_SO_9_23_7 == K_sob_v1_9_23_7, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_9 = ifelse(sobY_v1_SO_9_23_9 == K_sob_v1_9_23_9, 1, 0),
+           Score_sobY_v1_SO_9_23_10 = ifelse(sobY_v1_SO_9_23_10 == K_sob_v1_9_23_10, 1, 0),
+           Score_sobY_v1_SO_9_23_11 = ifelse(sobY_v1_SO_9_23_11 == K_sob_v1_9_23_11, 1, 0),
+           Score_sobY_v1_SO_9_23_12 = ifelse(sobY_v1_SO_9_23_12 == K_sob_v1_9_23_12, 1, 0),
+           Score_sobY_v1_SO_9_23_13 = ifelse(sobY_v1_SO_9_23_13 == K_sob_v1_9_23_13, 1, 0),
+           Score_sobY_v1_SO_9_23_14 = ifelse(sobY_v1_SO_9_23_14 == K_sob_v1_9_23_14, 1, 0),
+           Score_sobY_v1_SO_9_23_15 = ifelse(sobY_v1_SO_9_23_15 == K_sob_v1_9_23_15, 1, 0),
+           Score_sobY_v1_SO_9_23_16 = ifelse(sobY_v1_SO_9_23_16 == K_sob_v1_9_23_16, 1, 0),
+           Score_sobY_v1_SO_9_23_17 = ifelse(sobY_v1_SO_9_23_17 == K_sob_v1_9_23_17, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_19 = ifelse(sobY_v1_SO_9_23_19 == K_sob_v1_9_23_19, 1, 0),
+           Score_sobY_v1_SO_9_23_20 = ifelse(sobY_v1_SO_9_23_20 == K_sob_v1_9_23_20, 1, 0),
+           Score_sobY_v1_SO_9_23_21 = ifelse(sobY_v1_SO_9_23_21 == K_sob_v1_9_23_21, 1, 0),
+           Score_sobY_v1_SO_9_23_22 = ifelse(sobY_v1_SO_9_23_22 == K_sob_v1_9_23_22, 1, 0),
+           Score_sobY_v1_SO_9_23_23 = ifelse(sobY_v1_SO_9_23_23 == K_sob_v1_9_23_23, 1, 0),
+           Score_sobY_v1_SO_9_23_24 = ifelse(sobY_v1_SO_9_23_24 == K_sob_v1_9_23_24, 1, 0),
+           Score_sobY_v1_SO_9_23_25 = ifelse(sobY_v1_SO_9_23_25 == K_sob_v1_9_23_25, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_27 = ifelse(sobY_v1_SO_9_23_27 == K_sob_v1_9_23_27, 1, 0),
+           Score_sobY_v1_SO_9_23_28 = ifelse(sobY_v1_SO_9_23_28 == K_sob_v1_9_23_28, 1, 0),
+           Score_sobY_v1_SO_9_23_29 = ifelse(sobY_v1_SO_9_23_29 == K_sob_v1_9_23_29, 1, 0),
+           Score_sobY_v1_SO_9_23_30 = ifelse(sobY_v1_SO_9_23_30 == K_sob_v1_9_23_30, 1, 0),
+           Score_sobY_v1_SO_9_23_31 = ifelse(sobY_v1_SO_9_23_31 == K_sob_v1_9_23_31, 1, 0),
+           Score_sobY_v1_SO_9_23_32 = ifelse(sobY_v1_SO_9_23_32 == K_sob_v1_9_23_32, 1, 0),
+           Score_sobY_v1_SO_9_23_33 = ifelse(sobY_v1_SO_9_23_33 == K_sob_v1_9_23_33, 1, 0),
+           Score_sobY_v1_SO_9_23_34 = ifelse(sobY_v1_SO_9_23_34 == K_sob_v1_9_23_34, 1, 0),
+           Score_sobY_v1_SO_9_23_35 = ifelse(sobY_v1_SO_9_23_35 == K_sob_v1_9_23_35, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_37 = ifelse(sobY_v1_SO_9_23_37 == K_sob_v1_9_23_37, 1, 0),
+           Score_sobY_v1_SO_9_23_38 = ifelse(sobY_v1_SO_9_23_38 == K_sob_v1_9_23_38, 1, 0),
+           Score_sobY_v1_SO_9_23_39 = ifelse(sobY_v1_SO_9_23_39 == K_sob_v1_9_23_39, 1, 0),
+           Score_sobY_v1_SO_9_23_40 = ifelse(sobY_v1_SO_9_23_40 == K_sob_v1_9_23_40, 1, 0),
+           Score_sobY_v1_SO_9_23_41 = ifelse(sobY_v1_SO_9_23_41 == K_sob_v1_9_23_41, 1, 0),
+           Score_sobY_v1_SO_9_23_42 = ifelse(sobY_v1_SO_9_23_42 == K_sob_v1_9_23_42, 1, 0),
+           Score_sobY_v1_SO_9_23_43 = ifelse(sobY_v1_SO_9_23_43 == K_sob_v1_9_23_43, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_45 = ifelse(sobY_v1_SO_9_23_45 == K_sob_v1_9_23_45, 1, 0),
+           Score_sobY_v1_SO_9_23_46 = ifelse(sobY_v1_SO_9_23_46 == K_sob_v1_9_23_46, 1, 0),
+           Score_sobY_v1_SO_9_23_47 = ifelse(sobY_v1_SO_9_23_47 == K_sob_v1_9_23_47, 1, 0),
+           Score_sobY_v1_SO_9_23_48 = ifelse(sobY_v1_SO_9_23_48 == K_sob_v1_9_23_48, 1, 0),
+           Score_sobY_v1_SO_9_23_49 = ifelse(sobY_v1_SO_9_23_49 == K_sob_v1_9_23_49, 1, 0),
+           Score_sobY_v1_SO_9_23_50 = ifelse(sobY_v1_SO_9_23_50 == K_sob_v1_9_23_50, 1, 0),
+           Score_sobY_v1_SO_9_23_51 = ifelse(sobY_v1_SO_9_23_51 == K_sob_v1_9_23_51, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_53 = ifelse(sobY_v1_SO_9_23_53 == K_sob_v1_9_23_53, 1, 0),
+           Score_sobY_v1_SO_9_23_54 = ifelse(sobY_v1_SO_9_23_54 == K_sob_v1_9_23_54, 1, 0),
+           Score_sobY_v1_SO_9_23_55 = ifelse(sobY_v1_SO_9_23_55 == K_sob_v1_9_23_55, 1, 0),
+           Score_sobY_v1_SO_9_23_56 = ifelse(sobY_v1_SO_9_23_56 == K_sob_v1_9_23_56, 1, 0),
+           Score_sobY_v1_SO_9_23_57 = ifelse(sobY_v1_SO_9_23_57 == K_sob_v1_9_23_57, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_66 = ifelse(sobY_v1_SO_9_23_66 == K_sob_v1_9_23_66, 1, 0),
+           Score_sobY_v1_SO_9_23_67 = ifelse(sobY_v1_SO_9_23_67 == K_sob_v1_9_23_67, 1, 0),
+           Score_sobY_v1_SO_9_23_68 = ifelse(sobY_v1_SO_9_23_68 == K_sob_v1_9_23_68, 1, 0),
+           Score_sobY_v1_SO_9_23_69 = ifelse(sobY_v1_SO_9_23_69 == K_sob_v1_9_23_69, 1, 0),
+           Score_sobY_v1_SO_9_23_70 = ifelse(sobY_v1_SO_9_23_70 == K_sob_v1_9_23_70, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_79 = ifelse(sobY_v1_SO_9_23_79 == K_sob_v1_9_23_79, 1, 0),
+           Score_sobY_v1_SO_9_23_80 = ifelse(sobY_v1_SO_9_23_80 == K_sob_v1_9_23_80, 1, 0),
+           Score_sobY_v1_SO_9_23_81 = ifelse(sobY_v1_SO_9_23_81 == K_sob_v1_9_23_81, 1, 0),
+           Score_sobY_v1_SO_9_23_82 = ifelse(sobY_v1_SO_9_23_82 == K_sob_v1_9_23_82, 1, 0),
+           Score_sobY_v1_SO_9_23_83 = ifelse(sobY_v1_SO_9_23_83 == K_sob_v1_9_23_83, 1, 0),
+           
+           Score_sobY_v1_SO_9_23_92 = ifelse(sobY_v1_SO_9_23_92 == K_sob_v1_9_23_92, 1, 0),
+           Score_sobY_v1_SO_9_23_93 = ifelse(sobY_v1_SO_9_23_93 == K_sob_v1_9_23_93, 1, 0),
+           Score_sobY_v1_SO_9_23_94 = ifelse(sobY_v1_SO_9_23_94 == K_sob_v1_9_23_94, 1, 0),
+           Score_sobY_v1_SO_9_23_95 = ifelse(sobY_v1_SO_9_23_95 == K_sob_v1_9_23_95, 1, 0),
+           Score_sobY_v1_SO_9_23_96 = ifelse(sobY_v1_SO_9_23_96 == K_sob_v1_9_23_96, 1, 0),
+           
+           ScoreOverall_sobY_v1 = sum(Score_sobY_v1_SO_9_23_1, Score_sobY_v1_SO_9_23_2,       
+                               Score_sobY_v1_SO_9_23_3, Score_sobY_v1_SO_9_23_4,       
+                               Score_sobY_v1_SO_9_23_5, Score_sobY_v1_SO_9_23_6, 
+                               Score_sobY_v1_SO_9_23_7,
+                               
+                               Score_sobY_v1_SO_9_23_9, Score_sobY_v1_SO_9_23_10,       
+                               Score_sobY_v1_SO_9_23_11, Score_sobY_v1_SO_9_23_12,       
+                               Score_sobY_v1_SO_9_23_13, Score_sobY_v1_SO_9_23_14,       
+                               Score_sobY_v1_SO_9_23_15, Score_sobY_v1_SO_9_23_16,       
+                               Score_sobY_v1_SO_9_23_17,       
+                               
+                               Score_sobY_v1_SO_9_23_19, Score_sobY_v1_SO_9_23_20,       
+                               Score_sobY_v1_SO_9_23_21, Score_sobY_v1_SO_9_23_22,       
+                               Score_sobY_v1_SO_9_23_23, Score_sobY_v1_SO_9_23_24,       
+                               Score_sobY_v1_SO_9_23_25,       
+                               
+                               Score_sobY_v1_SO_9_23_27, Score_sobY_v1_SO_9_23_28,       
+                               Score_sobY_v1_SO_9_23_29, Score_sobY_v1_SO_9_23_30,       
+                               Score_sobY_v1_SO_9_23_31, Score_sobY_v1_SO_9_23_32,       
+                               Score_sobY_v1_SO_9_23_33, Score_sobY_v1_SO_9_23_34,       
+                               Score_sobY_v1_SO_9_23_35,       
+                               
+                               Score_sobY_v1_SO_9_23_37, Score_sobY_v1_SO_9_23_38,       
+                               Score_sobY_v1_SO_9_23_39, Score_sobY_v1_SO_9_23_40,       
+                               Score_sobY_v1_SO_9_23_41, Score_sobY_v1_SO_9_23_42,       
+                               Score_sobY_v1_SO_9_23_43,       
+                               
+                               Score_sobY_v1_SO_9_23_45, Score_sobY_v1_SO_9_23_46,       
+                               Score_sobY_v1_SO_9_23_47, Score_sobY_v1_SO_9_23_48,       
+                               Score_sobY_v1_SO_9_23_49, Score_sobY_v1_SO_9_23_50,       
+                               Score_sobY_v1_SO_9_23_51,       
+                               
+                               Score_sobY_v1_SO_9_23_53, Score_sobY_v1_SO_9_23_54,       
+                               Score_sobY_v1_SO_9_23_55,       
+                               Score_sobY_v1_SO_9_23_56,       
+                               Score_sobY_v1_SO_9_23_57,       
+                               
+                               Score_sobY_v1_SO_9_23_66,       
+                               Score_sobY_v1_SO_9_23_67,       
+                               Score_sobY_v1_SO_9_23_68,       
+                               Score_sobY_v1_SO_9_23_69,       
+                               Score_sobY_v1_SO_9_23_70,       
+                               
+                               Score_sobY_v1_SO_9_23_79,       
+                               Score_sobY_v1_SO_9_23_80,       
+                               Score_sobY_v1_SO_9_23_81,       
+                               Score_sobY_v1_SO_9_23_82,       
+                               Score_sobY_v1_SO_9_23_83,       
+                               
+                               Score_sobY_v1_SO_9_23_92, Score_sobY_v1_SO_9_23_93, 
+                               Score_sobY_v1_SO_9_23_94,
+                               Score_sobY_v1_SO_9_23_95, Score_sobY_v1_SO_9_23_96
+           ),
+           ScoreOverall_sobY_v1 = round(ScoreOverall_sobY_v1 / 66, 3)
+    ) %>% 
+  mutate(Score_sobY_v2_SO_9_23_1 = ifelse(sobY_v2_SO_9_23_1 == K_sob_v2_9_23_1, 1, 0),
+           Score_sobY_v2_SO_9_23_2 = ifelse(sobY_v2_SO_9_23_2 == K_sob_v2_9_23_2, 1, 0),
+           Score_sobY_v2_SO_9_23_3 = ifelse(sobY_v2_SO_9_23_3 == K_sob_v2_9_23_3, 1, 0),
+           Score_sobY_v2_SO_9_23_4 = ifelse(sobY_v2_SO_9_23_4 == K_sob_v2_9_23_4, 1, 0),
+           Score_sobY_v2_SO_9_23_5 = ifelse(sobY_v2_SO_9_23_5 == K_sob_v2_9_23_5, 1, 0),
+           Score_sobY_v2_SO_9_23_6 = ifelse(sobY_v2_SO_9_23_6 == K_sob_v2_9_23_6, 1, 0),
+           Score_sobY_v2_SO_9_23_7 = ifelse(sobY_v2_SO_9_23_7 == K_sob_v2_9_23_7, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_9 = ifelse(sobY_v2_SO_9_23_9 == K_sob_v2_9_23_9, 1, 0),
+           Score_sobY_v2_SO_9_23_10 = ifelse(sobY_v2_SO_9_23_10 == K_sob_v2_9_23_10, 1, 0),
+           Score_sobY_v2_SO_9_23_11 = ifelse(sobY_v2_SO_9_23_11 == K_sob_v2_9_23_11, 1, 0),
+           Score_sobY_v2_SO_9_23_12 = ifelse(sobY_v2_SO_9_23_12 == K_sob_v2_9_23_12, 1, 0),
+           Score_sobY_v2_SO_9_23_13 = ifelse(sobY_v2_SO_9_23_13 == K_sob_v2_9_23_13, 1, 0),
+           Score_sobY_v2_SO_9_23_14 = ifelse(sobY_v2_SO_9_23_14 == K_sob_v2_9_23_14, 1, 0),
+           Score_sobY_v2_SO_9_23_15 = ifelse(sobY_v2_SO_9_23_15 == K_sob_v2_9_23_15, 1, 0),
+           Score_sobY_v2_SO_9_23_16 = ifelse(sobY_v2_SO_9_23_16 == K_sob_v2_9_23_16, 1, 0),
+           Score_sobY_v2_SO_9_23_17 = ifelse(sobY_v2_SO_9_23_17 == K_sob_v2_9_23_17, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_19 = ifelse(sobY_v2_SO_9_23_19 == K_sob_v2_9_23_19, 1, 0),
+           Score_sobY_v2_SO_9_23_20 = ifelse(sobY_v2_SO_9_23_20 == K_sob_v2_9_23_20, 1, 0),
+           Score_sobY_v2_SO_9_23_21 = ifelse(sobY_v2_SO_9_23_21 == K_sob_v2_9_23_21, 1, 0),
+           Score_sobY_v2_SO_9_23_22 = ifelse(sobY_v2_SO_9_23_22 == K_sob_v2_9_23_22, 1, 0),
+           Score_sobY_v2_SO_9_23_23 = ifelse(sobY_v2_SO_9_23_23 == K_sob_v2_9_23_23, 1, 0),
+           Score_sobY_v2_SO_9_23_24 = ifelse(sobY_v2_SO_9_23_24 == K_sob_v2_9_23_24, 1, 0),
+           Score_sobY_v2_SO_9_23_25 = ifelse(sobY_v2_SO_9_23_25 == K_sob_v2_9_23_25, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_27 = ifelse(sobY_v2_SO_9_23_27 == K_sob_v2_9_23_27, 1, 0),
+           Score_sobY_v2_SO_9_23_28 = ifelse(sobY_v2_SO_9_23_28 == K_sob_v2_9_23_28, 1, 0),
+           Score_sobY_v2_SO_9_23_29 = ifelse(sobY_v2_SO_9_23_29 == K_sob_v2_9_23_29, 1, 0),
+           Score_sobY_v2_SO_9_23_30 = ifelse(sobY_v2_SO_9_23_30 == K_sob_v2_9_23_30, 1, 0),
+           Score_sobY_v2_SO_9_23_31 = ifelse(sobY_v2_SO_9_23_31 == K_sob_v2_9_23_31, 1, 0),
+           Score_sobY_v2_SO_9_23_32 = ifelse(sobY_v2_SO_9_23_32 == K_sob_v2_9_23_32, 1, 0),
+           Score_sobY_v2_SO_9_23_33 = ifelse(sobY_v2_SO_9_23_33 == K_sob_v2_9_23_33, 1, 0),
+           Score_sobY_v2_SO_9_23_34 = ifelse(sobY_v2_SO_9_23_34 == K_sob_v2_9_23_34, 1, 0),
+           Score_sobY_v2_SO_9_23_35 = ifelse(sobY_v2_SO_9_23_35 == K_sob_v2_9_23_35, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_37 = ifelse(sobY_v2_SO_9_23_37 == K_sob_v2_9_23_37, 1, 0),
+           Score_sobY_v2_SO_9_23_38 = ifelse(sobY_v2_SO_9_23_38 == K_sob_v2_9_23_38, 1, 0),
+           Score_sobY_v2_SO_9_23_39 = ifelse(sobY_v2_SO_9_23_39 == K_sob_v2_9_23_39, 1, 0),
+           Score_sobY_v2_SO_9_23_40 = ifelse(sobY_v2_SO_9_23_40 == K_sob_v2_9_23_40, 1, 0),
+           Score_sobY_v2_SO_9_23_41 = ifelse(sobY_v2_SO_9_23_41 == K_sob_v2_9_23_41, 1, 0),
+           Score_sobY_v2_SO_9_23_42 = ifelse(sobY_v2_SO_9_23_42 == K_sob_v2_9_23_42, 1, 0),
+           Score_sobY_v2_SO_9_23_43 = ifelse(sobY_v2_SO_9_23_43 == K_sob_v2_9_23_43, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_45 = ifelse(sobY_v2_SO_9_23_45 == K_sob_v2_9_23_45, 1, 0),
+           Score_sobY_v2_SO_9_23_46 = ifelse(sobY_v2_SO_9_23_46 == K_sob_v2_9_23_46, 1, 0),
+           Score_sobY_v2_SO_9_23_47 = ifelse(sobY_v2_SO_9_23_47 == K_sob_v2_9_23_47, 1, 0),
+           Score_sobY_v2_SO_9_23_48 = ifelse(sobY_v2_SO_9_23_48 == K_sob_v2_9_23_48, 1, 0),
+           Score_sobY_v2_SO_9_23_49 = ifelse(sobY_v2_SO_9_23_49 == K_sob_v2_9_23_49, 1, 0),
+           Score_sobY_v2_SO_9_23_50 = ifelse(sobY_v2_SO_9_23_50 == K_sob_v2_9_23_50, 1, 0),
+           Score_sobY_v2_SO_9_23_51 = ifelse(sobY_v2_SO_9_23_51 == K_sob_v2_9_23_51, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_53 = ifelse(sobY_v2_SO_9_23_53 == K_sob_v2_9_23_53, 1, 0),
+           Score_sobY_v2_SO_9_23_54 = ifelse(sobY_v2_SO_9_23_54 == K_sob_v2_9_23_54, 1, 0),
+           Score_sobY_v2_SO_9_23_55 = ifelse(sobY_v2_SO_9_23_55 == K_sob_v2_9_23_55, 1, 0),
+           Score_sobY_v2_SO_9_23_56 = ifelse(sobY_v2_SO_9_23_56 == K_sob_v2_9_23_56, 1, 0),
+           Score_sobY_v2_SO_9_23_57 = ifelse(sobY_v2_SO_9_23_57 == K_sob_v2_9_23_57, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_66 = ifelse(sobY_v2_SO_9_23_66 == K_sob_v2_9_23_66, 1, 0),
+           Score_sobY_v2_SO_9_23_67 = ifelse(sobY_v2_SO_9_23_67 == K_sob_v2_9_23_67, 1, 0),
+           Score_sobY_v2_SO_9_23_68 = ifelse(sobY_v2_SO_9_23_68 == K_sob_v2_9_23_68, 1, 0),
+           Score_sobY_v2_SO_9_23_69 = ifelse(sobY_v2_SO_9_23_69 == K_sob_v2_9_23_69, 1, 0),
+           Score_sobY_v2_SO_9_23_70 = ifelse(sobY_v2_SO_9_23_70 == K_sob_v2_9_23_70, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_79 = ifelse(sobY_v2_SO_9_23_79 == K_sob_v2_9_23_79, 1, 0),
+           Score_sobY_v2_SO_9_23_80 = ifelse(sobY_v2_SO_9_23_80 == K_sob_v2_9_23_80, 1, 0),
+           Score_sobY_v2_SO_9_23_81 = ifelse(sobY_v2_SO_9_23_81 == K_sob_v2_9_23_81, 1, 0),
+           Score_sobY_v2_SO_9_23_82 = ifelse(sobY_v2_SO_9_23_82 == K_sob_v2_9_23_82, 1, 0),
+           Score_sobY_v2_SO_9_23_83 = ifelse(sobY_v2_SO_9_23_83 == K_sob_v2_9_23_83, 1, 0),
+           
+           Score_sobY_v2_SO_9_23_92 = ifelse(sobY_v2_SO_9_23_92 == K_sob_v2_9_23_92, 1, 0),
+           Score_sobY_v2_SO_9_23_93 = ifelse(sobY_v2_SO_9_23_93 == K_sob_v2_9_23_93, 1, 0),
+           Score_sobY_v2_SO_9_23_94 = ifelse(sobY_v2_SO_9_23_94 == K_sob_v2_9_23_94, 1, 0),
+           Score_sobY_v2_SO_9_23_95 = ifelse(sobY_v2_SO_9_23_95 == K_sob_v2_9_23_95, 1, 0),
+           Score_sobY_v2_SO_9_23_96 = ifelse(sobY_v2_SO_9_23_96 == K_sob_v2_9_23_96, 1, 0),
+           
+           ScoreOverall_sobY_v2 = sum(Score_sobY_v2_SO_9_23_1, Score_sobY_v2_SO_9_23_2,       
+                               Score_sobY_v2_SO_9_23_3,       
+                               Score_sobY_v2_SO_9_23_4,       
+                               Score_sobY_v2_SO_9_23_5,       
+                               Score_sobY_v2_SO_9_23_6, Score_sobY_v2_SO_9_23_7,
+                               
+                               Score_sobY_v2_SO_9_23_9,       
+                               Score_sobY_v2_SO_9_23_10,       
+                               Score_sobY_v2_SO_9_23_11,       
+                               Score_sobY_v2_SO_9_23_12,       
+                               Score_sobY_v2_SO_9_23_13,       
+                               Score_sobY_v2_SO_9_23_14,       
+                               Score_sobY_v2_SO_9_23_15,       
+                               Score_sobY_v2_SO_9_23_16,       
+                               Score_sobY_v2_SO_9_23_17,       
+                               
+                               Score_sobY_v2_SO_9_23_19,       
+                               Score_sobY_v2_SO_9_23_20,       
+                               Score_sobY_v2_SO_9_23_21,       
+                               Score_sobY_v2_SO_9_23_22,       
+                               Score_sobY_v2_SO_9_23_23,       
+                               Score_sobY_v2_SO_9_23_24,       
+                               Score_sobY_v2_SO_9_23_25,       
+                               
+                               Score_sobY_v2_SO_9_23_27,       
+                               Score_sobY_v2_SO_9_23_28,       
+                               Score_sobY_v2_SO_9_23_29,       
+                               Score_sobY_v2_SO_9_23_30,       
+                               Score_sobY_v2_SO_9_23_31,       
+                               Score_sobY_v2_SO_9_23_32,       
+                               Score_sobY_v2_SO_9_23_33,       
+                               Score_sobY_v2_SO_9_23_34,       
+                               Score_sobY_v2_SO_9_23_35,       
+                               
+                               Score_sobY_v2_SO_9_23_37,       
+                               Score_sobY_v2_SO_9_23_38,       
+                               Score_sobY_v2_SO_9_23_39,       
+                               Score_sobY_v2_SO_9_23_40,       
+                               Score_sobY_v2_SO_9_23_41,       
+                               Score_sobY_v2_SO_9_23_42,       
+                               Score_sobY_v2_SO_9_23_43,       
+                               
+                               Score_sobY_v2_SO_9_23_45,       
+                               Score_sobY_v2_SO_9_23_46,       
+                               Score_sobY_v2_SO_9_23_47,       
+                               Score_sobY_v2_SO_9_23_48,       
+                               Score_sobY_v2_SO_9_23_49,       
+                               Score_sobY_v2_SO_9_23_50,       
+                               Score_sobY_v2_SO_9_23_51,       
+                               
+                               Score_sobY_v2_SO_9_23_53,       
+                               Score_sobY_v2_SO_9_23_54,       
+                               Score_sobY_v2_SO_9_23_55,       
+                               Score_sobY_v2_SO_9_23_56,       
+                               Score_sobY_v2_SO_9_23_57,       
+                               
+                               Score_sobY_v2_SO_9_23_66,       
+                               Score_sobY_v2_SO_9_23_67,       
+                               Score_sobY_v2_SO_9_23_68,       
+                               Score_sobY_v2_SO_9_23_69,       
+                               Score_sobY_v2_SO_9_23_70,       
+                               
+                               Score_sobY_v2_SO_9_23_79,       
+                               Score_sobY_v2_SO_9_23_80,       
+                               Score_sobY_v2_SO_9_23_81,       
+                               Score_sobY_v2_SO_9_23_82,       
+                               Score_sobY_v2_SO_9_23_83,       
+                               
+                               Score_sobY_v2_SO_9_23_92, Score_sobY_v2_SO_9_23_93, 
+                               Score_sobY_v2_SO_9_23_94,
+                               Score_sobY_v2_SO_9_23_95, Score_sobY_v2_SO_9_23_96
+           ),
+           ScoreOverall_sobY_v2 = round(ScoreOverall_sobY_v2 / 66, 3)
+    ) %>% 
+  mutate(Score_sobO_v1_SO_24_48_1 = ifelse(sobO_v1_SO_24_48_1 == K_sob_v1_24_48_1, 1, 0),
+           Score_sobO_v1_SO_24_48_2 = ifelse(sobO_v1_SO_24_48_2 == K_sob_v1_24_48_2, 1, 0),
+           Score_sobO_v1_SO_24_48_3 = ifelse(sobO_v1_SO_24_48_3 == K_sob_v1_24_48_3, 1, 0),
+           Score_sobO_v1_SO_24_48_4 = ifelse(sobO_v1_SO_24_48_4 == K_sob_v1_24_48_4, 1, 0),
+           Score_sobO_v1_SO_24_48_5 = ifelse(sobO_v1_SO_24_48_5 == K_sob_v1_24_48_5, 1, 0),
+           Score_sobO_v1_SO_24_48_6 = ifelse(sobO_v1_SO_24_48_6 == K_sob_v1_24_48_6, 1, 0),
+           Score_sobO_v1_SO_24_48_7 = ifelse(sobO_v1_SO_24_48_7 == K_sob_v1_24_48_7, 1, 0),
+           Score_sobO_v1_SO_24_48_8 = ifelse(sobO_v1_SO_24_48_8 == K_sob_v1_24_48_8, 1, 0),
+           Score_sobO_v1_SO_24_48_9 = ifelse(sobO_v1_SO_24_48_9 == K_sob_v1_24_48_9, 1, 0),
+           Score_sobO_v1_SO_24_48_10 = ifelse(sobO_v1_SO_24_48_10 == K_sob_v1_24_48_10, 1, 0),
+           Score_sobO_v1_SO_24_48_11 = ifelse(sobO_v1_SO_24_48_11 == K_sob_v1_24_48_11, 1, 0),
+           Score_sobO_v1_SO_24_48_12 = ifelse(sobO_v1_SO_24_48_12 == K_sob_v1_24_48_12, 1, 0),
+           Score_sobO_v1_SO_24_48_13 = ifelse(sobO_v1_SO_24_48_13 == K_sob_v1_24_48_13, 1, 0),
+           Score_sobO_v1_SO_24_48_14 = ifelse(sobO_v1_SO_24_48_14 == K_sob_v1_24_48_14, 1, 0),
+           Score_sobO_v1_SO_24_48_15 = ifelse(sobO_v1_SO_24_48_15 == K_sob_v1_24_48_15, 1, 0),
+           Score_sobO_v1_SO_24_48_16 = ifelse(sobO_v1_SO_24_48_16 == K_sob_v1_24_48_16, 1, 0),
+           Score_sobO_v1_SO_24_48_17 = ifelse(sobO_v1_SO_24_48_17 == K_sob_v1_24_48_17, 1, 0),
+           Score_sobO_v1_SO_24_48_18 = ifelse(sobO_v1_SO_24_48_18 == K_sob_v1_24_48_18, 1, 0),
+           Score_sobO_v1_SO_24_48_19 = ifelse(sobO_v1_SO_24_48_19 == K_sob_v1_24_48_19, 1, 0),
+           
+           Score_sobO_v1_SO_24_48_20 = ifelse(sobO_v1_SO_24_48_20 == K_sob_v1_24_48_20, 1, 0),
+           Score_sobO_v1_SO_24_48_21 = ifelse(sobO_v1_SO_24_48_21 == K_sob_v1_24_48_21, 1, 0),
+           Score_sobO_v1_SO_24_48_22 = ifelse(sobO_v1_SO_24_48_22 == K_sob_v1_24_48_22, 1, 0),
+           Score_sobO_v1_SO_24_48_23 = ifelse(sobO_v1_SO_24_48_23 == K_sob_v1_24_48_23, 1, 0),
+           Score_sobO_v1_SO_24_48_24 = ifelse(sobO_v1_SO_24_48_24 == K_sob_v1_24_48_24, 1, 0),
+           Score_sobO_v1_SO_24_48_25 = ifelse(sobO_v1_SO_24_48_25 == K_sob_v1_24_48_25, 1, 0),
+           Score_sobO_v1_SO_24_48_26 = ifelse(sobO_v1_SO_24_48_26 == K_sob_v1_24_48_26, 1, 0),
+           Score_sobO_v1_SO_24_48_27 = ifelse(sobO_v1_SO_24_48_27 == K_sob_v1_24_48_27, 1, 0),
+           Score_sobO_v1_SO_24_48_28 = ifelse(sobO_v1_SO_24_48_28 == K_sob_v1_24_48_28, 1, 0),
+           Score_sobO_v1_SO_24_48_29 = ifelse(sobO_v1_SO_24_48_29 == K_sob_v1_24_48_29, 1, 0),
+           Score_sobO_v1_SO_24_48_30 = ifelse(sobO_v1_SO_24_48_30 == K_sob_v1_24_48_30, 1, 0),
+           Score_sobO_v1_SO_24_48_31 = ifelse(sobO_v1_SO_24_48_31 == K_sob_v1_24_48_31, 1, 0),
+           
+           ScoreOverall_sobO_v1 = sum(Score_sobO_v1_SO_24_48_1, Score_sobO_v1_SO_24_48_2, 
+                               Score_sobO_v1_SO_24_48_3, Score_sobO_v1_SO_24_48_4,
+                               Score_sobO_v1_SO_24_48_5, Score_sobO_v1_SO_24_48_6,
+                               Score_sobO_v1_SO_24_48_7, Score_sobO_v1_SO_24_48_8,
+                               Score_sobO_v1_SO_24_48_9, Score_sobO_v1_SO_24_48_10,
+                               Score_sobO_v1_SO_24_48_11, Score_sobO_v1_SO_24_48_12,
+                               Score_sobO_v1_SO_24_48_13, Score_sobO_v1_SO_24_48_14,
+                               Score_sobO_v1_SO_24_48_15, Score_sobO_v1_SO_24_48_16,
+                               Score_sobO_v1_SO_24_48_17, Score_sobO_v1_SO_24_48_18,
+                               Score_sobO_v1_SO_24_48_19, Score_sobO_v1_SO_24_48_20,
+                               Score_sobO_v1_SO_24_48_21, Score_sobO_v1_SO_24_48_22,
+                               Score_sobO_v1_SO_24_48_23, Score_sobO_v1_SO_24_48_24,
+                               Score_sobO_v1_SO_24_48_25, Score_sobO_v1_SO_24_48_26,
+                               Score_sobO_v1_SO_24_48_27, Score_sobO_v1_SO_24_48_28,
+                               Score_sobO_v1_SO_24_48_29, Score_sobO_v1_SO_24_48_30,
+                               Score_sobO_v1_SO_24_48_31
+           ),
+           ScoreOverall_sobO_v1 = round(ScoreOverall_sobO_v1 / 31, 3)
+    ) %>% 
+  mutate(Score_sobO_v2_SO_24_48_1 = ifelse(sobO_v2_SO_24_48_1 == K_sob_v2_24_48_1, 1, 0),
+           Score_sobO_v2_SO_24_48_2 = ifelse(sobO_v2_SO_24_48_2 == K_sob_v2_24_48_2, 1, 0),
+           Score_sobO_v2_SO_24_48_3 = ifelse(sobO_v2_SO_24_48_3 == K_sob_v2_24_48_3, 1, 0),
+           Score_sobO_v2_SO_24_48_4 = ifelse(sobO_v2_SO_24_48_4 == K_sob_v2_24_48_4, 1, 0),
+           Score_sobO_v2_SO_24_48_5 = ifelse(sobO_v2_SO_24_48_5 == K_sob_v2_24_48_5, 1, 0),
+           Score_sobO_v2_SO_24_48_6 = ifelse(sobO_v2_SO_24_48_6 == K_sob_v2_24_48_6, 1, 0),
+           Score_sobO_v2_SO_24_48_7 = ifelse(sobO_v2_SO_24_48_7 == K_sob_v2_24_48_7, 1, 0),
+           Score_sobO_v2_SO_24_48_8 = ifelse(sobO_v2_SO_24_48_8 == K_sob_v2_24_48_8, 1, 0),
+           Score_sobO_v2_SO_24_48_9 = ifelse(sobO_v2_SO_24_48_9 == K_sob_v2_24_48_9, 1, 0),
+           Score_sobO_v2_SO_24_48_10 = ifelse(sobO_v2_SO_24_48_10 == K_sob_v2_24_48_10, 1, 0),
+           Score_sobO_v2_SO_24_48_11 = ifelse(sobO_v2_SO_24_48_11 == K_sob_v2_24_48_11, 1, 0),
+           Score_sobO_v2_SO_24_48_12 = ifelse(sobO_v2_SO_24_48_12 == K_sob_v2_24_48_12, 1, 0),
+           Score_sobO_v2_SO_24_48_13 = ifelse(sobO_v2_SO_24_48_13 == K_sob_v2_24_48_13, 1, 0),
+           Score_sobO_v2_SO_24_48_14 = ifelse(sobO_v2_SO_24_48_14 == K_sob_v2_24_48_14, 1, 0),
+           Score_sobO_v2_SO_24_48_15 = ifelse(sobO_v2_SO_24_48_15 == K_sob_v2_24_48_15, 1, 0),
+           Score_sobO_v2_SO_24_48_16 = ifelse(sobO_v2_SO_24_48_16 == K_sob_v2_24_48_16, 1, 0),
+           Score_sobO_v2_SO_24_48_17 = ifelse(sobO_v2_SO_24_48_17 == K_sob_v2_24_48_17, 1, 0),
+           Score_sobO_v2_SO_24_48_18 = ifelse(sobO_v2_SO_24_48_18 == K_sob_v2_24_48_18, 1, 0),
+           Score_sobO_v2_SO_24_48_19 = ifelse(sobO_v2_SO_24_48_19 == K_sob_v2_24_48_19, 1, 0),
+           
+           Score_sobO_v2_SO_24_48_20 = ifelse(sobO_v2_SO_24_48_20 == K_sob_v2_24_48_20, 1, 0),
+           Score_sobO_v2_SO_24_48_21 = ifelse(sobO_v2_SO_24_48_21 == K_sob_v2_24_48_21, 1, 0),
+           Score_sobO_v2_SO_24_48_22 = ifelse(sobO_v2_SO_24_48_22 == K_sob_v2_24_48_22, 1, 0),
+           Score_sobO_v2_SO_24_48_23 = ifelse(sobO_v2_SO_24_48_23 == K_sob_v2_24_48_23, 1, 0),
+           Score_sobO_v2_SO_24_48_24 = ifelse(sobO_v2_SO_24_48_24 == K_sob_v2_24_48_24, 1, 0),
+           Score_sobO_v2_SO_24_48_25 = ifelse(sobO_v2_SO_24_48_25 == K_sob_v2_24_48_25, 1, 0),
+           Score_sobO_v2_SO_24_48_26 = ifelse(sobO_v2_SO_24_48_26 == K_sob_v2_24_48_26, 1, 0),
+           Score_sobO_v2_SO_24_48_27 = ifelse(sobO_v2_SO_24_48_27 == K_sob_v2_24_48_27, 1, 0),
+           Score_sobO_v2_SO_24_48_28 = ifelse(sobO_v2_SO_24_48_28 == K_sob_v2_24_48_28, 1, 0),
+           Score_sobO_v2_SO_24_48_29 = ifelse(sobO_v2_SO_24_48_29 == K_sob_v2_24_48_29, 1, 0),
+           Score_sobO_v2_SO_24_48_30 = ifelse(sobO_v2_SO_24_48_30 == K_sob_v2_24_48_30, 1, 0),
+           Score_sobO_v2_SO_24_48_31 = ifelse(sobO_v2_SO_24_48_31 == K_sob_v2_24_48_31, 1, 0),
+           
+           ScoreOverall_sobO_v2 = sum(Score_sobO_v2_SO_24_48_1, Score_sobO_v2_SO_24_48_2, 
+                               Score_sobO_v2_SO_24_48_3, Score_sobO_v2_SO_24_48_4,
+                               Score_sobO_v2_SO_24_48_5, Score_sobO_v2_SO_24_48_6,
+                               Score_sobO_v2_SO_24_48_7, Score_sobO_v2_SO_24_48_8,
+                               Score_sobO_v2_SO_24_48_9, Score_sobO_v2_SO_24_48_10,
+                               Score_sobO_v2_SO_24_48_11, Score_sobO_v2_SO_24_48_12,
+                               Score_sobO_v2_SO_24_48_13, Score_sobO_v2_SO_24_48_14,
+                               Score_sobO_v2_SO_24_48_15, Score_sobO_v2_SO_24_48_16,
+                               Score_sobO_v2_SO_24_48_17, Score_sobO_v2_SO_24_48_18,
+                               Score_sobO_v2_SO_24_48_19, Score_sobO_v2_SO_24_48_20,
+                               Score_sobO_v2_SO_24_48_21, Score_sobO_v2_SO_24_48_22,
+                               Score_sobO_v2_SO_24_48_23, Score_sobO_v2_SO_24_48_24,
+                               Score_sobO_v2_SO_24_48_25, Score_sobO_v2_SO_24_48_26,
+                               Score_sobO_v2_SO_24_48_27, Score_sobO_v2_SO_24_48_28,
+                               Score_sobO_v2_SO_24_48_29, Score_sobO_v2_SO_24_48_30,
+                               Score_sobO_v2_SO_24_48_31
+           ),
+           ScoreOverall_sobO_v2 = round(ScoreOverall_sobO_v2 / 31, 3)
+    ) %>% 
+  mutate(Score_gug_v1_back = ifelse(gug_v1_back == K_gug_v1_Back, 1, 0),
+           Score_gug_v1_roll = ifelse(gug_v1_roll == K_gug_v1_Roll, 1, 0),
+           Score_gug_v1_uppos = ifelse(gug_v1_uppos == K_gug_v1_UpPos, 1, 0),
+           Score_gug_v1_turn = ifelse(gug_v1_turn == K_gug_v1_Turn, 1, 0),
+           Score_gug_v1_trameth = ifelse(gug_v1_trameth == K_gug_v1_TraMeth, 1, 0),
+           Score_gug_v1_tradis = ifelse(gug_v1_tradis == K_gug_v1_TraDis, 1, 0),
+           Score_gug_v1_start = ifelse(between(gug_v1_start, K_gug_v1_Start - 0.01, K_gug_v1_Start + 0.01), 1,
+                                       ifelse(gug_v1_start == K_gug_v1_Start - 0.02, 0.5,
+                                              ifelse(gug_v1_start == K_gug_v1_Start + 0.02, 0.5, 0))),
+           Score_gug_v1_end = ifelse(between(gug_v1_end, K_gug_v1_End - 0.01, K_gug_v1_End + 0.01), 1,
+                                     ifelse(gug_v1_end == K_gug_v1_End - 0.02, 0.5,
+                                            ifelse(gug_v1_end == K_gug_v1_End + 0.02, 0.5, 0))),
+           Score_gug_v1_stairup = ifelse(gug_v1_stairup == K_gug_v1_StairUp, 1, 0),
+           Score_gug_v1_stairdo = ifelse(gug_v1_stairdo == K_gug_v1_StairDo, 1, 0),
+           
+           ScoreOverall_gug_v1 = sum(Score_gug_v1_back, 
+                              Score_gug_v1_roll, Score_gug_v1_uppos,
+                              Score_gug_v1_turn, Score_gug_v1_trameth, 
+                              Score_gug_v1_tradis, Score_gug_v1_start,
+                              Score_gug_v1_end, Score_gug_v1_stairup,
+                              Score_gug_v1_stairdo
+           ),
+           ScoreOverall_gug_v1 = round(ScoreOverall_gug_v1 / 10, 3)
+    ) %>% 
+  mutate(Score_gug_v2_back = ifelse(gug_v2_back == K_gug_v2_Back, 1, 0),
+           Score_gug_v2_roll = ifelse(gug_v2_roll == K_gug_v2_Roll, 1, 0),
+           Score_gug_v2_uppos = ifelse(gug_v2_uppos == K_gug_v2_UpPos, 1, 0),
+           
+           Score_gug_v2_stand = ifelse(gug_v2_stand == K_gug_v2_Stand, 1, 0),
+           Score_gug_v2_hands = ifelse(gug_v2_hands == K_gug_v2_Hands, 1, 0),
+           Score_gug_v2_turn = ifelse(gug_v2_turn == K_gug_v2_Turn, 1, 0),
+           Score_gug_v2_trameth = ifelse(gug_v2_trameth == K_gug_v2_TraMeth, 1, 0),
+           Score_gug_v2_toes = ifelse(gug_v2_toes == K_gug_v2_Toes, 1, 0),
+           Score_gug_v2_tradis = ifelse(gug_v2_tradis == K_gug_v2_TraDis, 1, 0),
+           Score_gug_v2_start = ifelse(between(gug_v2_start, K_gug_v2_Start - 0.01, K_gug_v2_Start + 0.01), 1,
+                                       ifelse(gug_v2_start == K_gug_v2_Start - 0.02, 0.5,
+                                              ifelse(gug_v2_start == K_gug_v2_Start + 0.02, 0.5, 0))),
+           Score_gug_v2_end = ifelse(between(gug_v2_end, K_gug_v2_End - 0.01, K_gug_v2_End + 0.01), 1,
+                                     ifelse(gug_v2_end == K_gug_v2_End - 0.02, 0.5,
+                                            ifelse(gug_v2_end == K_gug_v2_End + 0.02, 0.5, 0))),
+           Score_gug_v2_stairup = ifelse(gug_v2_stairup == K_gug_v2_StairUp, 1, 0),
+           Score_gug_v2_stairdo = ifelse(gug_v2_stairdo == K_gug_v2_StairDo, 1, 0),
+           
+           ScoreOverall_gug_v2 = sum(Score_gug_v2_back, 
+                              Score_gug_v2_roll, Score_gug_v2_uppos,
+                              Score_gug_v2_stand,
+                              Score_gug_v2_hands, Score_gug_v2_turn,
+                              Score_gug_v2_trameth, Score_gug_v2_toes,
+                              Score_gug_v2_tradis, Score_gug_v2_start,
+                              Score_gug_v2_end, Score_gug_v2_stairup,
+                              Score_gug_v2_stairdo
+           ),
+           ScoreOverall_gug_v2 = round(ScoreOverall_gug_v2 / 13, 3)
+    ) %>% 
+    mutate(Score_rte_v1_sctr_success = ifelse(rte_v1_sctr_success == K_rte_v1_SCTR_Success, 1, 0),
+           Score_rte_v1_sctr_grasp = ifelse(rte_v1_sctr_grasp == K_rte_v1_SCTR_Grasp, 1, 0),
+           Score_rte_v1_sctl_success = ifelse(rte_v1_sctl_success == K_rte_v1_SCTL_Success, 1, 0),
+           Score_rte_v1_sctl_grasp = ifelse(rte_v1_sctl_grasp == K_rte_v1_SCTL_Grasp, 1, 0),
+           
+           Score_rte_v1_spnter_purpose = ifelse(rte_v1_spnter_purpose == K_rte_v1_SpnTer_Purpose, 1, 0),
+           Score_rte_v1_spnter_move = ifelse(rte_v1_spnter_move == K_rte_v1_SpnTer_Move, 1, 0),
+           Score_rte_v1_spnter_grasp = ifelse(rte_v1_spnter_grasp == K_rte_v1_SpnTer_Grasp, 1, 0),
+           Score_rte_v1_spnter_thumb = ifelse(rte_v1_spnter_thumb == K_rte_v1_SpnTer_Thumb, 1, 0),
+           Score_rte_v1_spnter_success = ifelse(rte_v1_spnter_success == K_rte_v1_SpnTer_Success, 1, 0),
+           Score_rte_v1_spnthr_purpose = ifelse(rte_v1_spnthr_purpose == K_rte_v1_SpnThr_Purpose, 1, 0),
+           Score_rte_v1_spnthr_move = ifelse(rte_v1_spnthr_move == K_rte_v1_SpnThr_Move, 1, 0),
+           Score_rte_v1_spnthr_grasp = ifelse(rte_v1_spnthr_grasp == K_rte_v1_SpnThr_Grasp, 1, 0),
+           Score_rte_v1_spnthr_thumb = ifelse(rte_v1_spnthr_thumb == K_rte_v1_SpnThr_Thumb, 1, 0),
+           Score_rte_v1_spnthr_success = ifelse(rte_v1_spnthr_success == K_rte_v1_SpnThr_Success, 1, 0),
+           
+           Score_rte_v1_spntel_purpose = ifelse(rte_v1_spntel_purpose == K_rte_v1_SpnTel_Purpose, 1, 0),
+           Score_rte_v1_spntel_move = ifelse(rte_v1_spntel_move == K_rte_v1_SpnTel_Move, 1, 0),
+           Score_rte_v1_spntel_grasp = ifelse(rte_v1_spntel_grasp == K_rte_v1_SpnTel_Grasp, 1, 0),
+           Score_rte_v1_spntel_thumb = ifelse(rte_v1_spntel_thumb == K_rte_v1_SpnTel_Thumb, 1, 0),
+           Score_rte_v1_spntel_success = ifelse(rte_v1_spntel_success == K_rte_v1_SpnTel_Success, 1, 0),
+           Score_rte_v1_spnthl_purpose = ifelse(rte_v1_spnthl_purpose == K_rte_v1_SpnThl_Purpose, 1, 0),
+           Score_rte_v1_spnthl_move = ifelse(rte_v1_spnthl_move == K_rte_v1_SpnThl_Move, 1, 0),
+           Score_rte_v1_spnthl_grasp = ifelse(rte_v1_spnthl_grasp == K_rte_v1_SpnThl_Grasp, 1, 0),
+           Score_rte_v1_spnthl_thumb = ifelse(rte_v1_spnthl_thumb == K_rte_v1_SpnThl_Thumb, 1, 0),
+           Score_rte_v1_spnthl_success = ifelse(rte_v1_spnthl_success == K_rte_v1_SpnThl_Success, 1, 0),
+           
+           ScoreOverall_rte_v1 = sum(Score_rte_v1_sctr_success, Score_rte_v1_sctr_grasp, 
+                              Score_rte_v1_sctl_success, Score_rte_v1_sctl_grasp, 
+                              
+                              Score_rte_v1_spnter_purpose, Score_rte_v1_spnter_move, 
+                              Score_rte_v1_spnter_grasp, Score_rte_v1_spnter_thumb, 
+                              Score_rte_v1_spnter_success, Score_rte_v1_spnthr_purpose, 
+                              Score_rte_v1_spnthr_move, Score_rte_v1_spnthr_grasp, 
+                              Score_rte_v1_spnthr_thumb, Score_rte_v1_spnthr_success, 
+                              
+                              Score_rte_v1_spntel_purpose, Score_rte_v1_spntel_move, 
+                              Score_rte_v1_spntel_grasp, Score_rte_v1_spntel_thumb, 
+                              Score_rte_v1_spntel_success, Score_rte_v1_spnthl_purpose, 
+                              Score_rte_v1_spnthl_move, Score_rte_v1_spnthl_grasp,
+                              Score_rte_v1_spnthl_thumb, Score_rte_v1_spnthl_success),
+           ScoreOverall_rte_v1 = round(ScoreOverall_rte_v1 / 24 , 3)
+    ) %>% 
+    mutate(Score_rte_v2_sctr_success = ifelse(rte_v2_sctr_success == K_rte_v2_SCTR_Success, 1, 0),
+           Score_rte_v2_sctr_grasp = ifelse(rte_v2_sctr_grasp == K_rte_v2_SCTR_Grasp, 1, 0),
+           Score_rte_v2_sctl_success = ifelse(rte_v2_sctl_success == K_rte_v2_SCTL_Success, 1, 0),
+           Score_rte_v2_sctl_grasp = ifelse(rte_v2_sctl_grasp == K_rte_v2_SCTL_Grasp, 1, 0),
+           
+           Score_rte_v2_lctr_success = ifelse(rte_v2_lctr_success == K_rte_v2_LCTR_Success, 1, 0),
+           Score_rte_v2_lctr_grasp = ifelse(rte_v2_lctr_grasp == K_rte_v2_LCTR_Grasp, 1, 0),
+           Score_rte_v2_lctl_success = ifelse(rte_v2_lctl_success == K_rte_v2_LCTL_Success, 1, 0),
+           Score_rte_v2_lctl_grasp = ifelse(rte_v2_lctl_grasp == K_rte_v2_LCTL_Grasp, 1, 0),
+           
+           ScoreOverall_rte_v2 = sum(Score_rte_v2_sctr_success, Score_rte_v2_sctr_grasp, 
+                              Score_rte_v2_sctl_success, Score_rte_v2_sctl_grasp, 
+                              Score_rte_v2_lctr_success, Score_rte_v2_lctr_grasp, 
+                              Score_rte_v2_lctl_success, Score_rte_v2_lctl_grasp 
+           ),
+           ScoreOverall_rte_v2 = round(ScoreOverall_rte_v2 / 8 , 3)
+    )  %>% 
+    mutate(Score_sas_v1_usit_q1 = ifelse(sas_v1_usit_q1 == K_sas_v1_Usit_Q1, 
+                                         1, 0),
+           Score_sas_v1_usit_q2_start = ifelse(between(sas_v1_usit_q2_start, K_sas_v1_Usit_Q2_St - 0.01, K_sas_v1_Usit_Q2_St + 0.01), 1, 
+                                               ifelse(sas_v1_usit_q2_start == K_sas_v1_Usit_Q2_St - 0.02, 0.5,
+                                                      ifelse(sas_v1_usit_q2_start == K_sas_v1_Usit_Q2_St + 0.02, 0.5, 0))),
+           Score_sas_v1_usit_q2_end = ifelse(between(sas_v1_usit_q2_end, K_sas_v1_Usit_Q2_End - 0.01, K_sas_v1_Usit_Q2_End + 0.01), 1, 
+                                             ifelse(sas_v1_usit_q2_end == K_sas_v1_Usit_Q2_End - 0.02, 0.5,
+                                                    ifelse(sas_v1_usit_q2_end == K_sas_v1_Usit_Q2_End + 0.02, 0.5, 0))),
+           ScoreOverall_sas_v1 = sum(Score_sas_v1_usit_q1, Score_sas_v1_usit_q2_start, Score_sas_v1_usit_q2_end),
+           ScoreOverall_sas_v1 = round(ScoreOverall_sas_v1 / 3, 3)
+    )  %>% 
+    mutate(Score_sas_v2_std_q1 = ifelse(sas_v2_std_q1 == K_sas_v2_StD_Q1, 
+                                        1, 0),
+           Score_sas_v2_std_q2_start = ifelse(between(sas_v2_std_q2_start, K_sas_v2_StD_Q2_St - 0.01, K_sas_v2_StD_Q2_St + 0.01), 1, 
+                                              ifelse(sas_v2_std_q2_start == K_sas_v2_StD_Q2_St - 0.02, 0.5,
+                                                     ifelse(sas_v2_std_q2_start == K_sas_v2_StD_Q2_St + 0.02, 0.5, 0))),
+           Score_sas_v2_std_q2_end = ifelse(between(sas_v2_std_q2_end, K_sas_v2_StD_Q2_End - 0.01, K_sas_v2_StD_Q2_End + 0.01), 1, 
+                                            ifelse(sas_v2_std_q2_end == K_sas_v2_StD_Q2_End - 0.02, 0.5,
+                                                   ifelse(sas_v2_std_q2_end == K_sas_v2_StD_Q2_End + 0.02, 0.5, 0))),
+           
+           Score_sas_v2_std_q3 = ifelse(sas_v2_std_q3 == K_sas_v2_StD_Q3, 
+                                        1, 0),
+           Score_sas_v2_std_q4_start = ifelse(between(sas_v2_std_q4_start, K_sas_v2_StD_Q4_St - 0.01, K_sas_v2_StD_Q4_St + 0.01), 1, 
+                                              ifelse(sas_v2_std_q4_start == K_sas_v2_StD_Q4_St - 0.02, 0.5,
+                                                     ifelse(sas_v2_std_q4_start == K_sas_v2_StD_Q4_St + 0.02, 0.5, 0))),
+           Score_sas_v2_std_q4_end = ifelse(between(sas_v2_std_q4_end, K_sas_v2_StD_Q4_End - 0.01, K_sas_v2_StD_Q4_End + 0.01), 1, 
+                                            ifelse(sas_v2_std_q4_end == K_sas_v2_StD_Q4_End - 0.02, 0.5,
+                                                   ifelse(sas_v2_std_q4_end == K_sas_v2_StD_Q4_End + 0.02, 0.5, 0))),
+           
+           ScoreOverall_sas_v2 = sum(Score_sas_v2_std_q1, Score_sas_v2_std_q2_start, Score_sas_v2_std_q2_end,
+                              Score_sas_v2_std_q3, Score_sas_v2_std_q4_start, Score_sas_v2_std_q4_end),
+           ScoreOverall_sas_v2 = round(ScoreOverall_sas_v2 / 6 , 3)
+    )  %>% 
+    mutate(Score_sas_v3_pts_q1 = ifelse(sas_v3_pts_q1 == K_sas_v3_PtS_Q1, 
+                                        1, 0),
+           Score_sas_v3_usit_q1 = ifelse(sas_v3_usit_q1 == K_sas_v3_Usit_Q1, 
+                                         1, 0),
+           Score_sas_v3_usit_q2_start = ifelse(between(sas_v3_usit_q2_start, K_sas_v3_Usit_Q2_St - 0.01, K_sas_v3_Usit_Q2_St + 0.01), 1, 
+                                               ifelse(sas_v3_usit_q2_start == K_sas_v3_Usit_Q2_St - 0.02, 0.5,
+                                                      ifelse(sas_v3_usit_q2_start == K_sas_v3_Usit_Q2_St + 0.02, 0.5, 0))),
+           Score_sas_v3_usit_q2_end = ifelse(between(sas_v3_usit_q2_end, K_sas_v3_Usit_Q2_End - 0.01, K_sas_v3_Usit_Q2_End + 0.01), 1, 
+                                             ifelse(sas_v3_usit_q2_end == K_sas_v3_Usit_Q2_End - 0.02, 0.5,
+                                                    ifelse(sas_v3_usit_q2_end == K_sas_v3_Usit_Q2_End + 0.02, 0.5, 0))),
+           ScoreOverall_sas_v3 = sum(Score_sas_v3_pts_q1, Score_sas_v3_usit_q1, Score_sas_v3_usit_q2_start, Score_sas_v3_usit_q2_end),
+           ScoreOverall_sas_v3 = round(ScoreOverall_sas_v3 / 4, 3)
+    )  %>% 
+    mutate(Score_sas_v4_std_q1 = ifelse(sas_v4_std_q1 == K_sas_v4_StD_Q1, 
+                                        1, 0),
+           Score_sas_v4_std_q2_start = ifelse(between(sas_v4_std_q2_start, K_sas_v4_StD_Q2_St - 0.01, K_sas_v4_StD_Q2_St + 0.01), 1, 
+                                              ifelse(sas_v4_std_q2_start == K_sas_v4_StD_Q2_St - 0.02, 0.5,
+                                                     ifelse(sas_v4_std_q2_start == K_sas_v4_StD_Q2_St + 0.02, 0.5, 0))),
+           Score_sas_v4_std_q2_end = ifelse(between(sas_v4_std_q2_end, K_sas_v4_StD_Q2_End - 0.01, K_sas_v4_StD_Q2_End + 0.01), 1, 
+                                            ifelse(sas_v4_std_q2_end == K_sas_v4_StD_Q2_End - 0.02, 0.5,
+                                                   ifelse(sas_v4_std_q2_end == K_sas_v4_StD_Q2_End + 0.02, 0.5, 0))),
+           
+           Score_sas_v4_std_q3 = ifelse(sas_v4_std_q3 == K_sas_v4_StD_Q3, 
+                                        1, 0),
+           Score_sas_v4_std_q4_start = ifelse(between(sas_v4_std_q4_start, K_sas_v4_StD_Q4_St - 0.01, K_sas_v4_StD_Q4_St + 0.01), 1, 
+                                              ifelse(sas_v4_std_q4_start == K_sas_v4_StD_Q4_St - 0.02, 0.5,
+                                                     ifelse(sas_v4_std_q4_start == K_sas_v4_StD_Q4_St + 0.02, 0.5, 0))),
+           Score_sas_v4_std_q4_end = ifelse(between(sas_v4_std_q4_end, K_sas_v4_StD_Q4_End - 0.01, K_sas_v4_StD_Q4_End + 0.01), 1, 
+                                            ifelse(sas_v4_std_q4_end == K_sas_v4_StD_Q4_End - 0.02, 0.5,
+                                                   ifelse(sas_v4_std_q4_end == K_sas_v4_StD_Q4_End + 0.02, 0.5, 0))),
+           
+           ScoreOverall_sas_v4 = sum(Score_sas_v4_std_q1, Score_sas_v4_std_q2_start, Score_sas_v4_std_q2_end,
+                              Score_sas_v4_std_q3, Score_sas_v4_std_q4_start, Score_sas_v4_std_q4_end),
+           ScoreOverall_sas_v4 = round(ScoreOverall_sas_v4 / 6 , 3)
+    ) %>% 
+  ungroup()
+  
+```
+
+### Factor the Data 
+
+```{r}
+app_values_1or0 <- c(1, 0)
+app_values_1_0 <- c(1, 0)
+app_values_0_2 <- c(0, 1, 2)
+app_values_1_2 <- c(1, 2)
+app_values_1_3 <- c(1, 2, 3)
+app_values_0_4 <- c(0, 1, 2, 3, 4)
+app_values_1_4 <- c(1, 2, 3, 4)
+app_values_1_5 <- c(1, 2, 3, 4, 5)
+app_values_0_5 <- c(0, 1, 2, 3, 4, 5)
+app_values_1_6 <- c(1, 2, 3, 4, 5, 6)
+app_values_1_7 <- c(1, 2, 3, 4, 5, 6, 7)
+app_values_0_8 <- c(0, 1, 2, 3, 4, 5, 6, 7, 8)
+app_values_1_9 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+app_values_0_3_neg2 <- c(0, -2, 1, 2, 3)
+
+score_cert_factored <- scored_cert_df 
+
+pull_cols <- score_cert_factored %>% 
+    select(starts_with("sobY"), starts_with("sobO"), starts_with("K_sob")) %>% 
+    colnames()
+
+score_cert_factored[ ,pull_cols] <- lapply(score_cert_factored[ ,pull_cols], 
+                                           factor, levels = c(0, 1), 
+                                           labels = c("No", "Yes"))
+
+
+score_cert_factored <- score_cert_factored %>% 
+    mutate(gug_v1_back = factor(gug_v1_back, app_values_0_2, c("No (didn’t try)", "No (tried but couldn’t)", "Yes")),
+           K_gug_v1_Back = factor(K_gug_v1_Back, app_values_0_2, c("No (didn’t try)", "No (tried but couldn’t)", "Yes")),
+           
+           gug_v1_roll = factor(gug_v1_roll, app_values_1_5, c("Rolled to belly, hands trapped",
+                                                               "Rolled to belly, hands out", "Rolled to hands-knees",
+                                                               "Side lying", "Got up without rolling")),
+           K_gug_v1_Roll = factor(K_gug_v1_Roll, app_values_1_5, c("Rolled to belly, hands trapped",
+                                                     "Rolled to belly, hands out", "Rolled to hands-knees",
+                                                     "Side lying", "Got up without rolling")),
+           
+           gug_v1_uppos = factor(gug_v1_uppos, app_values_1_4, c("Belly", "Hands-knees or hands-feet",
+                                                                 "Sit or kneel, back vertical", "Stand")),
+           K_gug_v1_UpPos = factor(K_gug_v1_UpPos, app_values_1_4, c("Belly", "Hands-knees or hands-feet",
+                                                       "Sit or kneel, back vertical", "Stand")),
+           
+           
+           
+           gug_v1_turn = factor(gug_v1_turn, app_values_1_3, c("Never faced finish", "Turned to face finish", "Already facing finish")),
+           K_gug_v1_Turn = factor(K_gug_v1_Turn, app_values_1_3, c("Never faced finish", "Turned to face finish", "Already facing finish")),
+           
+           gug_v1_trameth = factor(gug_v1_trameth, app_values_1_7, c("Did not travel", "Log roll",
+                                                                     "Belly crawl", "Bum shuffle or hitch",
+                                                                     "Hands-knees or hands-feet", "Knee-walk or half-kneel",
+                                                                     "Walk")),
+           K_gug_v1_TraMeth = factor(K_gug_v1_TraMeth, app_values_1_7, c("Did not travel", "Log roll",
+                                                           "Belly crawl", "Bum shuffle or hitch",
+                                                           "Hands-knees or hands-feet", "Knee-walk or half-kneel",
+                                                           "Walk")),
+           
+           
+           
+           gug_v1_tradis = factor(gug_v1_tradis, app_values_1_5, c("Took a few steps and fell",
+                                                                   "Took a few steps and stopped", "3 meters, not continuous",
+                                                                   "3 meters, but dawdled", "3 meters, no dawdling")),
+           K_gug_v1_TraDis = factor(K_gug_v1_TraDis, app_values_1_5, c("Took a few steps and fell",
+                                                         "Took a few steps and stopped", "3 meters, not continuous",
+                                                         "3 meters, but dawdled", "3 meters, no dawdling")),
+           
+           
+           
+           gug_v1_stairup = factor(gug_v1_stairup, app_values_0_8, c("Didn't try", "Did not pull up",
+                                                                     "Pulled up to knees", "Pulled up to stand",
+                                                                     "Climbed up, stayed prone", "Climbed up, stood up",
+                                                                     "Tried to step & fell", "Stepped up, not integrated",
+                                                                     "Stepped up, gait integrated")),
+           K_gug_v1_StairUp = factor(K_gug_v1_StairUp, app_values_0_8, c("Didn't try", "Did not pull up",
+                                                           "Pulled up to knees", "Pulled up to stand",
+                                                           "Climbed up, stayed prone", "Climbed up, stood up",
+                                                           "Tried to step & fell", "Stepped up, not integrated",
+                                                           "Stepped up, gait integrated")),
+           
+           
+           gug_v1_stairdo = factor(gug_v1_stairdo, app_values_0_8, c("Didn't try to come down",
+                                                                     "Climbed down, fell", "Climbed down, stayed down", "Climbed down, stood up",
+                                                                     "Walked down, fell", "Walked down, not integrated",
+                                                                     "Walked down, integrated", "Jumped or leaped & fell",
+                                                                     "Jumped or leaped no fall")),
+           K_gug_v1_StairDo = factor(K_gug_v1_StairDo, app_values_0_8, c("Didn't try to come down",
+                                                           "Climbed down, fell", "Climbed down, stayed down", "Climbed down, stood up",
+                                                           "Walked down, fell", "Walked down, not integrated",
+                                                           "Walked down, integrated", "Jumped or leaped & fell",
+                                                           "Jumped or leaped no fall"))
+           
+    ) %>% 
+  mutate(gug_v2_back = factor(gug_v2_back, app_values_0_2, c("No (didn’t try)", "No (tried but couldn’t)", "Yes")),
+           K_gug_v2_Back = factor(K_gug_v2_Back, app_values_0_2, c("No (didn’t try)", "No (tried but couldn’t)", "Yes")),
+           
+           
+           
+           gug_v2_roll = factor(gug_v2_roll, app_values_1_5, c("Rolled to belly, hands trapped",
+                                                               "Rolled to belly, hands out", "Rolled to hands-knees",
+                                                               "Side lying", "Got up without rolling")),
+           K_gug_v2_Roll = factor(K_gug_v2_Roll, app_values_1_5, c("Rolled to belly, hands trapped",
+                                                     "Rolled to belly, hands out", "Rolled to hands-knees",
+                                                     "Side lying", "Got up without rolling")),
+           
+           gug_v2_uppos = factor(gug_v2_uppos, app_values_1_4, c("Belly", "Hands-knees or hands-feet",
+                                                                 "Sit or kneel, back vertical", "Stand")),
+           K_gug_v2_UpPos = factor(K_gug_v2_UpPos, app_values_1_4, c("Belly", "Hands-knees or hands-feet",
+                                                       "Sit or kneel, back vertical", "Stand")),
+           
+           
+           gug_v2_stand = factor(gug_v2_stand, app_values_1_3, c("Down-dog to stand",
+                                                                 "Half-kneel to stand", "Squat to stand")),
+           K_gug_v2_Stand = factor(K_gug_v2_Stand, app_values_1_3, c("Down-dog to stand",
+                                                       "Half-kneel to stand", "Squat to stand")),
+           
+           gug_v2_hands = factor(gug_v2_hands, app_values_0_2, c("0", "1", "2")),
+           K_gug_v2_Hands = factor(K_gug_v2_Hands, app_values_0_2, c("0", "1", "2")),
+           
+           gug_v2_turn = factor(gug_v2_turn, app_values_1_3, c("Never faced finish", "Turned to face finish", "Already facing finish")),
+           K_gug_v2_Turn = factor(K_gug_v2_Turn, app_values_1_3, c("Never faced finish", "Turned to face finish", "Already facing finish")),
+           
+           gug_v2_trameth = factor(gug_v2_trameth, app_values_1_7, c("Did not travel", "Log roll",
+                                                                     "Belly crawl", "Bum shuffle or hitch",
+                                                                     "Hands-knees or hands-feet", "Knee-walk or half-kneel",
+                                                                     "Walk")),
+           K_gug_v2_TraMeth = factor(K_gug_v2_TraMeth, app_values_1_7, c("Did not travel", "Log roll",
+                                                           "Belly crawl", "Bum shuffle or hitch",
+                                                           "Hands-knees or hands-feet", "Knee-walk or half-kneel",
+                                                           "Walk")),
+           
+           gug_v2_toes = factor(gug_v2_toes, app_values_1_5, c("Can't see heels", "No",
+                                                               "Right foot", "Left foot",
+                                                               "Both")),
+           K_gug_v2_Toes = factor(K_gug_v2_Toes, app_values_1_5, c("Can't see heels", "No",
+                                                     "Right foot", "Left foot",
+                                                     "Both")),
+           
+           gug_v2_tradis = factor(gug_v2_tradis, app_values_1_5, c("Took a few steps and fell",
+                                                                   "Took a few steps and stopped", "3 meters, not continuous",
+                                                                   "3 meters, but dawdled", "3 meters, no dawdling")),
+           K_gug_v2_TraDis = factor(K_gug_v2_TraDis, app_values_1_5, c("Took a few steps and fell",
+                                                         "Took a few steps and stopped", "3 meters, not continuous",
+                                                         "3 meters, but dawdled", "3 meters, no dawdling")),
+           
+           
+           
+           gug_v2_stairup = factor(gug_v2_stairup, app_values_0_8, c("Didn't try", "Did not pull up",
+                                                                     "Pulled up to knees", "Pulled up to stand",
+                                                                     "Climbed up, stayed prone", "Climbed up, stood up",
+                                                                     "Tried to step & fell", "Stepped up, not integrated",
+                                                                     "Stepped up, gait integrated")),
+           K_gug_v2_StairUp = factor(K_gug_v2_StairUp, app_values_0_8, c("Didn't try", "Did not pull up",
+                                                           "Pulled up to knees", "Pulled up to stand",
+                                                           "Climbed up, stayed prone", "Climbed up, stood up",
+                                                           "Tried to step & fell", "Stepped up, not integrated",
+                                                           "Stepped up, gait integrated")),
+           
+           
+           gug_v2_stairdo = factor(gug_v2_stairdo, app_values_0_8, c("Didn't try to come down",
+                                                                     "Climbed down, fell", "Climbed down, stayed down", "Climbed down, stood up",
+                                                                     "Walked down, fell", "Walked down, not integrated",
+                                                                     "Walked down, integrated", "Jumped or leaped & fell",
+                                                                     "Jumped or leaped no fall")),
+           K_gug_v2_StairDo = factor(K_gug_v2_StairDo, app_values_0_8, c("Didn't try to come down",
+                                                           "Climbed down, fell", "Climbed down, stayed down", "Climbed down, stood up",
+                                                           "Walked down, fell", "Walked down, not integrated",
+                                                           "Walked down, integrated", "Jumped or leaped & fell",
+                                                           "Jumped or leaped no fall"))
+           
+    ) %>%
+  mutate(rte_v1_sctr_success = factor(rte_v1_sctr_success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           K_rte_v1_SCTR_Success = factor(K_rte_v1_SCTR_Success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           rte_v1_sctr_grasp = factor(rte_v1_sctr_grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           K_rte_v1_SCTR_Grasp = factor(K_rte_v1_SCTR_Grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           
+           rte_v1_sctl_success = factor(rte_v1_sctl_success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           K_rte_v1_SCTL_Success = factor(K_rte_v1_SCTL_Success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           rte_v1_sctl_grasp = factor(rte_v1_sctl_grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           K_rte_v1_SCTL_Grasp = factor(K_rte_v1_SCTL_Grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           
+           rte_v1_spnter_purpose = factor(rte_v1_spnter_purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           K_rte_v1_SpnTer_Purpose = factor(K_rte_v1_SpnTer_Purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           rte_v1_spnter_move = factor(rte_v1_spnter_move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           K_rte_v1_SpnTer_Move = factor(K_rte_v1_SpnTer_Move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           rte_v1_spnter_grasp = factor(rte_v1_spnter_grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           K_rte_v1_SpnTer_Grasp = factor(K_rte_v1_SpnTer_Grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           rte_v1_spnter_thumb = factor(rte_v1_spnter_thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           K_rte_v1_SpnTer_Thumb = factor(K_rte_v1_SpnTer_Thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           rte_v1_spnter_success = factor(rte_v1_spnter_success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                                        "Cheerio fell", "After replacement",
+                                                                                        "On first attempt")),
+           K_rte_v1_SpnTer_Success = factor(K_rte_v1_SpnTer_Success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                              "Cheerio fell", "After replacement",
+                                                                              "On first attempt")),
+           
+           rte_v1_spnthr_purpose = factor(rte_v1_spnthr_purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           K_rte_v1_SpnThr_Purpose = factor(K_rte_v1_SpnThr_Purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           rte_v1_spnthr_move = factor(rte_v1_spnthr_move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           K_rte_v1_SpnThr_Move = factor(K_rte_v1_SpnThr_Move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           rte_v1_spnthr_grasp = factor(rte_v1_spnthr_grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           K_rte_v1_SpnThr_Grasp = factor(K_rte_v1_SpnThr_Grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           rte_v1_spnthr_thumb = factor(rte_v1_spnthr_thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           K_rte_v1_SpnThr_Thumb = factor(K_rte_v1_SpnThr_Thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           rte_v1_spnthr_success = factor(rte_v1_spnthr_success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                                        "Cheerio fell", "After replacement",
+                                                                                        "On first attempt")),
+           K_rte_v1_SpnThr_Success = factor(K_rte_v1_SpnThr_Success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                              "Cheerio fell", "After replacement",
+                                                                              "On first attempt")),
+           
+           
+           rte_v1_spntel_purpose = factor(rte_v1_spntel_purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           K_rte_v1_SpnTel_Purpose = factor(K_rte_v1_SpnTel_Purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           rte_v1_spntel_move = factor(rte_v1_spntel_move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           K_rte_v1_SpnTel_Move = factor(K_rte_v1_SpnTel_Move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           rte_v1_spntel_grasp = factor(rte_v1_spntel_grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           K_rte_v1_SpnTel_Grasp = factor(K_rte_v1_SpnTel_Grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           rte_v1_spntel_thumb = factor(rte_v1_spntel_thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           K_rte_v1_SpnTel_Thumb = factor(K_rte_v1_SpnTel_Thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           rte_v1_spntel_success = factor(rte_v1_spntel_success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                                        "Cheerio fell", "After replacement",
+                                                                                        "On first attempt")),
+           K_rte_v1_SpnTel_Success = factor(K_rte_v1_SpnTel_Success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                              "Cheerio fell", "After replacement",
+                                                                              "On first attempt")),
+           
+           rte_v1_spnthl_purpose = factor(rte_v1_spnthl_purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           K_rte_v1_SpnThl_Purpose = factor(K_rte_v1_SpnThl_Purpose, app_values_0_4, c("Noncompliant", "Refused to pick up spoon", "Picked up to play", "Grasped Cheerio", "Grasped spoon for transport")),
+           rte_v1_spnthl_move = factor(rte_v1_spnthl_move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           K_rte_v1_SpnThl_Move = factor(K_rte_v1_SpnThl_Move, app_values_1_2, c("Grasped handle", "Moved handle")),
+           rte_v1_spnthl_grasp = factor(rte_v1_spnthl_grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           K_rte_v1_SpnThl_Grasp = factor(K_rte_v1_SpnThl_Grasp, app_values_1_3, c("Palmer grip", "Thumb & finger grip", "Adult-like grip")),
+           rte_v1_spnthl_thumb = factor(rte_v1_spnthl_thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           K_rte_v1_SpnThl_Thumb = factor(K_rte_v1_SpnThl_Thumb, app_values_1_2, c("Away from bowl", "Toward bowl")),
+           rte_v1_spnthl_success = factor(rte_v1_spnthl_success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                                        "Cheerio fell", "After replacement",
+                                                                                        "On first attempt")),
+           K_rte_v1_SpnThl_Success = factor(K_rte_v1_SpnThl_Success, app_values_0_3_neg2, c("Didn't try", "Child used restrained hand",
+                                                                              "Cheerio fell", "After replacement",
+                                                                              "On first attempt"))
+           
+    ) %>% 
+  mutate(rte_v2_sctr_success = factor(rte_v2_sctr_success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           K_rte_v2_SCTR_Success = factor(K_rte_v2_SCTR_Success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           rte_v2_sctr_grasp = factor(rte_v2_sctr_grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           K_rte_v2_SCTR_Grasp = factor(K_rte_v2_SCTR_Grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           
+           rte_v2_sctl_success = factor(rte_v2_sctl_success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           K_rte_v2_SCTL_Success = factor(K_rte_v2_SCTL_Success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           rte_v2_sctl_grasp = factor(rte_v2_sctl_grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           K_rte_v2_SCTL_Grasp = factor(K_rte_v2_SCTL_Grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           
+           rte_v2_lctr_success = factor(rte_v2_lctr_success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           K_rte_v2_LCTR_Success = factor(K_rte_v2_LCTR_Success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           rte_v2_lctr_grasp = factor(rte_v2_lctr_grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           K_rte_v2_LCTR_Grasp = factor(K_rte_v2_LCTR_Grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           
+           rte_v2_lctl_success = factor(rte_v2_lctl_success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           K_rte_v2_LCTL_Success = factor(K_rte_v2_LCTL_Success, app_values_0_5, c("Noncompliant", "Didn't try", "Moved arm only", "Touched but no grasp", "Grasped from the table", "Grasped from the base")),
+           rte_v2_lctl_grasp = factor(rte_v2_lctl_grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip")),
+           K_rte_v2_LCTL_Grasp = factor(K_rte_v2_LCTL_Grasp, app_values_1_3, c("Palmer grip", "Multi-finger grip", "Thumb & finger grip"))
+    ) %>% 
+  mutate(sas_v1_usit_q1 = factor(sas_v1_usit_q1, app_values_1_5,
+                                   c("Non-compliant", "Fell", "Used hands for support",
+                                     "Sat without support", "Shifted to prone")),
+           K_sas_v1_Usit_Q1 = factor(K_sas_v1_Usit_Q1, app_values_1_5,
+                              c("Non-compliant", "Fell", "Used hands for support",
+                                "Sat without support", "Shifted to prone"))) %>% 
+  mutate(sas_v2_std_q1 = factor(sas_v2_std_q1, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet together")),
+           K_sas_v2_StD_Q1 = factor(K_sas_v2_StD_Q1, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet together")),
+           sas_v2_std_q3 = factor(sas_v2_std_q3, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet tandem")),
+           K_sas_v2_StD_Q3 = factor(K_sas_v2_StD_Q3, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet tandem"))
+    ) %>% 
+  mutate(sas_v3_pts_q1 = factor(sas_v3_pts_q1, app_values_1_2,
+                                  c("No", "Yes")),
+           sas_v3_usit_q1 = factor(sas_v3_usit_q1, app_values_1_5,
+                                   c("Non-compliant", "Fell", "Used hands for support",
+                                     "Sat without support", "Shifted to prone")),
+           K_sas_v3_Usit_Q1 = factor(K_sas_v3_Usit_Q1, app_values_1_5,
+                              c("Non-compliant", "Fell", "Used hands for support",
+                                "Sat without support", "Shifted to prone"))) %>% 
+  mutate(sas_v4_std_q1 = factor(sas_v4_std_q1, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet together")),
+           K_sas_v4_StD_Q1 = factor(K_sas_v4_StD_Q1, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet together")),
+           sas_v4_std_q3 = factor(sas_v4_std_q3, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet tandem")),
+           K_sas_v4_StD_Q3 = factor(K_sas_v4_StD_Q3, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet tandem"))
+    ) %>% 
+    mutate_all(as.character)
+
+```
+
+### Rotate the Data
+
+```{r}
+master_questions <- score_cert_factored %>% 
+  select(-c(starts_with("ScoreOverall"))) %>% 
+  pivot_longer(., 
+                 cols = c(-c(name, site)), 
+                 names_to = "Question",
+                 values_to = "Score"
+    ) %>% 
+  arrange(Question) %>% 
+  select(Question) %>% 
+  mutate(Question = tolower(Question)) %>% 
+  unique() %>% 
+  mutate(type = ifelse(str_detect(Question, "^k_"), "Answer", 
+                       ifelse(str_detect(Question, "^score"), "Score", "Response")),
+         Q_gug = ifelse(str_detect(Question, "_back"), "Did child get off back?", 
+             ifelse(str_detect(Question, "_roll"), "How child got off back?", 
+             ifelse(str_detect(Question, "_uppos"), "Most upright postures?", 
+             ifelse(str_detect(Question, "_stand"), "How child got to standing?", 
+             ifelse(str_detect(Question, "_hands"), "How many hands child used?", 
+             ifelse(str_detect(Question, "_turn"), "Child turned to face finish line?", 
+             ifelse(str_detect(Question, "_trameth"), "How child traveled?", 
+             ifelse(str_detect(Question, "_toes"), "Child walked on toes?", 
+             ifelse(str_detect(Question, "_tradis"), "How far child traveled?",
+             ifelse(str_detect(Question, "gug_v\\d_start"), "When did the child cross start line?",
+             ifelse(str_detect(Question, "gug_v\\d_end"), "When did the child cross finish line?", 
+             ifelse(str_detect(Question, "_stairup"), "How did child get up stair?", 
+             ifelse(str_detect(Question, "_stairdo"), "How did child get down stair?", 
+                    NA))))))))))))),
+         Q_rte = ifelse(str_detect(Question, "_sctr_success"), "Cheerio Small Base Task Right Hand: Did child reach small base with right hand?", 
+              ifelse(str_detect(Question, "_sctr_grasp"), "Cheerio Small Base Task Right Hand: Child used which grasp with right hand?", 
+              ifelse(str_detect(Question, "_sctl_success"), "Cheerio Small Base Task Left Hand: Did child reach small base with left hand?", 
+              ifelse(str_detect(Question, "_sctl_grasp"), "Cheerio Small Base Task Left Hand: Child used which grasp with left hand?",
+             ifelse(str_detect(Question, "_spnter_purpose"), "Cheerio Spoon Easy Right Hand: Did child use right hand to move spoon?", 
+              ifelse(str_detect(Question, "_spnter_move"), "Cheerio Spoon Easy Right Hand: Did child use right hand to grasp or move handle?",
+              ifelse(str_detect(Question, "_spnter_grasp"), "Cheerio Spoon Easy Right Hand: Child used which grasp with right hand?", 
+              ifelse(str_detect(Question, "_spnter_thumb"), "Cheerio Spoon Easy Right Hand: Where was right hand thumb pointing?", 
+              ifelse(str_detect(Question, "_spnter_success"), "Cheerio Spoon Easy Right Hand: Did child bring cheerio to mouth with right hand?", 
+   
+              ifelse(str_detect(Question, "_spnthr_purpose"), "Cheerio Spoon Hard Right Hand: Did child use right hand to move spoon?", 
+              ifelse(str_detect(Question, "_spnthr_move"), "Cheerio Spoon Hard Right Hand: Did child use right hand to grasp or move handle?",
+              ifelse(str_detect(Question, "_spnthr_grasp"), "Cheerio Spoon Hard Right Hand: Child used which grasp with right hand?", 
+              ifelse(str_detect(Question, "_spnthr_thumb"), "Cheerio Spoon Hard Right Hand: Where was right hand thumb pointing?", 
+              ifelse(str_detect(Question, "_spnthr_success"), "Cheerio Spoon Hard Right Hand: Did child bring cheerio to mouth with right hand?", 
+   
+              ifelse(str_detect(Question, "_spntel_purpose"), "Cheerio Spoon Easy Left Hand: Did child use left hand to move spoon?", 
+              ifelse(str_detect(Question, "_spntel_move"), "Cheerio Spoon Easy Left Hand: Did child use left hand to grasp or move handle?",
+              ifelse(str_detect(Question, "_spntel_grasp"), "Cheerio Spoon Easy Left Hand: Child used which grasp with left hand?", 
+              ifelse(str_detect(Question, "_spntel_thumb"), "Cheerio Spoon Easy Left Hand: Where was left hand thumb pointing?", 
+              ifelse(str_detect(Question, "_spntel_success"), "Cheerio Spoon Easy Left Hand: Did child bring cheerio to mouth with left hand?", 
+   
+              ifelse(str_detect(Question, "_spnthl_purpose"), "Cheerio Spoon Hard Left Hand: Did child use left hand to move spoon?", 
+              ifelse(str_detect(Question, "_spnthl_move"), "Cheerio Spoon Hard Left Hand: Did child use left hand to grasp or move handle?",
+              ifelse(str_detect(Question, "_spnthl_grasp"), "Cheerio Spoon Hard Left Hand: Child used which grasp with left hand?", 
+              ifelse(str_detect(Question, "_spnthl_thumb"), "Cheerio Spoon Hard Left Hand: Where was left hand thumb pointing?", 
+              ifelse(str_detect(Question, "_spnthl_success"), "Cheerio Spoon Hard Left Hand: Did child bring cheerio to mouth with left hand?",
+                     ifelse(str_detect(Question, "_lctr_success"), "Cheerio Large Base Task Right Hand: Did child reach small base with right hand?", 
+                                  ifelse(str_detect(Question, "_lctr_grasp"), "Cheerio Large Base Task Right Hand: Child used which grasp with right hand?", 
+                                  ifelse(str_detect(Question, "_lctl_success"), "Cheerio Large Base Task Left Hand: Did child reach small base with left hand?", 
+                                  ifelse(str_detect(Question, "_lctl_grasp"), "Cheerio Large Base Task Left Hand: Child used which grasp with left hand?",
+                                         NA)))))))))))))))))))))))))))),
+         Q_sas = ifelse(str_detect(Question, "_pts_q1"), "Pull to Sit: head in line with torso?", 
+ifelse(str_detect(Question, "_usit_q1"), "Unsupported Sit: Did child sit for 30 seconds?", 
+ifelse(str_detect(Question, "_usit_q2_st"), "Find Longest Segment: When did the child start sitting?", 
+ifelse(str_detect(Question, "_usit_q2_end"), "Find Longest Segment: When did the child stop sitting?",
+
+ifelse(str_detect(Question, "_std_q1"), "Feet Together Stand: Unsupported for 30 seconds?", 
+ifelse(str_detect(Question, "_std_q2_st"), "Feet Together Stand Find Timing: When did the child start standing?", 
+ifelse(str_detect(Question, "_std_q2_end"), "Feet Together Stand Find Timing: When did the child stop standing?", 
+ifelse(str_detect(Question, "_std_q3"), "Tandem Stand: Unsupported for 30 seconds?", 
+ifelse(str_detect(Question, "_std_q4_st"), "Tandem Stand Find Timing: When did the child start standing?", 
+ifelse(str_detect(Question, "_std_q4_end"), "Tandem Stand Find Timing: When did the child stop standing?",
+                           NA
+                                  )))))))))),
+Q_sobO = ifelse(str_detect(Question, "_24_48_1$"), "Joint Attention (Minute One): Following point",
+                
+ifelse(str_detect(Question, "_24_48_2$"), "Joint Attention (Minute One): Complies with request (pot) spontaneously", 
+ifelse(str_detect(Question, "_24_48_3$"), "Joint Attention (Minute One): Complies with request after prompt",
+ifelse(str_detect(Question, "_24_48_4$"), "Joint Attention (Minute One): Comments on jungle animal",
+ifelse(str_detect(Question, "_24_48_5$"), "Joint Attention (Minute One): Points to jungle animal",
+ifelse(str_detect(Question, "_24_48_6$"), "Joint Attention (Minute One): Shows jungle animal",
+
+ifelse(str_detect(Question, "_24_48_7$"), "Pretend Play (Minutes Two-Three): Child-as-agent", 
+ifelse(str_detect(Question, "_24_48_8$"), "Pretend Play (Minutes Two-Three): Substitution",                         
+ifelse(str_detect(Question, "_24_48_9$"), "Pretend Play (Minutes Two-Three): Substitution without object",
+ifelse(str_detect(Question, "_24_48_10$"), "Pretend Play (Minutes Two-Three): Dolls-as-agent", 
+ifelse(str_detect(Question, "_24_48_11$"), "Pretend Play (Minutes Two-Three): Socio-dramatic play",
+
+ifelse(str_detect(Question, "_24_48_12$"), "Prosocial Behavior (Minutes Four-Five): Shares blocks",
+ifelse(str_detect(Question, "_24_48_13$"), "Prosocial Behavior (Minutes Four-Five): Takes turns building tower", 
+ifelse(str_detect(Question, "_24_48_14$"), "Prosocial Behavior (Minutes Four-Five): Picks up fallen blocks or repairs tower",
+ifelse(str_detect(Question, "_24_48_15$"), "Prosocial Behavior (Minutes Four-Five): Concerned facial expression",
+ifelse(str_detect(Question, "_24_48_16$"), "Prosocial Behavior (Minutes Four-Five): Verbal concern/comforting",
+ifelse(str_detect(Question, "_24_48_17$"), "Prosocial Behavior (Minutes Four-Five): Physical comforting",
+ifelse(str_detect(Question, "_24_48_18$"), "Prosocial Behavior (Minutes Four-Five): Helps clean up spontaneously",
+ifelse(str_detect(Question, "_24_48_19$"), "Prosocial Behavior (Minutes Four-Five): Helps clean up after prompt",
+
+ifelse(str_detect(Question, "_24_48_20$"), "Social Communication 1 (Minutes Six-Seven): Rebuilds elephant at least 2-steps", 
+ifelse(str_detect(Question, "_24_48_21$"), "Social Communication 1 (Minutes Six-Seven): Rebuilds elephant all steps",                         
+ifelse(str_detect(Question, "_24_48_22$"), "Social Communication 1 (Minutes Six-Seven): Steps in correct order",
+ifelse(str_detect(Question, "_24_48_23$"), "Social Communication 1 (Minutes Six-Seven): Asks for help opening container",
+
+ifelse(str_detect(Question, "_24_48_24$"), "Social Communications 2 (Minutes Eight-Ten): Initiates/responds to conversation",
+ifelse(str_detect(Question, "_24_48_25$"), "Social Communications 2 (Minutes Eight-Ten): Takes a conversational turn", 
+ifelse(str_detect(Question, "_24_48_26$"), "Social Communications 2 (Minutes Eight-Ten): Responds to a shift in topic",
+ifelse(str_detect(Question, "_24_48_27$"), "Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by protest only",
+ifelse(str_detect(Question, "_24_48_28$"), "Social Communications 2 (Minutes Eight-Ten): Corrects mislabeling by giving correct label",
+ifelse(str_detect(Question, "_24_48_29$"), "Social Communications 2 (Minutes Eight-Ten): Adapts speech register for doll",
+ifelse(str_detect(Question, "_24_48_30$"), "Social Communications 2 (Minutes Eight-Ten): Turns book to face doll",
+ifelse(str_detect(Question, "_24_48_31$"), "Social Communications 2 (Minutes Eight-Ten): Attempts to teach doll",
+                NA
+))))))))))))))))))))))))))))))),
+Q_soby_p1 = ifelse(str_detect(Question, "_9_23_1$"), "Communicative Temptation 1 (Minute One): 2-point gaze shift",
+       ifelse(str_detect(Question, "_9_23_2$"), "Communicative Temptation 1 (Minute One): 3-point gaze shift", 
+              ifelse(str_detect(Question, "_9_23_3$"), "Communicative Temptation 1 (Minute One): Smiles without look",
+                     ifelse(str_detect(Question, "_9_23_4$"), "Communicative Temptation 1 (Minute One): Smiles with look",
+                            ifelse(str_detect(Question, "_9_23_5$"), "Communicative Temptation 1 (Minute One): Show gesture",
+                                   ifelse(str_detect(Question, "_9_23_6$"), "Communicative Temptation 1 (Minute One): Uses point gesture",
+ifelse(str_detect(Question, "_9_23_7$"), "Communicative Temptation 1 (Minute One): Comments with sounds or words",
+
+ifelse(str_detect(Question, "_9_23_9$"), "Response to Name & Gaze/Point 1 (Minute Two): Responds to name", 
+ifelse(str_detect(Question, "_9_23_10$"), "Response to Name & Gaze/Point 1 (Minute Two): Follows gaze/point",                         
+ifelse(str_detect(Question, "_9_23_11$"), "Response to Name & Gaze/Point 1 (Minute Two): 2-point gaze shift",
+ifelse(str_detect(Question, "_9_23_12$"), "Response to Name & Gaze/Point 1 (Minute Two): 3-point gaze shift", 
+ifelse(str_detect(Question, "_9_23_13$"), "Response to Name & Gaze/Point 1 (Minute Two): Smiles without look",
+ifelse(str_detect(Question, "_9_23_14$"), "Response to Name & Gaze/Point 1 (Minute Two): Smiles with look",
+ifelse(str_detect(Question, "_9_23_15$"), "Response to Name & Gaze/Point 1 (Minute Two): Show gesture",
+ifelse(str_detect(Question, "_9_23_16$"), "Response to Name & Gaze/Point 1 (Minute Two): Uses point gesture", 
+ifelse(str_detect(Question, "_9_23_17$"), "Response to Name & Gaze/Point 1 (Minute Two): Comments with sounds or words",
+
+ifelse(str_detect(Question, "_9_23_19$"), "Communicative Temptation 2 (Minute Three): 2-point gaze shift",
+ifelse(str_detect(Question, "_9_23_20$"), "Communicative Temptation 2 (Minute Three): 3-point gaze shift", 
+ifelse(str_detect(Question, "_9_23_21$"), "Communicative Temptation 2 (Minute Three): Smiles without look",
+ifelse(str_detect(Question, "_9_23_22$"), "Communicative Temptation 2 (Minute Three): Smiles with look",
+ifelse(str_detect(Question, "_9_23_23$"), "Communicative Temptation 2 (Minute Three): Show gesture",
+ifelse(str_detect(Question, "_9_23_24$"), "Communicative Temptation 2 (Minute Three): Uses point gesture",
+ifelse(str_detect(Question, "_9_23_25$"), "Communicative Temptation 2 (Minute Three): Comments with sounds or words",
+
+ifelse(str_detect(Question, "_9_23_27$"), "Communicative Temptation 3, probe 2 (Minute Four): Responds to name", 
+ifelse(str_detect(Question, "_9_23_28$"), "Communicative Temptation 3, probe 2 (Minute Four): Follows gaze/point",                         
+ifelse(str_detect(Question, "_9_23_29$"), "Communicative Temptation 3, probe 2 (Minute Four): 2-point gaze shift",
+ifelse(str_detect(Question, "_9_23_30$"), "Communicative Temptation 3, probe 2 (Minute Four): 3-point gaze shift", 
+ifelse(str_detect(Question, "_9_23_31$"), "Communicative Temptation 3, probe 2 (Minute Four): Smiles without look",
+ifelse(str_detect(Question, "_9_23_32$"), "Communicative Temptation 3, probe 2 (Minute Four): Smiles with look",
+ifelse(str_detect(Question, "_9_23_33$"), "Communicative Temptation 3, probe 2 (Minute Four): Show gesture",
+ifelse(str_detect(Question, "_9_23_34$"), "Communicative Temptation 3, probe 2 (Minute Four): Uses point gesture", 
+ifelse(str_detect(Question, "_9_23_35$"), "Communicative Temptation 3, probe 2 (Minute Four): Comments with sounds or words", 
+       NA
+)))))))))))))))))))))))))))))))),
+Q_soby_p2 = ifelse(str_detect(Question, "_9_23_37$"), "Sharing Books 1 (Minute Five): 2-point gaze shift",
+ifelse(str_detect(Question, "_9_23_38$"), "Sharing Books 1 (Minute Five): 3-point gaze shift", 
+ifelse(str_detect(Question, "_9_23_39$"), "Sharing Books 1 (Minute Five): Smiles without look",
+ifelse(str_detect(Question, "_9_23_40$"), "Sharing Books 1 (Minute Five): Smiles with look",
+ifelse(str_detect(Question, "_9_23_41$"), "Sharing Books 1 (Minute Five): Show gesture",
+ifelse(str_detect(Question, "_9_23_42$"), "Sharing Books 1 (Minute Five): Uses point gesture",
+ifelse(str_detect(Question, "_9_23_43$"), "Sharing Books 1 (Minute Five): Comments with sounds or words",
+
+ifelse(str_detect(Question, "_9_23_45$"), "Sharing Books 2 (Minute Six): 2-point gaze shift",
+ifelse(str_detect(Question, "_9_23_46$"), "Sharing Books 2 (Minute Six): 3-point gaze shift", 
+ifelse(str_detect(Question, "_9_23_47$"), "Sharing Books 2 (Minute Six): Smiles without look",
+ifelse(str_detect(Question, "_9_23_48$"), "Sharing Books 2 (Minute Six): Smiles with look",
+ifelse(str_detect(Question, "_9_23_49$"), "Sharing Books 2 (Minute Six): Show gesture",
+ifelse(str_detect(Question, "_9_23_50$"), "Sharing Books 2 (Minute Six): Uses point gesture",
+ifelse(str_detect(Question, "_9_23_51$"), "Sharing Books 2 (Minute Six): Comments with sounds or words",
+
+ifelse(str_detect(Question, "_9_23_53$"), "Parent/Caregiver-Child Play 1 (Minute Seven): Explores features of object",
+ifelse(str_detect(Question, "_9_23_54$"), "Parent/Caregiver-Child Play 1 (Minute Seven): Uses item functionally", 
+ifelse(str_detect(Question, "_9_23_55$"), "Parent/Caregiver-Child Play 1 (Minute Seven): Pretends toward other (caregiver, examiner, doll)",
+ifelse(str_detect(Question, "_9_23_56$"), "Parent/Caregiver-Child Play 1 (Minute Seven): 2 Pretend action sequences",
+ifelse(str_detect(Question, "_9_23_57$"), "Parent/Caregiver-Child Play 1 (Minute Seven): 3 Pretend action sequences",
+
+ifelse(str_detect(Question, "_9_23_66$"), "Parent/Caregiver-Child Play 2 (Minute Eight): Explores features of object",
+ifelse(str_detect(Question, "_9_23_67$"), "Parent/Caregiver-Child Play 2 (Minute Eight): Uses item functionally", 
+ifelse(str_detect(Question, "_9_23_68$"), "Parent/Caregiver-Child Play 2 (Minute Eight): Pretends toward other (caregiver, examiner, doll)",
+ifelse(str_detect(Question, "_9_23_69$"), "Parent/Caregiver-Child Play 2 (Minute Eight): 2 Pretend action sequences",
+ifelse(str_detect(Question, "_9_23_70$"), "Parent/Caregiver-Child Play 2 (Minute Eight): 3 Pretend action sequences",
+
+ifelse(str_detect(Question, "_9_23_79$"), "Parent/Caregiver-Child Play 3 (Minute Nine): Explores features of object",
+ifelse(str_detect(Question, "_9_23_80$"), "Parent/Caregiver-Child Play 3 (Minute Nine): Uses item functionally", 
+ifelse(str_detect(Question, "_9_23_81$"), "Parent/Caregiver-Child Play 3 (Minute Nine): Pretends toward other (caregiver, examiner, doll)",
+ifelse(str_detect(Question, "_9_23_82$"), "Parent/Caregiver-Child Play 3 (Minute Nine): 2 Pretend action sequences",
+ifelse(str_detect(Question, "_9_23_83$"), "Parent/Caregiver-Child Play 3 (Minute Nine): 3 Pretend action sequences",
+
+ifelse(str_detect(Question, "_9_23_92$"), "Parent/Caregiver-Child Play 4 (Minute Ten): Explores features of object",
+ifelse(str_detect(Question, "_9_23_93$"), "Parent/Caregiver-Child Play 4 (Minute Ten): Uses item functionally", 
+ifelse(str_detect(Question, "_9_23_94$"), "Parent/Caregiver-Child Play 4 (Minute Ten): Pretends toward other (caregiver, examiner, doll)",
+ifelse(str_detect(Question, "_9_23_95$"), "Parent/Caregiver-Child Play 4 (Minute Ten): 2 Pretend action sequences",
+ifelse(str_detect(Question, "_9_23_96$"), "Parent/Caregiver-Child Play 4 (Minute Ten): 3 Pretend action sequences",
+       NA
+))))))))))))))))))))))))))))))))))
+  )    %>% 
+  mutate(Q_sobY = coalesce(Q_soby_p1, Q_soby_p2)) %>% 
+  select(-c(Q_soby_p1, Q_soby_p2)) %>% 
+  mutate(Q_sob = coalesce(Q_sobY, Q_sobO)) %>% 
+  select(-c(Q_sobY, Q_sobO)) %>% 
+  mutate(Q_1 = coalesce(Q_sob, Q_rte)) %>% 
+  select(-c(Q_sob, Q_rte)) %>% 
+  mutate(Q_2 = coalesce(Q_1, Q_sas)) %>% 
+  select(-c(Q_1, Q_sas)) %>% 
+  mutate(Q = coalesce(Q_2, Q_gug)) %>% 
+  select(-c(Q_2, Q_gug)) %>% 
+  mutate(Video = ifelse(str_detect(Question, "v1"), "Video 1",
+                 ifelse(str_detect(Question, "v2"), "Video 2",
+                 ifelse(str_detect(Question, "v3"), "Video 3",
+                 ifelse(str_detect(Question, "v4"), "Video 4",
+                                   NA))))) %>% 
+  mutate(Measure = ifelse(str_detect(Question, "gug"), "Get up and Go",
+                 ifelse(str_detect(Question, "sas"), "Sit and Stand",
+                 ifelse(str_detect(Question, "rte"), "Reach to Eat",
+                 ifelse(str_detect(Question, "_9_23_"), "Social Obs. (younger)",
+                        ifelse(str_detect(Question, "_24_48_"), "Social Obs. (older)",
+                                   NA))))))
+```
+
+
+```{r}
+score_to_pivot <- score_cert_factored %>% 
+  select(-c(starts_with("ScoreOverall"))) %>% 
+  pivot_longer(., 
+                 cols = c(-c(name, site)), 
+                 names_to = "Question",
+                 values_to = "Score"
+    ) %>% 
+  arrange(Question) %>% 
+  mutate(Question = tolower(Question)) %>% 
+  full_join(., master_questions, by = "Question") %>% 
+  select(-c(Question)) %>% 
+  rename(Question = Q)
+```
+
+
+# Create Tables 
+
+```{r, results="asis"}
+pull_names <- score_to_pivot %>% 
+  count(name, site) %>%
+  pull(name)
+
+overall_list <- list()
+item_list <- list()
+
+
+
+for(i in 1:length(pull_names)) {
+  
+  overall_df <- scored_cert_df %>%
+    filter(name %in% paste(pull_names[i])) %>%
+  select(name, site, starts_with("ScoreOverall")) %>%
+    t() %>% 
+    data.frame() 
+  
+  overall_df %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[1])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% cat
+  
+  overall_list[[i]] <- overall_df
+  
+item_df <- score_to_pivot %>% 
+  filter(name %in% paste(pull_names[i])) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = type,
+            values_from = Score) %>%
+select(Measure, Video, Question, Response, Answer, Score)
+
+item_list[[i]] <- item_df
+
+# print(paste("Scores for ", pull_names[i]))
+# print(kable(overall_df, "rst"))
+# print(kable(item_df, "rst"))
+
+} 
+           
+```
+
+
+# Individual Scores
+
+## Person 1
+```{r}
+overall_list[[1]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[1])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[1]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[1])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
+## Person 2
+```{r}
+overall_list[[2]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[2])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[2]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[2])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
+## Person 3
+```{r}
+overall_list[[3]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[3])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[3]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[3])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
+## Person 4
+```{r}
+overall_list[[4]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[4])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[4]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[4])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
+## Person 5
+```{r}
+overall_list[[5]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[5])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[5]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[5])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
+## Person 6
+```{r}
+overall_list[[6]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[6])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[6]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[6])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
+## Person 7
+```{r}
+overall_list[[7]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[7])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+item_list[[7]] %>% 
+  data.frame() %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[7])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                fixed_thead = TRUE)
+
+
+```
+
