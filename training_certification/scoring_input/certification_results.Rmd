@@ -30,6 +30,7 @@ library(janitor)
 library(readxl)
 library(ggpubr)
 library(kableExtra)
+library(gridExtra)
 
 # Make sure you're running the most recent version of psych
 # sessionInfo()
@@ -52,7 +53,7 @@ cert_df_app_v1 <- read_xlsx("data/2023_BBTB_Cert_20230413.xlsx") %>%
 # colnames(cert_df_app_v1)
 
 ## Load in the item data 
-cert_df_app_v2 <- read_xlsx("data/2023_BBTB_Cert_20230414.xlsx") %>% 
+cert_df_app_v2 <- read_xlsx("data/2023_BBTB_Cert_20230417.xlsx") %>% 
   janitor::clean_names() %>% 
   filter(name %nin% c("QA Testing", "QA Test", "TEST-MIRIAM")) %>% 
   filter(key == "Response") %>% 
@@ -72,15 +73,63 @@ We want to make sure we're only pulling the first instance.
 We need to make sure there aren't errors in name entries before transforming the data
 ```{r}
 cert_df_app_v1v2 %>% 
-  count(name, site)
+  count(name, site) %>% 
+  kbl(caption = "Names and Sites") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+
+It looks like there are a few errors with names:
+
+We're only aware of one case where a different name was used on purpose. Therefore, corrections need to be made. 
+
+```{r}
+cert_df_app_v1v2 %>% 
+  count(name, site) %>% 
+  filter(name %in% c("Gaiser, Natali", "Gaiser, Natalie",
+                     "Krummel, Madalyn", "Krummel, Madalyn 2",
+                     "Lozano, Linda", "Lozano,Linda", 
+                     "McCormick", "McCormick, Dylan",
+                     "Paternostro,  Mercedes", "Paternostro, Mercedes"
+                     )) %>% 
+  kbl(caption = "Name Errors") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+Fix the names:
+```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Gaiser, Natali"] <- "Gaiser, Natalie"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Lozano,Linda"] <- "Lozano, Linda"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "McCormick"] <- "McCormick, Dylan"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Paternostro,  Mercedes"] <- "Paternostro, Mercedes"
+```
+
+
+```{r}
+# cert_df_app_v1v2 %>% 
+#   filter(name %in% c("Krummel, Madalyn 2")) %>% 
+#   count(task_id)
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn" & cert_df_app_v1v2$task_id == "sobY_v2"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn" & cert_df_app_v1v2$task_id == "sobO_v1"] <- "Delete"
+
+# cert_df_app_v1v2 %>% 
+#   filter(name %in% c("Delete"))
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_app_v1v2$task_id == "sobY_v2"] <- "Krummel, Madalyn"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_app_v1v2$task_id == "sobO_v1"] <- "Krummel, Madalyn"
+
+```
+
 
 ### Deal with duplicates
 See how many duplicates we're dealing with.
 
 So far there appears to be not duplicates between version 1 and version 2. This is something that needs to be checked every time we read in an updated version of the file. 
 
-This is not information that needs to be printed out in the report as it's over 200 rows long.
+This is not information that needs to be printed out.
 ```{r, eval=FALSE}
 cert_df_app_v1v2 %>% 
   count(name, site, item_id) %>% 
@@ -97,7 +146,9 @@ cert_df_app_v1v2 %>%
   filter(n != 1) %>% 
   select(-c(item_id)) %>% 
   unique() %>% 
-  arrange(name)
+  arrange(name) %>% 
+  kbl(caption = "Who's resubmitting and on what?") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 We have approximately the following number of extra cases:
@@ -149,7 +200,8 @@ cert_df_app_v1_nodups <- cert_df_app_v1v2_nodups %>%
   filter(app_version == 1)
 
 cert_df_app_v2_nodups <- cert_df_app_v1v2_nodups %>% 
-  filter(app_version != 1)
+  filter(app_version != 1) %>% 
+  filter(name != "Delete")
 ```
 
 
@@ -1654,17 +1706,21 @@ score_to_pivot <- score_cert_factored %>%
 
 # Create Tables 
 
-```{r, results="asis"}
+```{r}
 pull_names <- score_to_pivot %>% 
   count(name, site) %>%
   pull(name)
 
 overall_list <- list()
 item_list <- list()
+```
 
 
+```{r, results="asis"}
 
 for(i in 1:length(pull_names)) {
+  
+  cat("\n##", pull_names[i],"\n")
   
   overall_df <- scored_cert_df %>%
     filter(name %in% paste(pull_names[i])) %>%
@@ -1673,11 +1729,13 @@ for(i in 1:length(pull_names)) {
     data.frame() 
   
   overall_df %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[1])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% cat
+  kbl(caption = paste("Overall Scores for ", pull_names[i])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+    cat
   
   overall_list[[i]] <- overall_df
   
+
 item_df <- score_to_pivot %>% 
   filter(name %in% paste(pull_names[i])) %>% 
   pivot_wider(.,
@@ -1686,128 +1744,22 @@ item_df <- score_to_pivot %>%
             values_from = Score) %>%
 select(Measure, Video, Question, Response, Answer, Score)
 
-item_list[[i]] <- item_df
+item_df %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[i])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+    cat
+  
 
-# print(paste("Scores for ", pull_names[i]))
-# print(kable(overall_df, "rst"))
-# print(kable(item_df, "rst"))
+item_list[[i]] <- item_df
 
 } 
            
 ```
 
-
-# Individual Scores
-
-## Person 1
+# Save the results
 ```{r}
-overall_list[[1]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[1])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-item_list[[1]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[1])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
+save(pull_names, overall_list, item_list, file = "data/results_to_print.rda")
 ```
 
-## Person 2
-```{r}
-overall_list[[2]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[2])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
-item_list[[2]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[2])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
-```
-
-## Person 3
-```{r}
-overall_list[[3]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[3])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-item_list[[3]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[3])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
-```
-
-## Person 4
-```{r}
-overall_list[[4]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[4])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-item_list[[4]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[4])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
-```
-
-## Person 5
-```{r}
-overall_list[[5]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[5])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-item_list[[5]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[5])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
-```
-
-## Person 6
-```{r}
-overall_list[[6]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[6])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-item_list[[6]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[6])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
-```
-
-## Person 7
-```{r}
-overall_list[[7]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Overall Scores for ", pull_names[7])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-item_list[[7]] %>% 
-  data.frame() %>% 
-  kbl(caption = paste("Item Level Scores for ", pull_names[7])) %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                fixed_thead = TRUE)
-
-
-```
 
