@@ -5,6 +5,7 @@
 .DS_Store
 
 # Files to ignore for training certification 
+training_certification/app_archive.R
 ## Make sure personal authentication information is not uploaded
 training_certification/rsconnect
 training_certification/authentication_files/authentication_info.R
@@ -13,13 +14,24 @@ training_certification/authentication_files/.secrets/
 training_certification/authentication_files/scoring_key.xlsx
 training_certification/authentication_files/helper_files/key.rds
 
+## Ignore output from training certification
+training_certification/scoring_input/data/*
+training_certification/scoring_input/*.pdf
+training_certification/scoring_input/*.html
+training_certification/scoring_input/individual_reports/*
+
+
 # Files to ignore for dry run analyses
+## Older versions of the EF Cog analysis
 dry_run/EFCog_dryrun_20230330.html
 dry_run/EFCog_dryrun_20230404.Rmd
 dry_run/EFCog_dryrun_20230404.html
 dry_run/EFCog_dryrun_20230404.pdf
 dry_run/EFCog_dryrun_20230404.log
+
+## Code in mismatching IDs for data cleaning and QA
 mismatch.xlsx
 
-dryrun/output/*
-dryrun/data/for_sharepoint/*.csv
+## Any output code
+dry_run/output/*
+dry_run/data/for_sharepoint/*.csv
