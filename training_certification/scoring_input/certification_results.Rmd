@@ -53,7 +53,7 @@ cert_df_app_v1 <- read_xlsx("data/2023_BBTB_Cert_20230413.xlsx") %>%
 # colnames(cert_df_app_v1)
 
 ## Load in the item data 
-cert_df_app_v2 <- read_xlsx("data/2023_BBTB_Cert_20230417.xlsx") %>% 
+cert_df_app_v2 <- read_xlsx("data/2023_BBTB_Cert.xlsx") %>% 
   janitor::clean_names() %>% 
   filter(name %nin% c("QA Testing", "QA Test", "TEST-MIRIAM")) %>% 
   filter(key == "Response") %>% 
@@ -1761,5 +1761,115 @@ item_list[[i]] <- item_df
 save(pull_names, overall_list, item_list, file = "data/results_to_print.rda")
 ```
 
+```{r, eval = FALSE}
+# Create files for Miriam
+
+## Social Obs. Older
+sob_younger_cert_scores <- score_to_pivot %>% 
+  filter(type == "Score") %>% 
+  filter(Measure %in% c("Social Obs. (younger)")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(sob_younger_cert_scores, "for_Miriam/sob_younger_cert_scores.xlsx")
+
+## Social Obs. Older
+sob_older_cert_scores <- score_to_pivot %>% 
+  filter(type == "Score") %>% 
+  filter(Measure %in% c("Social Obs. (older)")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(sob_older_cert_scores, "for_Miriam/sob_older_cert_scores.xlsx")
+
+## Get Up and Go Scores
+gug_cert_scores <- score_to_pivot %>% 
+  filter(type == "Score") %>% 
+  filter(Measure %in% c("Get up and Go")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(gug_cert_scores, "for_Miriam/gug_cert_scores.xlsx")
+
+## Get Up and Go Responses
+gug_cert_resp <- score_to_pivot %>% 
+  filter(type == "Response") %>% 
+  filter(Measure %in% c("Get up and Go")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(gug_cert_resp, "for_Miriam/gug_cert_resp.xlsx")
+
+
+## Reach to Eat Scores
+rte_cert_scores <- score_to_pivot %>% 
+  filter(type == "Score") %>% 
+  filter(Measure %in% c("Reach to Eat")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(rte_cert_scores, "for_Miriam/rte_cert_scores.xlsx")
+
+## Reach to Eat Responses
+rte_cert_resp <- score_to_pivot %>% 
+  filter(type == "Response") %>% 
+  filter(Measure %in% c("Reach to Eat")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(rte_cert_resp, "for_Miriam/rte_cert_resp.xlsx")
+
+## Sit and Stand Scores
+sas_cert_scores <- score_to_pivot %>% 
+  filter(type == "Score") %>% 
+  filter(Measure %in% c("Sit and Stand")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(sas_cert_scores, "for_Miriam/sas_cert_scores.xlsx")
+
+## Sit and Stand Responses
+sas_cert_resp <- score_to_pivot %>% 
+  filter(type == "Response") %>% 
+  filter(Measure %in% c("Sit and Stand")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(sas_cert_resp, "for_Miriam/sas_cert_resp.xlsx")
+
+
+```
 
 
