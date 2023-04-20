@@ -1,6 +1,6 @@
 ---
 title: "Training Certification Shiny App"
-subtitle: "NIH BabyTB GitHub Repository"
+subtitle: "A Component of the NIH BabyTB GitHub Repository"
 author: "Elizabeth Dworak"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Overview
 
-Welcome to the NBT Training Certification folder (`training_certification`). This folder includes code used for the training certification Shiny application. This application is intended to certify examiners undergoing training in the administration of the NIH BabyTB.
+Welcome to the NBT Training Certification folder (`training_certification`). This folder includes code used for the training certification Shiny application. This application is intended to certify examiners undergoing training in the administration of the NBT .
 
 
 # Folder organization
@@ -30,6 +30,6 @@ As of `r format(Sys.time(), '%B %Y')`, this folder contains a limited number of 
 
 -   `deploy.R` - This file contains a the code used for deploying and terminating the Shiny application. 
 
--   `authentication_files` - This folder contains hidden files for authenticating the Shiny application for data collection. The file will appear blank on GitHub to keep the authentication information confidential. However, the file has been uploaded to show the structures to those interested in creating their own Shiny application.  
+-   `authentication_files` - This folder contains hidden files for authenticating the Shiny application for data collection. The file will appear blank on GitHub to keep the authentication information confidential. However, the file has been uploaded to show the structure to those interested in creating their own Shiny application.  
 
--   `scoring_input` - This folder contains code  to clean, (re)score, and analyze scoring certification data. The code in this file will not only produce an overall table to tell the individual overseeing certification how trainees are doing, but will also create individual reports that can be returned to the trainee.   
+-   `scoring_input` - This folder contains code  to clean, (re)score, and analyze scoring certification data. The code in this file will not only produce an overall table to tell the individual overseeing certification how trainees are doing, but will also create individual reports that can be returned to the trainee.
