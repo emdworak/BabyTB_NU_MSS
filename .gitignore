@@ -18,7 +18,7 @@ training_certification/authentication_files/helper_files/key.rds
 training_certification/scoring_input/data/*
 training_certification/scoring_input/*.pdf
 training_certification/scoring_input/*.html
-training_certification/scoring_input/individual_reports/*
+training_certification/scoring_input/individual_reports/*/
 
 
 # Files to ignore for dry run analyses
