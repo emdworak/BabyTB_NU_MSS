@@ -1,7 +1,7 @@
 Dry Run Data Analyses
 ================
 Elizabeth Dworak
-11 April, 2023
+20 April, 2023
 
 - <a href="#overview" id="toc-overview">Overview</a>
 - <a href="#folder-organization" id="toc-folder-organization">Folder
@@ -38,18 +38,37 @@ description of the organization of the files and folders:
 - `data_cleaning_DP4.R` - This file contains the primary code to clean
   the DP4 data.
 
+- `Items_dryrun_for_sharing.R` - This file contains the code for
+  combining, pivoting, and splitting the item level Dry Run responses,
+  response time, and scores data for the 6 domains. These data are
+  intended to be shared with the NBT Domain managers and teams to help
+  with discussions about scoring.
+
 ## Data Analysis
 
-- `dryrun_analyses.R` - This file contains *ADD DETAILS*
+- `dryrun_analyses.R` - This file contains the initial draft code for
+  cleaning and analyzing the Dry Run data. More recent and updated code
+  are contained in: `EFCog_dryrun_20230329.Rmd`,
+  `Items_dryrun_results.Rmd`, and `Scores_dryrun_results.Rmd`.
 
-- `EFCog_dryrun_20230329.Rmd` - This file contains *ADD DETAILS*
+- `EFCog_dryrun_20230329.Rmd` - This file contains the code for cleaning
+  and analyzing the EF Cog data collected during Dry Run. These analyses
+  were used to determine if we would use two different batteries in
+  norming for ages 16-21 or not based on the assessments that used touch
+  vs. gaze.
 
-- `EFCog_dryrun_20230331.html` - This file contains *ADD DETAILS*
+- `EFCog_dryrun_20230331.html` - This file is a knit HTML file
+  containing the output created by `EFCog_dryrun_20230329.Rmd`.
 
-- `Items_dryrun_results.Rmd` - This file contains *ADD DETAILS*
+- `Items_dryrun_results.Rmd` - This file contains the code for cleaning
+  and analyzing the item level score data collected during Dry Run.
 
-- `Items_dryrun_results.html` - This file contains *ADD DETAILS*
+- `Items_dryrun_results.html` - This file is a knit HTML file containing
+  the output created by `Items_dryrun_results.Rmd`.
 
-- `Scores_dryrun_results.Rmd` - This file contains *ADD DETAILS*
+- `Scores_dryrun_results.Rmd` - This file contains the code for cleaning
+  and analyzing the assessment level score data collected during Dry
+  Run.
 
-- `Scores_dryrun_results.html` - This file contains *ADD DETAILS*
+- `Scores_dryrun_results.html` - This file is a knit HTML file
+  containing the output created by `Scores_dryrun_results.Rmd`.
