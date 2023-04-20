@@ -305,7 +305,7 @@ sobY_v1_key_df <- data.frame(
     K_sob_v1_9_23_33 = c(0),
     K_sob_v1_9_23_34 = c(1),
     K_sob_v1_9_23_35 = c(1),
-    K_sob_v1_9_23_37 = c(0),
+    K_sob_v1_9_23_37 = c(1), # Updated on 2023/04/20
     K_sob_v1_9_23_38 = c(1),
     K_sob_v1_9_23_39 = c(1),
     K_sob_v1_9_23_40 = c(1),
@@ -324,7 +324,7 @@ sobY_v1_key_df <- data.frame(
     K_sob_v1_9_23_55 = c(1),
     K_sob_v1_9_23_56 = c(0),
     K_sob_v1_9_23_57 = c(0),
-    K_sob_v1_9_23_66 = c(0),
+    K_sob_v1_9_23_66 = c(1), # Updated on 2023/04/20
     K_sob_v1_9_23_67 = c(1),
     K_sob_v1_9_23_68 = c(1),
     K_sob_v1_9_23_69 = c(0),
@@ -348,7 +348,7 @@ sobY_v2_key_df <- data.frame(
     K_sob_v2_9_23_4 = c(1),
     K_sob_v2_9_23_5 = c(0),
     K_sob_v2_9_23_6 = c(0),
-    K_sob_v2_9_23_7 = c(0),
+    K_sob_v2_9_23_7 = c(1), # Updated on 2023/04/20
     K_sob_v2_9_23_9 = c(1),
     K_sob_v2_9_23_10 = c(1),
     K_sob_v2_9_23_11 = c(1),
@@ -371,7 +371,7 @@ sobY_v2_key_df <- data.frame(
     K_sob_v2_9_23_30 = c(1),
     K_sob_v2_9_23_31 = c(0),
     K_sob_v2_9_23_32 = c(1),
-    K_sob_v2_9_23_33 = c(1),
+    K_sob_v2_9_23_33 = c(0), # Updated on 2023/04/20
     K_sob_v2_9_23_34 = c(0),
     K_sob_v2_9_23_35 = c(1),
     K_sob_v2_9_23_37 = c(1),
@@ -390,7 +390,7 @@ sobY_v2_key_df <- data.frame(
     K_sob_v2_9_23_51 = c(1),
     K_sob_v2_9_23_53 = c(0),
     K_sob_v2_9_23_54 = c(0),
-    K_sob_v2_9_23_55 = c(0),
+    K_sob_v2_9_23_55 = c(1), # Updated on 2023/04/20
     K_sob_v2_9_23_56 = c(1),
     K_sob_v2_9_23_57 = c(0),
     K_sob_v2_9_23_66 = c(0),
@@ -439,7 +439,7 @@ sobO_v1_key_df <- data.frame(
     K_sob_v1_24_48_26 = c(1),
     K_sob_v1_24_48_27 = c(1),
     K_sob_v1_24_48_28 = c(0),
-    K_sob_v1_24_48_29 = c(0),
+    K_sob_v1_24_48_29 = c(1), # Updated on 2023/04/20
     K_sob_v1_24_48_30 = c(1),
     K_sob_v1_24_48_31 = c(1)
   )
@@ -457,7 +457,7 @@ sobO_v2_key_df <- data.frame(
     K_sob_v2_24_48_10 = c(1),
     K_sob_v2_24_48_11 = c(0),
     K_sob_v2_24_48_12 = c(0),
-    K_sob_v2_24_48_13 = c(0),
+    K_sob_v2_24_48_13 = c(1), # Updated on 2023/04/20
     K_sob_v2_24_48_14 = c(1),
     K_sob_v2_24_48_15 = c(0),
     K_sob_v2_24_48_16 = c(0),
@@ -521,19 +521,19 @@ sobO_v2_key_df <- data.frame(
     K_rte_v1_SpnThr_Purpose = c(4),
     K_rte_v1_SpnThr_Move = c(2),
     K_rte_v1_SpnThr_Grasp = c(1),
-    K_rte_v1_SpnThr_Thumb = c(1),
+    K_rte_v1_SpnThr_Thumb = c(2), # Updated on 2023/04/20
     K_rte_v1_SpnThr_Success = c(2),
     
     K_rte_v1_SpnTel_Purpose = c(4),
     K_rte_v1_SpnTel_Move = c(1),
     K_rte_v1_SpnTel_Grasp = c(2),
     K_rte_v1_SpnTel_Thumb = c(2),
-    K_rte_v1_SpnTel_Success = c(2),
+    K_rte_v1_SpnTel_Success = c(3), # Updated on 2023/04/20
     K_rte_v1_SpnThl_Purpose = c(4),
     K_rte_v1_SpnThl_Move = c(2),
     K_rte_v1_SpnThl_Grasp = c(2),
     K_rte_v1_SpnThl_Thumb = c(2),
-    K_rte_v1_SpnThl_Success = c(2)
+    K_rte_v1_SpnThl_Success = c(3) # Updated on 2023/04/20
   )
   
     rte_v2_key_df <- data.frame(
@@ -575,7 +575,7 @@ sobO_v2_key_df <- data.frame(
     K_sas_v4_StD_Q2_St = c(.21),
     K_sas_v4_StD_Q2_End = c(.51),
     K_sas_v4_StD_Q3 = c(5),
-    K_sas_v4_StD_Q4_St = c(1.36),
+    K_sas_v4_StD_Q4_St = c(2.00), # Updated on 2023/04/20
     K_sas_v4_StD_Q4_End = c(2.34)
   )
   
