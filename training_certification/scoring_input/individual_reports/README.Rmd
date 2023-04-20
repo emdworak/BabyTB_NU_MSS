@@ -1,0 +1,22 @@
+---
+title: "Scoring Certification Reports: Individual Reports"
+subtitle: "A Component of the NIH BabyTB Training Certification Shiny App"
+author: "Elizabeth Dworak"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  github_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    highlight: "tango"
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Overview
+
+Welcome to the `individual_reports` folder of the NBT Scoring Certification Reports folder (`scoring_input`). This folder contains the individual reports produced by `individual_results.Rmd` organized by collection site. The file has been uploaded to show the structure to those interested in creating their own Shiny application.

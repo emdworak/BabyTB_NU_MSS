@@ -1,7 +1,7 @@
 Training Certification Shiny App
 ================
 Elizabeth Dworak
-18 April, 2023
+20 April, 2023
 
 - <a href="#overview" id="toc-overview">Overview</a>
 - <a href="#folder-organization" id="toc-folder-organization">Folder
@@ -13,7 +13,7 @@ Welcome to the NBT Training Certification folder
 (`training_certification`). This folder includes code used for the
 training certification Shiny application. This application is intended
 to certify examiners undergoing training in the administration of the
-NIH BabyTB.
+NBT .
 
 # Folder organization
 
@@ -32,8 +32,7 @@ brief description of the organization of the files and folders:
   authenticating the Shiny application for data collection. The file
   will appear blank on GitHub to keep the authentication information
   confidential. However, the file has been uploaded to show the
-  structures to those interested in creating their own Shiny
-  application.
+  structure to those interested in creating their own Shiny application.
 
 - `scoring_input` - This folder contains code to clean, (re)score, and
   analyze scoring certification data. The code in this file will not
