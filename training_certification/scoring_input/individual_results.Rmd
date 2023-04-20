@@ -1,16 +1,11 @@
 ---
 title: "BabyTB Individual Reports"
+subtitle: "Individuallized Results"
 author: "Elizabeth Dworak"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   pdf_document:
     toc: yes
-  html_document:
-    toc: yes
-    toc_float: yes
-    highlight: tango
-    code_folding: hide
-subtitle: Individuallized Results
 ---
 
 ```{r global-options, include=FALSE}
