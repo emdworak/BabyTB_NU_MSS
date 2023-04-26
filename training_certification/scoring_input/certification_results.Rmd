@@ -1,8 +1,8 @@
 ---
 title: "BabyTB Certification Scoring"
-subtitle: 'Individuallized Results'
+subtitle: 'Overall Report of Individualized Results'
 author: "Elizabeth Dworak"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "Created on `r format(Sys.time(), '%d %B, %Y at %H:%M')` CT"
 output:
   html_document:
     toc: yes
