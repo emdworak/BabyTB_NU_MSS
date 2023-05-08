@@ -85,7 +85,8 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Gaiser, Natali", "Gaiser, Natalie",
+  filter(name %in% c("Becky, Baron", "Baron, Becky",
+                     "Gaiser, Natali", "Gaiser, Natalie",
                      "Krummel, Madalyn", "Krummel, Madalyn 2",
                      "Lozano, Linda", "Lozano,Linda", 
                      "McCormick", "McCormick, Dylan",
@@ -97,6 +98,8 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Becky, Baron"] <- "Baron, Becky"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Gaiser, Natali"] <- "Gaiser, Natalie"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Lozano,Linda"] <- "Lozano, Linda"
@@ -258,12 +261,37 @@ cert_df_wide_full %>%
   count(name, site)
 ```
 
+```{r, echo = FALSE}
+# Load in the last export
+completed_cases <- read_rds(file = "data/completed_cases.rds")
+```
+
+
+```{r, echo = FALSE, eval = FALSE}
+# Create a new export
+pull_completed_cases <- cert_df_wide_full %>% 
+  count(name, site) %>% 
+  pull(name)
+
+write_rds(pull_completed_cases, file = "data/completed_cases.rds")
+```
+
+
 Who has incomplete data:
 ```{r}
 cert_df_wide_NA %>% 
   count(name, site)
 ```
 
+# New Reports as of `r format(Sys.time(), '%d %B, %Y')`
+
+```{r}
+cert_df_wide_full %>% 
+  count(name, site) %>%
+  filter(name %nin% completed_cases) %>% 
+  kbl(caption = "What reports are new?") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 
 
