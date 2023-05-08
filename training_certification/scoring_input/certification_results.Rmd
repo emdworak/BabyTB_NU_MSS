@@ -283,7 +283,7 @@ cert_df_wide_NA %>%
   count(name, site)
 ```
 
-# New Reports as of `r format(Sys.time(), '%d %B, %Y')`
+# New Reports as of `r format(Sys.time(), '%B %d')`
 
 ```{r}
 cert_df_wide_full %>% 
