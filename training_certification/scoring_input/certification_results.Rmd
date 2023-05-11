@@ -98,6 +98,12 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Yilma,aden"] <- "Yilma, Aden"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Yilma, aden"] <- "Yilma, Aden"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Oyer,Nick"] <- "Oyer, Nick"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Becky, Baron"] <- "Baron, Becky"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Gaiser, Natali"] <- "Gaiser, Natalie"
@@ -258,7 +264,9 @@ cert_df_wide_NA <- setdiff(cert_df_wide, cert_df_wide_full)
 Who has complete data:
 ```{r}
 cert_df_wide_full %>% 
-  count(name, site)
+  count(name, site) %>% 
+  kbl(caption = "Complete Data") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ```{r, echo = FALSE}
@@ -280,7 +288,9 @@ write_rds(pull_completed_cases, file = "data/completed_cases.rds")
 Who has incomplete data:
 ```{r}
 cert_df_wide_NA %>% 
-  count(name, site)
+  count(name, site) %>% 
+  kbl(caption = "Incomplete Data") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 # New Reports as of `r format(Sys.time(), '%B %d')`
