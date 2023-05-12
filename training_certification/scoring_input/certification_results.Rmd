@@ -85,7 +85,10 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Fletes. Fabiola", "Fletes, Fabiola",
+  filter(name %in% c("Medina, Keila", "Medina, Keils",
+                     "Simmons, Millennia", "Simmons,Millennia", "simmons,Millennia", "simmons,millennia",
+                     "Stewart-Milton", "Stewart-Milton, Chelsea",
+                     "Fletes. Fabiola", "Fletes, Fabiola",
                      "Ramirez,Rosario", "Ramirez, Rosario", 
                      "Skinner, Andrea", "Skinner, Andrea", "Andrea Skinner", "Skinner,  Andrea",
                      "Yilma, aden", "Yilma, Aden", "Yilma,aden",
@@ -103,6 +106,16 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Medina, Keils"] <- "Medina, Keila"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "simmons,millennia"] <- "Simmons, Millennia"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "simmons,Millennia"] <- "Simmons, Millennia"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Simmons,Millennia"] <- "Simmons, Millennia"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Stewart-Milton"] <- "Stewart-Milton, Chelsea"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Fletes. Fabiola"] <- "Fletes, Fabiola"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Ramirez,Rosario"] <- "Ramirez, Rosario"
