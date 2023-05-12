@@ -85,7 +85,12 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Becky, Baron", "Baron, Becky",
+  filter(name %in% c("Fletes. Fabiola", "Fletes, Fabiola",
+                     "Ramirez,Rosario", "Ramirez, Rosario", 
+                     "Skinner, Andrea", "Skinner, Andrea", "Andrea Skinner", "Skinner,  Andrea",
+                     "Yilma, aden", "Yilma, Aden", "Yilma,aden",
+                     "Oyer,Nick", "Oyer, Nick", 
+                     "Becky, Baron", "Baron, Becky",
                      "Gaiser, Natali", "Gaiser, Natalie",
                      "Krummel, Madalyn", "Krummel, Madalyn 2",
                      "Lozano, Linda", "Lozano,Linda", 
@@ -98,6 +103,16 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Fletes. Fabiola"] <- "Fletes, Fabiola"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Ramirez,Rosario"] <- "Ramirez, Rosario"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Skinner,  Andrea"] <- "Skinner, Andrea"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Skinner,Andrea"] <- "Skinner, Andrea"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Andrea Skinner"] <- "Skinner, Andrea"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Yilma,aden"] <- "Yilma, Aden"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Yilma, aden"] <- "Yilma, Aden"
@@ -131,6 +146,13 @@ cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_ap
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_app_v1v2$task_id == "sobO_v1"] <- "Krummel, Madalyn"
 
 ```
+
+Fix multiple locations:
+
+```{r}
+cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Skinner, Andrea"] <- "Nashville, TN"
+```
+
 
 
 ### Deal with duplicates
