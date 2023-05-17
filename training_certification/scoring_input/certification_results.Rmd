@@ -60,6 +60,8 @@ cert_df_app_v2 <- read_xlsx("data/2023_BBTB_Cert.xlsx") %>%
   filter(app_version != 1) %>% 
   mutate(app_version = ifelse(is.na(app_version), 2, app_version))
 
+cert_df_app_v2$name[cert_df_app_v2$name == "Field, Rebecca"] <- "Field, Rebecca 2"
+
 ## Bind the cols
 cert_df_app_v1v2 <- bind_rows(cert_df_app_v1, cert_df_app_v2) 
 
@@ -85,7 +87,13 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Medina, Keila", "Medina, Keils",
+  filter(name %in% c("Craog, Maggie", "Craig, Maggie",
+                     "Virginia, Christman", "Christman, Virginia", "Christman, Virginia`",
+                     "Lane Harlie", "Lane, Harlie", 
+    "churchillda pratt", "pratt churchillda", "Pratt Churchillda", "Pratt, Churchillda", "Pratt, churchillda",
+                     "Parman, Ben", "Parman. Ben", "Ben Parman",
+                     "Bologno , Megan", "Bologno Megan", "Bologno, Megan", 
+                     "Medina, Keila", "Medina, Keils",
                      "Simmons, Millennia", "Simmons,Millennia", "simmons,Millennia", "simmons,millennia",
                      "Stewart-Milton", "Stewart-Milton, Chelsea",
                      "Fletes. Fabiola", "Fletes, Fabiola",
@@ -106,6 +114,31 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Craog, Maggie"] <- "Craig, Maggie"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Virginia, Christman"] <- "Christman, Virginia"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Christman, Virginia`"] <- "Christman, Virginia"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Lane Harlie"] <- "Lane, Harlie"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "churchillda pratt"] <- "Pratt, Churchillda"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "pratt churchillda"] <- "Pratt, Churchillda"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Pratt Churchillda"] <- "Pratt, Churchillda"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Pratt, churchillda"] <- "Pratt, Churchillda"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Bologno Megan"] <- "Bologno, Megan"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Bologno , Megan"] <- "Bologno, Megan"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Ben Parman"] <- "Parman, Ben"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Parman. Ben"] <- "Parman, Ben"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Medina, Keils"] <- "Medina, Keila"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "simmons,millennia"] <- "Simmons, Millennia"
