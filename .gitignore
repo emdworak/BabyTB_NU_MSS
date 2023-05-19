@@ -19,6 +19,11 @@ training_certification/scoring_input/data/*
 training_certification/scoring_input/*.pdf
 training_certification/scoring_input/*.html
 training_certification/scoring_input/individual_reports/*/
+training_certification/scoring_input/for_Miriam/*.xlsx
+
+# Files to ignore for SaS certification 
+sas_scoring_certification/rsconnect
+sas_scoring_certification/authentication_files/.secrets/
 
 
 # Files to ignore for dry run analyses
@@ -28,6 +33,11 @@ dry_run/EFCog_dryrun_20230404.Rmd
 dry_run/EFCog_dryrun_20230404.html
 dry_run/EFCog_dryrun_20230404.pdf
 dry_run/EFCog_dryrun_20230404.log
+dry_run/Baby Toolbox measures by domain.docx
+dry_run/data/*.xlsx
+dry_run/data/*.csv
+dry_run/data/forr_sharepoint/*.xlsx
+dry_run/data/forr_sharepoint/*.docx
 
 ## Code in mismatching IDs for data cleaning and QA
 mismatch.xlsx
