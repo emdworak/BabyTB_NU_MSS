@@ -36,8 +36,8 @@ dry_run/EFCog_dryrun_20230404.log
 dry_run/Baby Toolbox measures by domain.docx
 dry_run/data/*.xlsx
 dry_run/data/*.csv
-dry_run/data/forr_sharepoint/*.xlsx
-dry_run/data/forr_sharepoint/*.docx
+dry_run/data/for_sharepoint/*.xlsx
+dry_run/data/for_sharepoint/*.docx
 
 ## Code in mismatching IDs for data cleaning and QA
 mismatch.xlsx
