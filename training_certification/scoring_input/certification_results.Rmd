@@ -80,6 +80,7 @@ cert_df_app_v1v2 %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+### Fix name errors
 It looks like there are a few errors with names:
 
 We're only aware of one case where a different name was used on purpose. Therefore, corrections need to be made. 
@@ -87,7 +88,11 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Craog, Maggie", "Craig, Maggie",
+  filter(name %in% c("Sifuentes, Maci", "Maci Sifuentes",
+                     "Samé, Alisha", "Same, Alisha",
+                     "Martinez, Karina", "Martinez, Karina", "Martinez", "MARTINEZ,KARINA", "MARTINEZ, KARINA", 
+                     "McGuire, Amy", "McGuire, McGuire",
+    "Craog, Maggie", "Craig, Maggie",
                      "Virginia, Christman", "Christman, Virginia", "Christman, Virginia`",
                      "Lane Harlie", "Lane, Harlie", 
     "churchillda pratt", "pratt churchillda", "Pratt Churchillda", "Pratt, Churchillda", "Pratt, churchillda",
@@ -114,6 +119,17 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Maci Sifuentes"] <- "Sifuentes, Maci"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Same, Alisha"] <- "Samé, Alisha"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "MARTINEZ, KARINA"] <- "Martinez, Karina"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "MARTINEZ,KARINA"] <- "Martinez, Karina"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Martinez"] <- "Martinez, Karina"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "McGuire, McGuire"] <- "McGuire, Amy"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Craog, Maggie"] <- "Craig, Maggie"
 
@@ -197,6 +213,8 @@ Fix multiple locations:
 
 ```{r}
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Skinner, Andrea"] <- "Nashville, TN"
+
+cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Martinez, Karina"] <- "Dallas, TX"
 ```
 
 
