@@ -1,6 +1,6 @@
 ---
 title: "BabyTB Individual Reports"
-subtitle: "Individuallized Results"
+subtitle: "Individualized Results"
 author: "Elizabeth Dworak"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
