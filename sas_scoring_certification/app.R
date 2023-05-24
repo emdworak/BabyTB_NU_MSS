@@ -731,7 +731,7 @@ server <- function(input, output, session) {
       K_PtS_Q1 = c(2),
       K_Usit_Q1 = c(2),
       K_Usit_Q2_St = c(.48),
-      K_Usit_Q2_End = c(1.12)
+      K_Usit_Q2_End = c(1.04) #Updated from 1.12 on 2023/5/24
     )
     
     sas_v6_combined <- cbind(sas_v6_data, sas_key_df) %>% 
