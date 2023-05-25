@@ -88,7 +88,9 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Adams Kyle", "Adams, Kyle",
+  filter(name %in% c("MUNESA, LUKE", "Munesa, Luke",
+                     "Aminah Askew", "Aminah askew",
+                     "Adams Kyle", "Adams, Kyle",
                      "Sifuentes, Maci", "Maci Sifuentes",
                      "Samé, Alisha", "Same, Alisha",
                      "Martinez, Karina", "Martinez, Karina", "Martinez", "MARTINEZ,KARINA", "MARTINEZ, KARINA", 
@@ -120,6 +122,10 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "MUNESA, LUKE"] <- "Munesa, Luke"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Aminah askew"] <- "Aminah Askew"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Adams Kyle"] <- "Adams, Kyle"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Maci Sifuentes"] <- "Sifuentes, Maci"
@@ -215,6 +221,10 @@ cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_ap
 Fix multiple locations:
 
 ```{r}
+cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Munesa, Luke"] <- "Philadelphia, PA"
+
+cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Adams, Kyle"] <- "Philadelphia, PA"
+
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Reid, Christopher"] <- "Baltimore, MD"
 
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Skinner, Andrea"] <- "Nashville, TN"
@@ -1113,10 +1123,10 @@ scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>%
            Score_gug_v1_turn = ifelse(gug_v1_turn == K_gug_v1_Turn, 1, 0),
            Score_gug_v1_trameth = ifelse(gug_v1_trameth == K_gug_v1_TraMeth, 1, 0),
            Score_gug_v1_tradis = ifelse(gug_v1_tradis == K_gug_v1_TraDis, 1, 0),
-           Score_gug_v1_start = ifelse(between(gug_v1_start, K_gug_v1_Start - 0.01, K_gug_v1_Start + 0.01), 1,
+           Score_gug_v1_start = ifelse(between(gug_v1_start, K_gug_v1_Start - 0.0101, K_gug_v1_Start + 0.0101), 1,
                                        ifelse(gug_v1_start == K_gug_v1_Start - 0.02, 0.5,
                                               ifelse(gug_v1_start == K_gug_v1_Start + 0.02, 0.5, 0))),
-           Score_gug_v1_end = ifelse(between(gug_v1_end, K_gug_v1_End - 0.01, K_gug_v1_End + 0.01), 1,
+           Score_gug_v1_end = ifelse(between(gug_v1_end, K_gug_v1_End - 0.0101, K_gug_v1_End + 0.0101), 1,
                                      ifelse(gug_v1_end == K_gug_v1_End - 0.02, 0.5,
                                             ifelse(gug_v1_end == K_gug_v1_End + 0.02, 0.5, 0))),
            Score_gug_v1_stairup = ifelse(gug_v1_stairup == K_gug_v1_StairUp, 1, 0),
@@ -1141,10 +1151,10 @@ scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>%
            Score_gug_v2_trameth = ifelse(gug_v2_trameth == K_gug_v2_TraMeth, 1, 0),
            Score_gug_v2_toes = ifelse(gug_v2_toes == K_gug_v2_Toes, 1, 0),
            Score_gug_v2_tradis = ifelse(gug_v2_tradis == K_gug_v2_TraDis, 1, 0),
-           Score_gug_v2_start = ifelse(between(gug_v2_start, K_gug_v2_Start - 0.01, K_gug_v2_Start + 0.01), 1,
+           Score_gug_v2_start = ifelse(between(gug_v2_start, K_gug_v2_Start - 0.0101, K_gug_v2_Start + 0.0101), 1,
                                        ifelse(gug_v2_start == K_gug_v2_Start - 0.02, 0.5,
                                               ifelse(gug_v2_start == K_gug_v2_Start + 0.02, 0.5, 0))),
-           Score_gug_v2_end = ifelse(between(gug_v2_end, K_gug_v2_End - 0.01, K_gug_v2_End + 0.01), 1,
+           Score_gug_v2_end = ifelse(between(gug_v2_end, K_gug_v2_End - 0.0101, K_gug_v2_End + 0.0101), 1,
                                      ifelse(gug_v2_end == K_gug_v2_End - 0.02, 0.5,
                                             ifelse(gug_v2_end == K_gug_v2_End + 0.02, 0.5, 0))),
            Score_gug_v2_stairup = ifelse(gug_v2_stairup == K_gug_v2_StairUp, 1, 0),
@@ -1223,10 +1233,10 @@ scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>%
     )  %>% 
     mutate(Score_sas_v1_usit_q1 = ifelse(sas_v1_usit_q1 == K_sas_v1_Usit_Q1, 
                                          1, 0),
-           Score_sas_v1_usit_q2_start = ifelse(between(sas_v1_usit_q2_start, K_sas_v1_Usit_Q2_St - 0.01, K_sas_v1_Usit_Q2_St + 0.01), 1, 
+           Score_sas_v1_usit_q2_start = ifelse(between(sas_v1_usit_q2_start, K_sas_v1_Usit_Q2_St - 0.0101, K_sas_v1_Usit_Q2_St + 0.0101), 1, 
                                                ifelse(sas_v1_usit_q2_start == K_sas_v1_Usit_Q2_St - 0.02, 0.5,
                                                       ifelse(sas_v1_usit_q2_start == K_sas_v1_Usit_Q2_St + 0.02, 0.5, 0))),
-           Score_sas_v1_usit_q2_end = ifelse(between(sas_v1_usit_q2_end, K_sas_v1_Usit_Q2_End - 0.01, K_sas_v1_Usit_Q2_End + 0.01), 1, 
+           Score_sas_v1_usit_q2_end = ifelse(between(sas_v1_usit_q2_end, K_sas_v1_Usit_Q2_End - 0.0101, K_sas_v1_Usit_Q2_End + 0.0101), 1, 
                                              ifelse(sas_v1_usit_q2_end == K_sas_v1_Usit_Q2_End - 0.02, 0.5,
                                                     ifelse(sas_v1_usit_q2_end == K_sas_v1_Usit_Q2_End + 0.02, 0.5, 0))),
            ScoreOverall_sas_v1 = sum(Score_sas_v1_usit_q1, Score_sas_v1_usit_q2_start, Score_sas_v1_usit_q2_end),
@@ -1234,19 +1244,19 @@ scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>%
     )  %>% 
     mutate(Score_sas_v2_std_q1 = ifelse(sas_v2_std_q1 == K_sas_v2_StD_Q1, 
                                         1, 0),
-           Score_sas_v2_std_q2_start = ifelse(between(sas_v2_std_q2_start, K_sas_v2_StD_Q2_St - 0.01, K_sas_v2_StD_Q2_St + 0.01), 1, 
+           Score_sas_v2_std_q2_start = ifelse(between(sas_v2_std_q2_start, K_sas_v2_StD_Q2_St - 0.0101, K_sas_v2_StD_Q2_St + 0.0101), 1, 
                                               ifelse(sas_v2_std_q2_start == K_sas_v2_StD_Q2_St - 0.02, 0.5,
                                                      ifelse(sas_v2_std_q2_start == K_sas_v2_StD_Q2_St + 0.02, 0.5, 0))),
-           Score_sas_v2_std_q2_end = ifelse(between(sas_v2_std_q2_end, K_sas_v2_StD_Q2_End - 0.01, K_sas_v2_StD_Q2_End + 0.01), 1, 
+           Score_sas_v2_std_q2_end = ifelse(between(sas_v2_std_q2_end, K_sas_v2_StD_Q2_End - 0.0101, K_sas_v2_StD_Q2_End + 0.0101), 1, 
                                             ifelse(sas_v2_std_q2_end == K_sas_v2_StD_Q2_End - 0.02, 0.5,
                                                    ifelse(sas_v2_std_q2_end == K_sas_v2_StD_Q2_End + 0.02, 0.5, 0))),
            
            Score_sas_v2_std_q3 = ifelse(sas_v2_std_q3 == K_sas_v2_StD_Q3, 
                                         1, 0),
-           Score_sas_v2_std_q4_start = ifelse(between(sas_v2_std_q4_start, K_sas_v2_StD_Q4_St - 0.01, K_sas_v2_StD_Q4_St + 0.01), 1, 
+           Score_sas_v2_std_q4_start = ifelse(between(sas_v2_std_q4_start, K_sas_v2_StD_Q4_St - 0.0101, K_sas_v2_StD_Q4_St + 0.0101), 1, 
                                               ifelse(sas_v2_std_q4_start == K_sas_v2_StD_Q4_St - 0.02, 0.5,
                                                      ifelse(sas_v2_std_q4_start == K_sas_v2_StD_Q4_St + 0.02, 0.5, 0))),
-           Score_sas_v2_std_q4_end = ifelse(between(sas_v2_std_q4_end, K_sas_v2_StD_Q4_End - 0.01, K_sas_v2_StD_Q4_End + 0.01), 1, 
+           Score_sas_v2_std_q4_end = ifelse(between(sas_v2_std_q4_end, K_sas_v2_StD_Q4_End - 0.0101, K_sas_v2_StD_Q4_End + 0.0101), 1, 
                                             ifelse(sas_v2_std_q4_end == K_sas_v2_StD_Q4_End - 0.02, 0.5,
                                                    ifelse(sas_v2_std_q4_end == K_sas_v2_StD_Q4_End + 0.02, 0.5, 0))),
            
@@ -1258,10 +1268,10 @@ scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>%
                                         1, 0),
            Score_sas_v3_usit_q1 = ifelse(sas_v3_usit_q1 == K_sas_v3_Usit_Q1, 
                                          1, 0),
-           Score_sas_v3_usit_q2_start = ifelse(between(sas_v3_usit_q2_start, K_sas_v3_Usit_Q2_St - 0.01, K_sas_v3_Usit_Q2_St + 0.01), 1, 
+           Score_sas_v3_usit_q2_start = ifelse(between(sas_v3_usit_q2_start, K_sas_v3_Usit_Q2_St - 0.0101, K_sas_v3_Usit_Q2_St + 0.0101), 1, 
                                                ifelse(sas_v3_usit_q2_start == K_sas_v3_Usit_Q2_St - 0.02, 0.5,
                                                       ifelse(sas_v3_usit_q2_start == K_sas_v3_Usit_Q2_St + 0.02, 0.5, 0))),
-           Score_sas_v3_usit_q2_end = ifelse(between(sas_v3_usit_q2_end, K_sas_v3_Usit_Q2_End - 0.01, K_sas_v3_Usit_Q2_End + 0.01), 1, 
+           Score_sas_v3_usit_q2_end = ifelse(between(sas_v3_usit_q2_end, K_sas_v3_Usit_Q2_End - 0.0101, K_sas_v3_Usit_Q2_End + 0.0101), 1, 
                                              ifelse(sas_v3_usit_q2_end == K_sas_v3_Usit_Q2_End - 0.02, 0.5,
                                                     ifelse(sas_v3_usit_q2_end == K_sas_v3_Usit_Q2_End + 0.02, 0.5, 0))),
            ScoreOverall_sas_v3 = sum(Score_sas_v3_pts_q1, Score_sas_v3_usit_q1, Score_sas_v3_usit_q2_start, Score_sas_v3_usit_q2_end),
@@ -1269,19 +1279,19 @@ scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>%
     )  %>% 
     mutate(Score_sas_v4_std_q1 = ifelse(sas_v4_std_q1 == K_sas_v4_StD_Q1, 
                                         1, 0),
-           Score_sas_v4_std_q2_start = ifelse(between(sas_v4_std_q2_start, K_sas_v4_StD_Q2_St - 0.01, K_sas_v4_StD_Q2_St + 0.01), 1, 
+           Score_sas_v4_std_q2_start = ifelse(between(sas_v4_std_q2_start, K_sas_v4_StD_Q2_St - 0.0101, K_sas_v4_StD_Q2_St + 0.0101), 1, 
                                               ifelse(sas_v4_std_q2_start == K_sas_v4_StD_Q2_St - 0.02, 0.5,
                                                      ifelse(sas_v4_std_q2_start == K_sas_v4_StD_Q2_St + 0.02, 0.5, 0))),
-           Score_sas_v4_std_q2_end = ifelse(between(sas_v4_std_q2_end, K_sas_v4_StD_Q2_End - 0.01, K_sas_v4_StD_Q2_End + 0.01), 1, 
+           Score_sas_v4_std_q2_end = ifelse(between(sas_v4_std_q2_end, K_sas_v4_StD_Q2_End - 0.0101, K_sas_v4_StD_Q2_End + 0.0101), 1, 
                                             ifelse(sas_v4_std_q2_end == K_sas_v4_StD_Q2_End - 0.02, 0.5,
                                                    ifelse(sas_v4_std_q2_end == K_sas_v4_StD_Q2_End + 0.02, 0.5, 0))),
            
            Score_sas_v4_std_q3 = ifelse(sas_v4_std_q3 == K_sas_v4_StD_Q3, 
                                         1, 0),
-           Score_sas_v4_std_q4_start = ifelse(between(sas_v4_std_q4_start, K_sas_v4_StD_Q4_St - 0.01, K_sas_v4_StD_Q4_St + 0.01), 1, 
+           Score_sas_v4_std_q4_start = ifelse(between(sas_v4_std_q4_start, K_sas_v4_StD_Q4_St - 0.0101, K_sas_v4_StD_Q4_St + 0.0101), 1, 
                                               ifelse(sas_v4_std_q4_start == K_sas_v4_StD_Q4_St - 0.02, 0.5,
                                                      ifelse(sas_v4_std_q4_start == K_sas_v4_StD_Q4_St + 0.02, 0.5, 0))),
-           Score_sas_v4_std_q4_end = ifelse(between(sas_v4_std_q4_end, K_sas_v4_StD_Q4_End - 0.01, K_sas_v4_StD_Q4_End + 0.01), 1, 
+           Score_sas_v4_std_q4_end = ifelse(between(sas_v4_std_q4_end, K_sas_v4_StD_Q4_End - 0.0101, K_sas_v4_StD_Q4_End + 0.0101), 1, 
                                             ifelse(sas_v4_std_q4_end == K_sas_v4_StD_Q4_End - 0.02, 0.5,
                                                    ifelse(sas_v4_std_q4_end == K_sas_v4_StD_Q4_End + 0.02, 0.5, 0))),
            
@@ -1577,6 +1587,8 @@ score_cert_factored <- score_cert_factored %>%
                                "Stepped out", "Stood feet tandem"))
     ) %>% 
   mutate(sas_v3_pts_q1 = factor(sas_v3_pts_q1, app_values_1_2,
+                                  c("No", "Yes")),
+         K_sas_v3_PtS_Q1  = factor(K_sas_v3_PtS_Q1, app_values_1_2,
                                   c("No", "Yes")),
            sas_v3_usit_q1 = factor(sas_v3_usit_q1, app_values_1_5,
                                    c("Non-compliant", "Fell", "Used hands for support",
