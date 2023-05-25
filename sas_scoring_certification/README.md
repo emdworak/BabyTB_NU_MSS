@@ -1,7 +1,7 @@
 Sit and Stand Scoring Certification Shiny App
 ================
 Elizabeth Dworak
-17 May, 2023
+24 May, 2023
 
 - <a href="#overview" id="toc-overview">Overview</a>
 - <a href="#folder-organization" id="toc-folder-organization">Folder
@@ -35,8 +35,8 @@ brief description of the organization of the files and folders:
   confidential. However, the file has been uploaded to show the
   structure to those interested in creating their own Shiny application.
 
-- `scoring_input` - This folder contains code to clean, (re)score, and
-  analyze Sas scoring certification data. The code in this file will not
-  only produce an overall table to tell the individual overseeing
+- `sas_scoring_input` - This folder contains code to clean, (re)score,
+  and analyze SaS scoring certification data. The code in this file will
+  not only produce an overall table to tell the individual overseeing
   certification how trainees are doing, but will also create individual
   reports that can be returned to the trainee.
