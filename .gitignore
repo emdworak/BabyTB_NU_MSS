@@ -6,6 +6,7 @@
 
 # Files to ignore for training certification 
 training_certification/app_archive.R
+
 ## Make sure personal authentication information is not uploaded
 training_certification/rsconnect
 training_certification/authentication_files/authentication_info.R
@@ -24,6 +25,13 @@ training_certification/scoring_input/for_Miriam/*.xlsx
 # Files to ignore for SaS certification 
 sas_scoring_certification/rsconnect
 sas_scoring_certification/authentication_files/.secrets/
+
+## Ignore output from SaS certification
+sas_scoring_certification/sas_scoring_input/data/*
+sas_scoring_certification/sas_scoring_input/*.pdf
+sas_scoring_certification/sas_scoring_input/*.html
+sas_scoring_certification/sas_scoring_input/individual_reports/*/
+sas_scoring_certification/sas_scoring_input/for_Miriam/*.xlsx
 
 
 # Files to ignore for dry run analyses
