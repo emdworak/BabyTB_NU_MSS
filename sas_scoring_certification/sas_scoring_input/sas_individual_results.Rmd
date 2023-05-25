@@ -1,0 +1,167 @@
+---
+title: "BabyTB Individual Reports"
+subtitle: "Individualized Results"
+author: "Elizabeth Dworak"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: yes
+---
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+options(width = 400)
+```
+
+# Prepare the data
+
+```{r, message = FALSE}
+# install.packages("psych", repos = "http://personality-project.org/r", type = "source")
+# install.packages("psychTools", repos = "http://personality-project.org/r", type = "source")
+
+# Load the relevant libraries --------------------------
+library(psych)
+library(psychTools)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(ggpubr)
+library(kableExtra)
+library(gridExtra)
+library(grid)
+
+# Make sure you're running the most recent version of psych
+# sessionInfo()
+
+```
+
+```{r}
+setwd("~/Desktop/MSS/BabyTB/BabyTB_Github/BabyTB_NU_MSS/sas_scoring_certification/sas_scoring_input")
+
+# Load the functions and data --------------------------
+`%nin%` <- Negate(`%in%`)
+
+## Load in the data 
+load(file = "data/sas_results_to_print.rda")
+```
+
+## Print the Reports
+```{r}
+# splitString <- function(text) {
+#     strings <- strsplit(text, " ")[[1]]
+#     newstring <- strings[1]
+#     linewidth <- stringWidth(newstring)
+#     gapwidth <- stringWidth(" ")
+#     availwidth <-
+#         convertWidth(unit(.28, "npc"),
+#                      "inches", valueOnly=TRUE)
+#     for (i in 2:length(strings)) {
+#         width <- stringWidth(strings[i])
+#         if (convertWidth(linewidth + gapwidth + width,
+#                          "inches", valueOnly=TRUE) <
+#             availwidth) {
+#             sep <- " "
+#             linewidth <- linewidth + gapwidth + width
+#         } else {
+#             sep <- "\n"
+#             linewidth <- width
+#         }
+#         newstring <- paste(newstring, strings[i], sep=sep)
+#     }
+#     newstring
+# }
+
+
+
+grid.ftable <- function(d, padding = unit(1, "mm"), ...) {
+
+  nc <- ncol(d)
+  nr <- nrow(d)
+
+  # d <- d %>% 
+  # rowwise() %>% 
+  # mutate(Question = splitString(Question))
+  
+  ## character table with added row and column names
+  extended_matrix <- cbind(c("", rownames(d)),
+                           rbind(colnames(d),
+                                 as.matrix(d)))
+  
+
+
+  ## string width and height
+  w <- apply(extended_matrix, 2, strwidth, "inch")
+  h <- apply(extended_matrix, 2, strheight, "inch")
+
+  widths <- apply(w, 2, max)
+  widths <- 0.75 * widths
+  heights <- apply(h, 1, max)
+
+  padding <- convertUnit(padding, unitTo = "in", valueOnly = TRUE)
+
+  x <- cumsum(widths + padding) - 0.5 * padding
+  y <- cumsum(heights + padding) - padding
+
+  rg <- rectGrob(x = unit(x - widths/2, "in"),
+                 y = unit(1, "npc") - unit(rep(y, each = nc + 1), "in"),
+                 width = unit(widths + padding, "in"),
+                 height = unit(heights + padding, "in"))
+
+  tg <- textGrob(c(t(extended_matrix)), x = unit(x - widths/2, "in"),
+                 y = unit(1, "npc") - unit(rep(y, each = nc + 1), "in"),
+                 just = "center")
+
+  g <- gTree(children = gList(rg, tg), ...,
+             x = x, y = y, widths = widths, heights = heights)
+
+  grid.draw(g)
+  invisible(g)
+}
+
+
+```
+
+```{r, results="asis"}
+
+for(i in 1:length(pull_names)) {
+  name_space <- pull_names[i]
+  name_space <- str_remove(name_space, ",")
+  name_space <- str_remove_all(name_space, " ")
+  
+  overall_df <- overall_list[[i]]
+  
+  pull_location <- overall_df[2,]
+  
+  pull_location <- str_remove(pull_location, ",")
+  pull_location <- str_remove_all(pull_location, " ")
+  
+  pdf_create <- paste0("~/Desktop/MSS/BabyTB/BabyTB_Github/BabyTB_NU_MSS/sas_scoring_certification/sas_scoring_input/individual_reports/", pull_location, "/", name_space, "_sas_report.pdf")
+
+  pdf(pdf_create, width = 10, height = 11)
+  
+  overall_df <- overall_list[[i]]
+  
+  overall_df %>% 
+    grid.table() 
+  
+  grid.newpage()
+  
+  item_df <- item_list[[i]]
+  
+  
+  item_df %>%
+    filter(Measure == "Sit and Stand") %>% 
+    grid.ftable(., 
+                gp = gpar(fontsize= 8,
+                          fill = rep(c("grey90", "grey95"), 
+                                     each = 7)))
+  
+
+  dev.off()
+
+} 
+           
+```
+
+
+

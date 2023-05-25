@@ -1,0 +1,601 @@
+---
+title: "BabyTB SaS Re-Certification Scoring"
+subtitle: 'Overall Report of Individualized Results'
+author: "Elizabeth Dworak"
+date: "Created on `r format(Sys.time(), '%d %B, %Y at %H:%M')` CT"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    code_folding: hide
+---
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+options(width = 400)
+```
+
+# Prepare the data
+
+```{r, message = FALSE}
+# install.packages("psych", repos = "http://personality-project.org/r", type = "source")
+# install.packages("psychTools", repos = "http://personality-project.org/r", type = "source")
+
+# Load the relevant libraries --------------------------
+library(psych)
+library(psychTools)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(ggpubr)
+library(kableExtra)
+library(gridExtra)
+
+# Make sure you're running the most recent version of psych
+# sessionInfo()
+
+```
+
+```{r}
+setwd("~/Desktop/MSS/BabyTB/BabyTB_Github/BabyTB_NU_MSS/sas_scoring_certification/sas_scoring_input")
+
+# Load the functions and data --------------------------
+`%nin%` <- Negate(`%in%`)
+
+## Load in the score data 
+cert_df_app_v5 <- read_xlsx("data/2023_BBTB_SaS_Cert_20230524.xlsx") %>% 
+  janitor::clean_names() %>% 
+  filter(name %nin% c("QA Testing", "QA Test", "TEST-MIRIAM")) %>% 
+  filter(key == "Response")
+
+# dim(cert_df_app_v5)
+# colnames(cert_df_app_v5)
+
+## Load in the item data 
+cert_df_app_v6 <- read_xlsx("data/2023_BBTB_SaS_Cert.xlsx") %>% 
+  janitor::clean_names() %>% 
+  filter(name %nin% c("QA Testing", "QA Test", "TEST-MIRIAM")) %>% 
+  filter(key == "Response") %>% 
+  filter(app_version != 1) %>% 
+  mutate(app_version = ifelse(is.na(app_version), 2, app_version))
+
+## Bind the cols
+cert_df_app_v5v2 <- bind_rows(cert_df_app_v5, cert_df_app_v6) 
+
+```
+
+## Deal with Duplicates
+We want to make sure we're only pulling the first instance. 
+
+### Confirm that the names are the same 
+
+We need to make sure there aren't errors in name entries before transforming the data
+```{r}
+cert_df_app_v5v2 %>% 
+  count(name, site) %>% 
+  kbl(caption = "Names and Sites") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+### Fix name errors
+It looks like there are a few errors with names:
+
+We're only aware of one case where a different name was used on purpose. Therefore, corrections need to be made. 
+
+```{r}
+cert_df_app_v5v2 %>% 
+  count(name, site) %>% 
+  filter(name %in% c("medina, keila", "Medina, Keila"
+                     )) %>% 
+  kbl(caption = "Name Errors") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+Fix the names:
+```{r}
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "medina, keila"] <- "Medina, Keila"
+
+
+```
+
+
+
+
+Fix multiple locations:
+
+```{r, eval = FALSE}
+cert_df_app_v5v2$site[cert_df_app_v5v2$name == ""] <- ""
+
+```
+
+
+
+### Deal with duplicates
+See how many duplicates we're dealing with.
+
+So far there appears to be not duplicates between version 1 and version 2. This is something that needs to be checked every time we read in an updated version of the file. 
+
+This is not information that needs to be printed out.
+```{r, eval=FALSE}
+cert_df_app_v5v2 %>% 
+  count(name, site, item_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  mutate(sum = sum(n))
+```
+
+See which specific tests are being duplicated and by whom. 
+```{r}
+cert_df_app_v5v2 %>% 
+  count(name, site, item_id, task_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  select(-c(item_id)) %>% 
+  unique() %>% 
+  arrange(name) %>% 
+  kbl(caption = "Who's resubmitting and on what?") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+We have approximately the following number of extra cases:
+```{r}
+pull_sum <- cert_df_app_v5v2 %>% 
+  count(name, site, item_id, task_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  mutate(sum = sum(n)) %>% 
+  select(sum) %>% 
+  unique() %>% 
+  pull(sum)
+
+pull_cases <- cert_df_app_v5v2 %>% 
+  count(name, site, item_id, task_id) %>% 
+  arrange(desc(n)) %>% 
+  filter(n != 1) %>% 
+  mutate(sum = sum(n)) %>% 
+  nrow()
+
+pull_sum - pull_cases
+```
+
+However, it's expected that there should only be the following number of "real" cases:
+```{r}
+nrow(cert_df_app_v5v2) - (pull_sum - pull_cases)
+```
+
+A break down looking at the date of submission is provided below:
+```{r}
+cert_df_app_v5v2 %>% 
+  group_by(name, site, item_id) %>% 
+  mutate(dup = ifelse(date == min(date), "original", "duplicate")) %>% 
+  ungroup() %>% 
+  count(dup)
+
+# cert_df_app_v5v2 %>% 
+#   group_by(name, site, item_id) %>% 
+#   filter(date == min(date)) %>% 
+#   ungroup() %>% 
+#   dim()
+
+cert_df_app_v5v2_nodups <- cert_df_app_v5v2 %>% 
+  group_by(name, site, item_id) %>% 
+  filter(date == min(date)) %>% 
+  ungroup() 
+
+cert_df_app_v5_nodups <- cert_df_app_v5v2_nodups %>% 
+  filter(app_version == 1)
+
+cert_df_app_v6_nodups <- cert_df_app_v5v2_nodups %>% 
+  filter(app_version != 1) %>% 
+  filter(name != "Delete")
+```
+
+
+
+```{r}
+## Combine the corrected V1 data with the V2 data
+cert_df_long <- bind_rows(cert_df_app_v5_nodups, cert_df_app_v6_nodups)
+```
+
+
+```{r, eval = FALSE}
+## Make sure the combined data are the same size
+dim(cert_df_app_v5v2_nodups)
+dim(cert_df_long)
+```
+
+## Make a wide dataframe
+```{r}
+cert_df_wide <- cert_df_long %>% 
+  pivot_wider(., id_cols = c(name, site),
+              names_from = item_id,
+              values_from = value)
+
+## These folks have finished certification
+cert_df_wide_full <- cert_df_wide %>% 
+  na.omit()
+
+
+## These are the folks that have not finished their certification
+cert_df_wide_NA <- setdiff(cert_df_wide, cert_df_wide_full)
+```
+
+Who has complete data:
+```{r}
+cert_df_wide_full %>% 
+  count(name, site) %>% 
+  kbl(caption = "Complete Data") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r, echo = FALSE, eval = FALSE}
+# Load in the last export
+completed_cases <- read_rds(file = "data/completed_cases.rds")
+```
+
+
+```{r, echo = FALSE, eval = FALSE}
+# Create a new export
+pull_completed_cases <- cert_df_wide_full %>% 
+  count(name, site) %>% 
+  pull(name)
+
+write_rds(pull_completed_cases, file = "data/completed_cases.rds")
+```
+
+
+Who has incomplete data:
+```{r}
+cert_df_wide_NA %>% 
+  count(name, site) %>% 
+  kbl(caption = "Incomplete Data") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+# New Reports as of `r format(Sys.time(), '%B %d')`
+
+```{r, eval = FALSE}
+cert_df_wide_full %>% 
+  count(name, site) %>%
+  filter(name %nin% completed_cases) %>% 
+  kbl(caption = "What reports are new?") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
+
+
+# Score the data
+
+## Create the Answer Keys
+```{r}
+  sas_v5_key_df <- data.frame(
+      K_sas_v5_StD_Q1 = c(5),
+      K_sas_v5_StD_Q2_St = c(.22),
+      K_sas_v5_StD_Q2_End = c(.50),
+      K_sas_v5_StD_Q3 = c(4),
+      K_sas_v5_StD_Q4_St = c(1.45),
+      K_sas_v5_StD_Q4_End = c(1.45)
+    )
+  
+    sas_v6_key_df <- data.frame(
+      K_sas_v6_PtS_Q1 = c(2),
+      K_sas_v6_Usit_Q1 = c(2),
+      K_sas_v6_Usit_Q2_St = c(.48),
+      K_sas_v6_Usit_Q2_End = c(1.04) #Updated from 1.12 on 2023/5/24
+    )
+    
+  sas_v7_key_df <- data.frame(
+      K_sas_v7_StD_Q1 = c(5),
+      K_sas_v7_StD_Q2_St = c(1.08),
+      K_sas_v7_StD_Q2_End = c(1.40),
+      K_sas_v7_StD_Q3 = c(2),
+      K_sas_v7_StD_Q4_St = c(2.36), 
+      K_sas_v7_StD_Q4_End = c(2.43)
+    )
+  
+  sas_v8_key_df <- data.frame(
+      K_sas_v8_Usit_Q1 = c(5),
+      K_sas_v8_Usit_Q2_St = c(.09),
+      K_sas_v8_Usit_Q2_End = c(.23)
+    )
+  
+  all_keys <- bind_cols(sas_v5_key_df, sas_v6_key_df,
+                        sas_v7_key_df, sas_v8_key_df
+                        )
+```
+
+## Score the Data
+
+```{r}
+scored_cert_df <- bind_cols(cert_df_wide_full, all_keys) %>% 
+  group_by(name, site) %>% 
+  mutate(Score_sas_v5_std_q1 = ifelse(sas_v5_std_q1 == K_sas_v5_StD_Q1, 
+                                      1, 0),
+         Score_sas_v5_std_q2_start = ifelse(between(sas_v5_std_q2_start, K_sas_v5_StD_Q2_St - 0.0101, K_sas_v5_StD_Q2_St + 0.0101), 1, 
+                                            ifelse(sas_v5_std_q2_start == K_sas_v5_StD_Q2_St - 0.02, 0.5,
+                                                   ifelse(sas_v5_std_q2_start == K_sas_v5_StD_Q2_St + 0.02, 0.5, 0))),
+         Score_sas_v5_std_q2_end = ifelse(between(sas_v5_std_q2_end, K_sas_v5_StD_Q2_End - 0.0101, K_sas_v5_StD_Q2_End + 0.0101), 1, 
+                                          ifelse(sas_v5_std_q2_end == K_sas_v5_StD_Q2_End - 0.02, 0.5,
+                                                 ifelse(sas_v5_std_q2_end == K_sas_v5_StD_Q2_End + 0.02, 0.5, 0))),
+         
+         Score_sas_v5_std_q3 = ifelse(sas_v5_std_q3 == K_sas_v5_StD_Q3, 
+                                      1, 0),
+         Score_sas_v5_std_q4_start = ifelse(between(sas_v5_std_q4_start, K_sas_v5_StD_Q4_St - 0.0101, K_sas_v5_StD_Q4_St + 0.0101), 1, 
+                                            ifelse(sas_v5_std_q4_start == K_sas_v5_StD_Q4_St - 0.02, 0.5,
+                                                   ifelse(sas_v5_std_q4_start == K_sas_v5_StD_Q4_St + 0.02, 0.5, 0))),
+         Score_sas_v5_std_q4_end = ifelse(between(sas_v5_std_q4_end, K_sas_v5_StD_Q4_End - 0.0101, K_sas_v5_StD_Q4_End + 0.0101), 1, 
+                                          ifelse(sas_v5_std_q4_end == K_sas_v5_StD_Q4_End - 0.02, 0.5,
+                                                 ifelse(sas_v5_std_q4_end == K_sas_v5_StD_Q4_End + 0.02, 0.5, 0))),
+         
+         ScoreOverall_sas_v5 = sum(Score_sas_v5_std_q1, Score_sas_v5_std_q2_start, Score_sas_v5_std_q2_end,
+                            Score_sas_v5_std_q3, Score_sas_v5_std_q4_start, Score_sas_v5_std_q4_end),
+         ScoreOverall_sas_v5 = round(ScoreOverall_sas_v5 / 6 , 3)
+  ) %>% 
+  mutate(Score_sas_v6_pts_q1 = ifelse(sas_v6_pts_q1 == K_sas_v6_PtS_Q1, 
+                                      1, 0),
+         Score_sas_v6_usit_q1 = ifelse(sas_v6_usit_q1 == K_sas_v6_Usit_Q1, 
+                                       1, 0),
+         Score_sas_v6_usit_q2_start = ifelse(between(sas_v6_usit_q2_start, K_sas_v6_Usit_Q2_St - 0.0101, K_sas_v6_Usit_Q2_St + 0.0101), 1, 
+                                             ifelse(sas_v6_usit_q2_start == K_sas_v6_Usit_Q2_St - 0.02, 0.5,
+                                                    ifelse(sas_v6_usit_q2_start == K_sas_v6_Usit_Q2_St + 0.02, 0.5, 0))),
+         Score_sas_v6_usit_q2_end = ifelse(between(sas_v6_usit_q2_end, K_sas_v6_Usit_Q2_End - 0.0101, K_sas_v6_Usit_Q2_End + 0.0101), 1, 
+                                           ifelse(sas_v6_usit_q2_end == K_sas_v6_Usit_Q2_End - 0.02, 0.5,
+                                                  ifelse(sas_v6_usit_q2_end == K_sas_v6_Usit_Q2_End + 0.02, 0.5, 0))),
+         ScoreOverall_sas_v6 = sum(Score_sas_v6_pts_q1, Score_sas_v6_usit_q1, Score_sas_v6_usit_q2_start, Score_sas_v6_usit_q2_end),
+         ScoreOverall_sas_v6 = round(ScoreOverall_sas_v6 / 4, 3)
+  ) %>% 
+  mutate(Score_sas_v7_std_q1 = ifelse(sas_v7_std_q1 == K_sas_v7_StD_Q1, 
+                                      1, 0),
+         Score_sas_v7_std_q2_start = ifelse(between(sas_v7_std_q2_start, K_sas_v7_StD_Q2_St - 0.0101, K_sas_v7_StD_Q2_St + 0.0101), 1, 
+                                            ifelse(sas_v7_std_q2_start == K_sas_v7_StD_Q2_St - 0.02, 0.5,
+                                                   ifelse(sas_v7_std_q2_start == K_sas_v7_StD_Q2_St + 0.02, 0.5, 0))),
+         Score_sas_v7_std_q2_end = ifelse(between(sas_v7_std_q2_end, K_sas_v7_StD_Q2_End - 0.0101, K_sas_v7_StD_Q2_End + 0.0101), 1, 
+                                          ifelse(sas_v7_std_q2_end == K_sas_v7_StD_Q2_End - 0.02, 0.5,
+                                                 ifelse(sas_v7_std_q2_end == K_sas_v7_StD_Q2_End + 0.02, 0.5, 0))),
+         
+         Score_sas_v7_std_q3 = ifelse(sas_v7_std_q3 == K_sas_v7_StD_Q3, 
+                                      1, 0),
+         Score_sas_v7_std_q4_start = ifelse(between(sas_v7_std_q4_start, K_sas_v7_StD_Q4_St - 0.0101, K_sas_v7_StD_Q4_St + 0.0101), 1, 
+                                            ifelse(sas_v7_std_q4_start == K_sas_v7_StD_Q4_St - 0.02, 0.5,
+                                                   ifelse(sas_v7_std_q4_start == K_sas_v7_StD_Q4_St + 0.02, 0.5, 0))),
+         Score_sas_v7_std_q4_end = ifelse(between(sas_v7_std_q4_end, K_sas_v7_StD_Q4_End - 0.0101, K_sas_v7_StD_Q4_End + 0.0101), 1, 
+                                          ifelse(sas_v7_std_q4_end == K_sas_v7_StD_Q4_End - 0.02, 0.5,
+                                                 ifelse(sas_v7_std_q4_end == K_sas_v7_StD_Q4_End + 0.02, 0.5, 0))),
+         
+         ScoreOverall_sas_v7 = sum(Score_sas_v7_std_q1, Score_sas_v7_std_q2_start, Score_sas_v7_std_q2_end,
+                            Score_sas_v7_std_q3, Score_sas_v7_std_q4_start, Score_sas_v7_std_q4_end),
+         ScoreOverall_sas_v7 = round(ScoreOverall_sas_v7 / 6 , 3)
+  ) %>% 
+  mutate(Score_sas_v8_usit_q1 = ifelse(sas_v8_usit_q1 == K_sas_v8_Usit_Q1, 
+                                       1, 0),
+         Score_sas_v8_usit_q2_start = ifelse(between(sas_v8_usit_q2_start, K_sas_v8_Usit_Q2_St - 0.0101, K_sas_v8_Usit_Q2_St + 0.0101), 1, 
+                                             ifelse(sas_v8_usit_q2_start == K_sas_v8_Usit_Q2_St - 0.02, 0.5,
+                                                    ifelse(sas_v8_usit_q2_start == K_sas_v8_Usit_Q2_St + 0.02, 0.5, 0))),
+         Score_sas_v8_usit_q2_end = ifelse(between(sas_v8_usit_q2_end, K_sas_v8_Usit_Q2_End - 0.0101, K_sas_v8_Usit_Q2_End + 0.0101), 1, 
+                                           ifelse(sas_v8_usit_q2_end == K_sas_v8_Usit_Q2_End - 0.02, 0.5,
+                                                  ifelse(sas_v8_usit_q2_end == K_sas_v8_Usit_Q2_End + 0.02, 0.5, 0))),
+         ScoreOverall_sas_v8 = sum(Score_sas_v8_usit_q1, Score_sas_v8_usit_q2_start, Score_sas_v8_usit_q2_end),
+         ScoreOverall_sas_v8 = round(ScoreOverall_sas_v8 / 3, 3)
+  ) %>% 
+  ungroup()
+
+```
+
+
+### Factor the Data 
+
+```{r}
+app_values_1or0 <- c(1, 0)
+app_values_1_0 <- c(1, 0)
+app_values_0_2 <- c(0, 1, 2)
+app_values_1_2 <- c(1, 2)
+app_values_1_3 <- c(1, 2, 3)
+app_values_0_4 <- c(0, 1, 2, 3, 4)
+app_values_1_4 <- c(1, 2, 3, 4)
+app_values_1_5 <- c(1, 2, 3, 4, 5)
+app_values_0_5 <- c(0, 1, 2, 3, 4, 5)
+app_values_1_6 <- c(1, 2, 3, 4, 5, 6)
+app_values_1_7 <- c(1, 2, 3, 4, 5, 6, 7)
+app_values_0_8 <- c(0, 1, 2, 3, 4, 5, 6, 7, 8)
+app_values_1_9 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+app_values_0_3_neg2 <- c(0, -2, 1, 2, 3)
+
+
+score_cert_factored <- scored_cert_df %>%                    
+  mutate(sas_v5_std_q1 = factor(sas_v5_std_q1, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet together")),
+           K_sas_v5_StD_Q1 = factor(K_sas_v5_StD_Q1, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet together")),
+           sas_v5_std_q3 = factor(sas_v5_std_q3, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet tandem")),
+           K_sas_v5_StD_Q3 = factor(K_sas_v5_StD_Q3, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet tandem"))
+    ) %>% 
+      mutate(sas_v6_pts_q1 = factor(sas_v6_pts_q1, app_values_1_2,
+                                  c("No", "Yes")),
+             K_sas_v6_PtS_Q1 = factor(K_sas_v6_PtS_Q1, app_values_1_2,
+                                  c("No", "Yes")),
+           sas_v6_usit_q1 = factor(sas_v6_usit_q1, app_values_1_5,
+                                   c("Non-compliant", "Fell", "Used hands for support",
+                                     "Sat without support", "Shifted to prone")),
+           K_sas_v6_Usit_Q1 = factor(K_sas_v6_Usit_Q1, app_values_1_5,
+                              c("Non-compliant", "Fell", "Used hands for support",
+                                "Sat without support", "Shifted to prone"))
+           ) %>% 
+  mutate(sas_v7_std_q1 = factor(sas_v7_std_q1, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet together")),
+           K_sas_v7_StD_Q1 = factor(K_sas_v7_StD_Q1, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet together")),
+           sas_v7_std_q3 = factor(sas_v7_std_q3, app_values_1_5,
+                                  c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                                    "Stepped out", "Stood feet tandem")),
+           K_sas_v7_StD_Q3 = factor(K_sas_v7_StD_Q3, app_values_1_5,
+                             c("Non-complaint", "Fell or grabbed", "Shifted to floor",
+                               "Stepped out", "Stood feet tandem"))
+    ) %>% 
+  mutate(sas_v8_usit_q1 = factor(sas_v8_usit_q1, app_values_1_5,
+                                   c("Non-compliant", "Fell", "Used hands for support",
+                                     "Sat without support", "Shifted to prone")),
+           K_sas_v8_Usit_Q1 = factor(K_sas_v8_Usit_Q1, app_values_1_5,
+                              c("Non-compliant", "Fell", "Used hands for support",
+                                "Sat without support", "Shifted to prone"))
+         ) %>% 
+    mutate_all(as.character) 
+
+```
+
+### Rotate the Data
+
+```{r}
+master_questions <- score_cert_factored %>% 
+  select(-c(starts_with("ScoreOverall"))) %>% 
+  pivot_longer(., 
+                 cols = c(-c(name, site)), 
+                 names_to = "Question",
+                 values_to = "Score"
+    ) %>% 
+  arrange(Question) %>% 
+  select(Question) %>% 
+  mutate(Question = tolower(Question)) %>% 
+  unique() %>% 
+  mutate(type = ifelse(str_detect(Question, "^k_"), "Answer", 
+                       ifelse(str_detect(Question, "^score"), "Score", "Response")),
+         Q_sas = ifelse(str_detect(Question, "_pts_q1"), "Pull to Sit: head in line with torso?", 
+ifelse(str_detect(Question, "_usit_q1"), "Unsupported Sit: Did child sit for 30 seconds?", 
+ifelse(str_detect(Question, "_usit_q2_st"), "Find Longest Segment: When did the child start sitting?", 
+ifelse(str_detect(Question, "_usit_q2_end"), "Find Longest Segment: When did the child stop sitting?",
+
+ifelse(str_detect(Question, "_std_q1"), "Feet Together Stand: Unsupported for 30 seconds?", 
+ifelse(str_detect(Question, "_std_q2_st"), "Feet Together Stand Find Timing: When did the child start standing?", 
+ifelse(str_detect(Question, "_std_q2_end"), "Feet Together Stand Find Timing: When did the child stop standing?", 
+ifelse(str_detect(Question, "_std_q3"), "Tandem Stand: Unsupported for 30 seconds?", 
+ifelse(str_detect(Question, "_std_q4_st"), "Tandem Stand Find Timing: When did the child start standing?", 
+ifelse(str_detect(Question, "_std_q4_end"), "Tandem Stand Find Timing: When did the child stop standing?",
+                           NA
+                                  ))))))))))
+  )    %>% 
+  rename(Q = Q_sas) %>% 
+  mutate(Video = ifelse(str_detect(Question, "v5"), "Video 5",
+                 ifelse(str_detect(Question, "v6"), "Video 6",
+                 ifelse(str_detect(Question, "v7"), "Video 7",
+                 ifelse(str_detect(Question, "v8"), "Video 8",
+                                   NA))))) %>% 
+  mutate(Measure = ifelse(str_detect(Question, "sas"), "Sit and Stand",
+                          NA))
+```
+
+
+```{r}
+score_to_pivot <- score_cert_factored %>% 
+  select(-c(starts_with("ScoreOverall"))) %>% 
+  pivot_longer(., 
+                 cols = c(-c(name, site)), 
+                 names_to = "Question",
+                 values_to = "Score"
+    ) %>% 
+  arrange(Question) %>% 
+  mutate(Question = tolower(Question)) %>% 
+  full_join(., master_questions, by = "Question") %>% 
+  select(-c(Question)) %>% 
+  rename(Question = Q)
+```
+
+
+# Create Tables 
+
+```{r}
+pull_names <- score_to_pivot %>% 
+  count(name, site) %>%
+  pull(name)
+
+overall_list <- list()
+item_list <- list()
+```
+
+
+```{r, results="asis"}
+
+for(i in 1:length(pull_names)) {
+  
+  cat("\n##", pull_names[i],"\n")
+  
+  overall_df <- scored_cert_df %>%
+    filter(name %in% paste(pull_names[i])) %>%
+  select(name, site, starts_with("ScoreOverall")) %>%
+    t() %>% 
+    data.frame() 
+  
+  overall_df %>% 
+  kbl(caption = paste("Overall Scores for ", pull_names[i])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+    cat
+  
+  overall_list[[i]] <- overall_df
+  
+
+item_df <- score_to_pivot %>% 
+  filter(name %in% paste(pull_names[i])) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = type,
+            values_from = Score) %>%
+select(Measure, Video, Question, Response, Answer, Score)
+
+item_df %>% 
+  kbl(caption = paste("Item Level Scores for ", pull_names[i])) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+    cat
+  
+
+item_list[[i]] <- item_df
+
+} 
+           
+```
+
+# Save the results
+```{r}
+save(pull_names, overall_list, item_list, file = "data/sas_results_to_print.rda")
+```
+
+```{r, eval = FALSE}
+# Create files for Miriam
+
+## Sit and Stand Scores
+sas_cert_scores <- score_to_pivot %>% 
+  filter(type == "Score") %>% 
+  filter(Measure %in% c("Sit and Stand")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(sas_cert_scores, "for_Miriam/sas_cert_scores.xlsx")
+
+## Sit and Stand Responses
+sas_cert_resp <- score_to_pivot %>% 
+  filter(type == "Response") %>% 
+  filter(Measure %in% c("Sit and Stand")) %>% 
+  pivot_wider(.,
+            id_cols = c(Measure, Video, Question),
+            names_from = c(name, site),
+            values_from = Score) %>%
+  select(-c(Measure)) %>%
+  select(Question, Video, everything()) 
+
+write_xlsx(sas_cert_resp, "for_Miriam/sas_cert_resp.xlsx")
+
+
+```
+
+
