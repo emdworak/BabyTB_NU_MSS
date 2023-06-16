@@ -1,5 +1,5 @@
 temp <- cert_df_wide_NA %>% 
-  filter(name == "Steed, Stephanie") %>% 
+  filter(name == "NAME") %>% 
   t() %>% 
   data.frame()
 
