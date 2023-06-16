@@ -31,6 +31,7 @@ library(readxl)
 library(ggpubr)
 library(kableExtra)
 library(gridExtra)
+library(writexl)
 
 # Make sure you're running the most recent version of psych
 # sessionInfo()
@@ -86,7 +87,11 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v5v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("medina, keila", "Medina, Keila"
+  filter(name %in% c("Ramirez, Rosario", "Ramirez,Rosario",
+                     "Maggie Craig", "Maggie M Craig",
+                     "Fletes, Fabiola", "Fletes. Fabiola",
+                     "Yilma,aden", "Yilma.aden",
+                     "medina, keila", "Medina, Keila"
                      )) %>% 
   kbl(caption = "Name Errors") %>% 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
@@ -94,8 +99,17 @@ cert_df_app_v5v2 %>%
 
 Fix the names:
 ```{r}
-cert_df_app_v5v2$name[cert_df_app_v5v2$name == "medina, keila"] <- "Medina, Keila"
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "Ramirez,Rosario"] <- "Ramirez, Rosario"
 
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "Maggie M Craig"] <- "Maggie Craig"
+
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "Fletes. Fabiola"] <- "Fletes, Fabiola"
+
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "Yilma.aden"] <- "Yilma, Aden"
+
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "Yilma,aden"] <- "Yilma, Aden"
+
+cert_df_app_v5v2$name[cert_df_app_v5v2$name == "medina, keila"] <- "Medina, Keila"
 
 ```
 
@@ -229,7 +243,7 @@ cert_df_wide_full %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 # Load in the last export
 completed_cases <- read_rds(file = "data/completed_cases.rds")
 ```
@@ -255,7 +269,7 @@ cert_df_wide_NA %>%
 
 # New Reports as of `r format(Sys.time(), '%B %d')`
 
-```{r, eval = FALSE}
+```{r}
 cert_df_wide_full %>% 
   count(name, site) %>%
   filter(name %nin% completed_cases) %>% 
@@ -599,3 +613,46 @@ write_xlsx(sas_cert_resp, "for_Miriam/sas_cert_resp.xlsx")
 ```
 
 
+# Extra code for printing tables
+
+
+```{r, eval = FALSE}
+sas_round2 <- scored_cert_df %>%
+  select(name, site, starts_with("ScoreOverall")) %>% 
+  pivot_longer(cols = ScoreOverall_sas_v5:ScoreOverall_sas_v8,
+               names_to = "names") %>% 
+  mutate(names2 = str_remove(names, "\\_v\\d"),
+         video = str_extract(names, "v\\d")) %>% 
+  pivot_wider(id_cols = c("name", "site", "video"),
+              names_from = names2,
+              values_from = value) %>% 
+  select(starts_with("ScoreOverall")) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "ScoreOverall\\_", replacement = "", 
+              matches("ScoreOverall\\_")) %>%
+  data.frame() %>% 
+  describe(., d = 4) 
+
+sas_round2 <- cbind(test = rownames(sas_round2), sas_round2)
+
+write_xlsx(sas_round2, "for_Miriam/sas_round2.xlsx")
+
+```
+
+```{r, eval=FALSE}
+sas_cert_summary <- scored_cert_df %>%
+  select(name, site, starts_with("ScoreOverall")) %>%
+  rename_with(stringr::str_replace, 
+              pattern = "ScoreOverall\\_", replacement = "", 
+              matches("ScoreOverall\\_")) %>%
+  group_by(name, site) %>% 
+  mutate(sas_r2_avg = mean(c(sas_v5, sas_v6, sas_v7, sas_v8)),
+         sas_r2_pass_fail = ifelse(sas_r2_avg >=.750, "Pass", "Fail")
+  ) %>% 
+  select(name, site, 
+         starts_with("sas_v"), starts_with("sas_r2")
+         ) %>% 
+  data.frame() 
+
+write_xlsx(sas_cert_summary, "for_Miriam/20230614_sas_cert_summary.xlsx")
+```
