@@ -31,6 +31,7 @@ library(readxl)
 library(ggpubr)
 library(kableExtra)
 library(gridExtra)
+library(writexl)
 
 # Make sure you're running the most recent version of psych
 # sessionInfo()
@@ -88,7 +89,11 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("MUNESA, LUKE", "Munesa, Luke",
+  filter(name %in% c("Martinez Marquez Flor", "Martinez marquez Flor",
+                     "martinez marquez flor", "martinez Marquez flor",
+                     "VanEss, Lisa", "Vaness, Lisa",
+                     "JANA, PUJA", "JANA,PUJA",
+                     "MUNESA, LUKE", "Munesa, Luke", "Luke Munesa",
                      "Aminah Askew", "Aminah askew",
                      "Adams Kyle", "Adams, Kyle",
                      "Sifuentes, Maci", "Maci Sifuentes",
@@ -122,6 +127,18 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "martinez marquez flor"] <- "Martinez Marquez Flor"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "martinez Marquez flor"] <- "Martinez Marquez Flor"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Martinez marquez Flor"] <- "Martinez Marquez Flor"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa"] <- "Vaness, Lisa"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "JANA,PUJA"] <- "JANA, PUJA"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Luke Munesa"] <- "Munesa, Luke"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "MUNESA, LUKE"] <- "Munesa, Luke"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Aminah askew"] <- "Aminah Askew"
@@ -1902,6 +1919,8 @@ item_list[[i]] <- item_df
 save(pull_names, overall_list, item_list, file = "data/results_to_print.rda")
 ```
 
+# Extra code for printing tables
+
 ```{r, eval = FALSE}
 # Create files for Miriam
 
@@ -2013,4 +2032,91 @@ write_xlsx(sas_cert_resp, "for_Miriam/sas_cert_resp.xlsx")
 
 ```
 
+```{r, eval = FALSE}
+original_examiners <- scored_cert_df %>%
+  filter(name %in% c("Sashoyan, Maria", "Holland, Jennifer",
+                     "LaFauci, Phil", "Martinez, Vanessa",
+                     "Paternostro, Mercedes", "Rodriguez, Cynthia",
+                     "Cipas, Kyle", "Lozano, Linda",
+                     "Lane, Harlie", "Thury, Khari",
+                     "Anderson, Josh", "Jenkins, Rebecca",
+                     "Olson, Megan")) %>%
+  select(name, site, starts_with("ScoreOverall")) %>% 
+  pivot_longer(cols = ScoreOverall_sobY_v1:ScoreOverall_sas_v4,
+               names_to = "names") %>% 
+  mutate(names2 = str_remove(names, "\\_v\\d"),
+         video = str_extract(names, "v\\d")) %>% 
+  pivot_wider(id_cols = c("name", "site", "video"),
+              names_from = names2,
+              values_from = value) %>% 
+  select(starts_with("ScoreOverall")) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "ScoreOverall\\_", replacement = "", 
+              matches("ScoreOverall\\_")) %>%
+  data.frame() %>% 
+  describe(., d = 4) 
+
+original_examiners <- cbind(test = rownames(original_examiners), original_examiners)
+
+write_xlsx(original_examiners, "for_Miriam/original_examiners.xlsx")
+
+secondary_examiners <- scored_cert_df %>%
+  filter(name %nin% c("Sashoyan, Maria", "Holland, Jennifer",
+                     "LaFauci, Phil", "Martinez, Vanessa",
+                     "Paternostro, Mercedes", "Rodriguez, Cynthia",
+                     "Cipas, Kyle", "Lozano, Linda",
+                     "Lane, Harlie", "Thury, Khari",
+                     "Anderson, Josh", "Jenkins, Rebecca",
+                     "Olson, Megan")) %>%
+  select(name, site, starts_with("ScoreOverall")) %>% 
+  pivot_longer(cols = ScoreOverall_sobY_v1:ScoreOverall_sas_v4,
+               names_to = "names") %>% 
+  mutate(names2 = str_remove(names, "\\_v\\d"),
+         video = str_extract(names, "v\\d")) %>% 
+  pivot_wider(id_cols = c("name", "site", "video"),
+              names_from = names2,
+              values_from = value) %>% 
+  select(starts_with("ScoreOverall")) %>% 
+  rename_with(stringr::str_replace, 
+              pattern = "ScoreOverall\\_", replacement = "", 
+              matches("ScoreOverall\\_")) %>%
+  data.frame() %>% 
+  describe(., d = 4)
+
+
+secondary_examiners <- cbind(test = rownames(secondary_examiners), secondary_examiners)
+
+write_xlsx(secondary_examiners, "for_Miriam/secondary_examiners.xlsx")
+
+```
+
+```{r, eval=FALSE}
+cert_summary <- scored_cert_df %>%
+  select(name, site, starts_with("ScoreOverall")) %>%
+  rename_with(stringr::str_replace, 
+              pattern = "ScoreOverall\\_", replacement = "", 
+              matches("ScoreOverall\\_")) %>%
+  group_by(name, site) %>% 
+  mutate(sobY_avg = mean(c(sobY_v1, sobY_v2)),
+         sobY_pass_fail = ifelse(sobY_avg >=.750, "Pass", "Fail"),
+         sobO_avg = mean(c(sobO_v1, sobO_v2)),
+         sobO_pass_fail = ifelse(sobO_avg >=.750, "Pass", "Fail"),
+         gug_avg = mean(c(gug_v1, gug_v2)),
+         gug_pass_fail = ifelse(gug_avg >=.750, "Pass", "Fail"),
+         rte_avg = mean(c(rte_v1, rte_v2)),
+         rte_pass_fail = ifelse(rte_avg >=.750, "Pass", "Fail"),
+         sas_avg = mean(c(sas_v1, sas_v2, sas_v3, sas_v4)),
+         sas_pass_fail = ifelse(sas_avg >=.750, "Pass", "Fail")
+  ) %>% 
+  select(name, site, 
+         starts_with("sobY_v"), starts_with("sobY"),
+         starts_with("sobO_v"), starts_with("sobO"),
+         starts_with("gug_v"), starts_with("gug"),
+         starts_with("rte_v"), starts_with("rte"),
+         starts_with("sas_v"), starts_with("sas")
+         ) %>% 
+  data.frame() 
+
+write_xlsx(cert_summary, "for_Miriam/20230613_cert_summary.xlsx")
+```
 
