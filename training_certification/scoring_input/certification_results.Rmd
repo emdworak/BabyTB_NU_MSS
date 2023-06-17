@@ -89,7 +89,8 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Martinez Marquez Flor", "Martinez marquez Flor",
+  filter(name %in% c("Karr, Reanna", "Karr",
+                     "Martinez Marquez Flor", "Martinez marquez Flor",
                      "martinez marquez flor", "martinez Marquez flor",
                      "VanEss, Lisa", "Vaness, Lisa",
                      "JANA, PUJA", "JANA,PUJA",
@@ -127,13 +128,15 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Karr"] <- "Karr, Reanna"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "martinez marquez flor"] <- "Martinez Marquez Flor"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "martinez Marquez flor"] <- "Martinez Marquez Flor"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Martinez marquez Flor"] <- "Martinez Marquez Flor"
 
-cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa"] <- "Vaness, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Vaness, Lisa"] <- "VanEss, Lisa"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "JANA,PUJA"] <- "JANA, PUJA"
 
@@ -232,6 +235,29 @@ cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn" & cert_df_app_
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_app_v1v2$task_id == "sobY_v2"] <- "Krummel, Madalyn"
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Krummel, Madalyn 2" & cert_df_app_v1v2$task_id == "sobO_v1"] <- "Krummel, Madalyn"
+
+
+## Fix the cases that required retests
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "sobY_v1"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "sobY_v2"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "gug_v1"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "gug_v2"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "sas_v1"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "sas_v2"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "sas_v3"] <- "Delete"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa" & cert_df_app_v1v2$task_id == "sas_v4"] <- "Delete"
+
+# cert_df_app_v1v2 %>% 
+#   filter(name %in% c("Delete"))
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sobY_v1"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sobY_v2"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "gug_v1"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "gug_v2"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sas_v1"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sas_v2"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sas_v3"] <- "VanEss, Lisa"
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sas_v4"] <- "VanEss, Lisa"
 
 ```
 
