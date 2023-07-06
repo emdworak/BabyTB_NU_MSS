@@ -118,8 +118,8 @@ cert_df_app_v5v2$name[cert_df_app_v5v2$name == "medina, keila"] <- "Medina, Keil
 
 Fix multiple locations:
 
-```{r, eval = FALSE}
-cert_df_app_v5v2$site[cert_df_app_v5v2$name == ""] <- ""
+```{r}
+cert_df_app_v5v2$site[cert_df_app_v5v2$name == "Yohe, Cameron"] <- "Houston, TX"
 
 ```
 
