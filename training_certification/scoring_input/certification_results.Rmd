@@ -89,7 +89,8 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Karr, Reanna", "Karr",
+  filter(name %in% c("Smith, Tudi", "smith, tudi", "smith, Tudi", "smith,tudi", "tudi", "tudi Smith",  "tudi smith", "smith,  tudi", 
+                     "Karr, Reanna", "Karr",
                      "Martinez Marquez Flor", "Martinez marquez Flor",
                      "martinez marquez flor", "martinez Marquez flor",
                      "VanEss, Lisa", "Vaness, Lisa",
@@ -128,6 +129,21 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "smith,  tudi"] <- "Smith, Tudi"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "smith, tudi"] <- "Smith, Tudi"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "smith, Tudi"] <- "Smith, Tudi"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "smith,tudi"] <- "Smith, Tudi"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "tudi"] <- "Smith, Tudi"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "tudi Smith"] <- "Smith, Tudi"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "tudi smith"] <- "Smith, Tudi"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Karr"] <- "Karr, Reanna"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "martinez marquez flor"] <- "Martinez Marquez Flor"
@@ -264,6 +280,8 @@ cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1
 Fix multiple locations:
 
 ```{r}
+cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Smith, Tudi"] <- "Minneapolis, MN"
+
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Munesa, Luke"] <- "Philadelphia, PA"
 
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Adams, Kyle"] <- "Philadelphia, PA"
