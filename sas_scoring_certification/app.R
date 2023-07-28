@@ -122,7 +122,8 @@ tabItem(tabName = "tab_sas_v5",
                                "Philadelphia, PA" = "Philadelphia, PA",
                                "Phoenix, AZ" = "Phoenix, AZ",
                                "St Louis, MO" = "St Louis, MO",
-                               "Seattle, WA" = "Seattle, WA"
+                               "Seattle, WA" = "Seattle, WA",
+                               "Clinical Site" = "Clinical Site"
                              )) 
                  
           ),
@@ -248,7 +249,8 @@ tabItem(tabName = "tab_sas_v6",
                                "Philadelphia, PA" = "Philadelphia, PA",
                                "Phoenix, AZ" = "Phoenix, AZ",
                                "St Louis, MO" = "St Louis, MO",
-                               "Seattle, WA" = "Seattle, WA"
+                               "Seattle, WA" = "Seattle, WA",
+                               "Clinical Site" = "Clinical Site"
                              )) 
           ),
           
@@ -352,7 +354,8 @@ tabItem(tabName = "tab_sas_v7",
                                "Philadelphia, PA" = "Philadelphia, PA",
                                "Phoenix, AZ" = "Phoenix, AZ",
                                "St Louis, MO" = "St Louis, MO",
-                               "Seattle, WA" = "Seattle, WA"
+                               "Seattle, WA" = "Seattle, WA",
+                               "Clinical Site" = "Clinical Site"
                              )) 
           ),
 
@@ -477,7 +480,8 @@ tabItem(tabName = "tab_sas_v8",
                                "Philadelphia, PA" = "Philadelphia, PA",
                                "Phoenix, AZ" = "Phoenix, AZ",
                                "St Louis, MO" = "St Louis, MO",
-                               "Seattle, WA" = "Seattle, WA"
+                               "Seattle, WA" = "Seattle, WA",
+                               "Clinical Site" = "Clinical Site"
                              )) 
           ),
           
