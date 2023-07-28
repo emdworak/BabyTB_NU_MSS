@@ -89,7 +89,10 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Smith, Tudi", "smith, tudi", "smith, Tudi", "smith,tudi", "tudi", "tudi Smith",  "tudi smith", "smith,  tudi", 
+  filter(name %in% c("Avina", "Avina Sara", "Avina sara",
+                     "stokes", "stokes monique", "stokes, monique", "stokes,monique",
+                     "Mlynski, Nicole", "Mlynski,Nicole", "Nicole Mlynski", 
+                     "Smith, Tudi", "smith, tudi", "smith, Tudi", "smith,tudi", "tudi", "tudi Smith",  "tudi smith", "smith,  tudi", 
                      "Karr, Reanna", "Karr",
                      "Martinez Marquez Flor", "Martinez marquez Flor",
                      "martinez marquez flor", "martinez Marquez flor",
@@ -129,6 +132,23 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Avina"] <- "Avina, Sara"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Avina Sara"] <- "Avina, Sara"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Avina sara"] <- "Avina, Sara"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Mlynski,Nicole"] <- "Mlynski, Nicole"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Nicole Mlynski"] <- "Mlynski, Nicole"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "stokes"] <- "Stokes, Monique"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "stokes monique"] <- "Stokes, Monique"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "stokes,monique"] <- "Stokes, Monique"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "stokes, monique"] <- "Stokes, Monique"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "smith,  tudi"] <- "Smith, Tudi"
 
@@ -275,11 +295,15 @@ cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sas_v3"] <- "VanEss, Lisa"
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "VanEss, Lisa 2" & cert_df_app_v1v2$task_id == "sas_v4"] <- "VanEss, Lisa"
 
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Stokes, Monique" & cert_df_app_v1v2$date > "2023-07-21"] <- "Stokes, Monique 2"
+
 ```
 
 Fix multiple locations:
 
 ```{r}
+cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Stokes, Monique 2"] <- "Phoenix, AZ"
+
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Smith, Tudi"] <- "Minneapolis, MN"
 
 cert_df_app_v1v2$site[cert_df_app_v1v2$name == "Munesa, Luke"] <- "Philadelphia, PA"
