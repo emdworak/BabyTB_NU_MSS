@@ -121,6 +121,8 @@ Fix multiple locations:
 ```{r}
 cert_df_app_v5v2$site[cert_df_app_v5v2$name == "Yohe, Cameron"] <- "Houston, TX"
 
+cert_df_app_v5v2$site[cert_df_app_v5v2$name == "stokes,monique"] <- "Phoenix, AZ"
+
 ```
 
 
