@@ -89,7 +89,8 @@ We're only aware of one case where a different name was used on purpose. Therefo
 ```{r}
 cert_df_app_v1v2 %>% 
   count(name, site) %>% 
-  filter(name %in% c("Avina", "Avina Sara", "Avina sara",
+  filter(name %in% c("Isbell (Weems), Christy", "Isbell- Weems", "Isbell- Weems, Christy", "Isbell-Weems", "Isbell-Weems, Christy", "Patricia Blasco",
+                     "Avina", "Avina Sara", "Avina sara",
                      "stokes", "stokes monique", "stokes, monique", "stokes,monique",
                      "Mlynski, Nicole", "Mlynski,Nicole", "Nicole Mlynski", 
                      "Smith, Tudi", "smith, tudi", "smith, Tudi", "smith,tudi", "tudi", "tudi Smith",  "tudi smith", "smith,  tudi", 
@@ -132,6 +133,16 @@ cert_df_app_v1v2 %>%
 
 Fix the names:
 ```{r}
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Patricia Blasco"] <- "Blasco, Patricia"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Isbell (Weems), Christy"] <- "Isbell-Weems, Christy"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Isbell- Weems"] <- "Isbell-Weems, Christy"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Isbell- Weems, Christy"] <- "Isbell-Weems, Christy"
+
+cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Isbell-Weems"] <- "Isbell-Weems, Christy"
+
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Avina"] <- "Avina, Sara"
 
 cert_df_app_v1v2$name[cert_df_app_v1v2$name == "Avina Sara"] <- "Avina, Sara"
